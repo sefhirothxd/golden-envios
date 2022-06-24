@@ -2,9 +2,9 @@ import React from 'react';
 
 const Home = () => {
   return (
-    <>
-      <h1>Home</h1>
-    </>
+    <div className="flex justify-center items-center h-screen w-full">
+      <h1 className="text-2xl font-bold ">Bienvenidos a HOME</h1>
+    </div>
   );
 };
 

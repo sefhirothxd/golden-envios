@@ -6,14 +6,16 @@ import Mundo from '../assets/img/mundo2.png';
 const login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { loginUser } = useContext(UserContext);
+  const { loginUser, setUser } = useContext(UserContext);
 
   const navegate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await loginUser(email, password);
+      setUser(true);
       console.log('Usuario logeado');
+      navegate('/');
     } catch (error) {
       console.log(error.code);
       alert(error.code);
