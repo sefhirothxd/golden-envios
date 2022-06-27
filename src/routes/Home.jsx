@@ -1,16 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../context/UserProvider';
 import Logo from '../assets/img/logoLogin2.png';
+import Campana from '../assets/img/campana.svg';
+import {
+  Dropdown,
+  Avatar,
+  Button,
+  Modal,
+  Label,
+  TextInput,
+  Checkbox,
+} from 'flowbite-react';
+import X from '../assets/img/x.svg';
 const Home = () => {
   const [showTrans, setShowTrans] = useState(false);
   const [showHabi, setShowHabi] = useState(false);
   const [showRece, setShowRece] = useState(false);
   const [showCuentas, setShowCuentas] = useState(false);
   const [showCaja, setShowCaja] = useState(false);
+  const [bar, setBar] = useState(false);
+  const [modal, setModal] = useState(false);
+  const { logoutUser } = useContext(UserContext);
+  const logOut = async () => {
+    await logoutUser();
+  };
 
   return (
-    <div className="flex h-screen w-full">
-      <aside className="h-full" aria-label="Sidebar">
-        <div className="overflow-y-auto h-full flex  items-center flex-col w-72  py-4 px-3 bg-sideblue rounded-tr-3xl dark:bg-gray-800">
+    <div className="flex h-screen w-full relative">
+      <aside className={!bar ? 'barSide' : 'barSide2'} aria-label="Sidebar">
+        <div className="overflow-y-auto h-full flex relative  items-center flex-col w-72  py-4 px-3 bg-sideblue rounded-tr-3xl dark:bg-gray-800">
+          <button onClick={() => setBar(!bar)}>
+            <img
+              src={X}
+              className="h-6 w-auto absolute right-5 920:hidden"
+              alt="aspa"
+            />
+          </button>
           <img src={Logo} className="mt-10" alt="logo golden fast" />
           <hr className="bg-white  w-full mt-7 mb-7" />
           <ul className="space-y-2 w-full">
@@ -450,8 +475,144 @@ const Home = () => {
           </ul>
         </div>
       </aside>
+
       <div className="flex flex-col h-screen w-full p-8 overflow-hidden">
-        <div className="bg-white border border-black rounded-xl mb-5 w-full h-14"></div>
+        <div className="bg-white border-b flex justify-end items-center relative border-gray-300 rounded-xl mb-5 w-full h-14 px-2">
+          <div className="flex justify-between w-full items-center gap-4">
+            <div className="flex justify-center items-center gap-2">
+              <div className="920:hidden ">
+                <button
+                  className="flex justify-center items-center"
+                  color={'white'}
+                  onClick={() => setBar(!bar)}
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    strokeWidth="0"
+                    viewBox="0 0 20 20"
+                    className=" h-6 w-6 cursor-pointer text-black dark:text-gray-400"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                      clipRule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <p>Sede:</p>
+              <select
+                className="rounded-full py-1 px-2 w-32 "
+                name="sede"
+                id=""
+              >
+                <option value="1">Lima</option>
+                <option value="2">Pichanaqui</option>
+                <option value="3">Cusco</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-4 justify-center">
+              <h3>Saldo:</h3>
+              <p className="px-2 py-1 bg-red-500 rounded-full">S/15,000.00</p>
+              <p className="px-2 py-1 bg-gray-200 rounded-full">$/15,000.00</p>
+            </div>
+          </div>
+          <img className="h-6 mx-4" src={Campana} alt="campana" />
+          <Dropdown
+            size={'sm'}
+            label={
+              <Avatar
+                alt="User settings"
+                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                rounded={true}
+              />
+            }
+            arrowIcon={false}
+            inline={true}
+          >
+            <Dropdown.Header>
+              <span className="block text-sm">Ricardo milo</span>
+              <span className="block truncate text-sm font-medium">
+                admin@test.com
+              </span>
+            </Dropdown.Header>
+            <Dropdown.Item>Dashboard</Dropdown.Item>
+            <Dropdown.Item>Settings</Dropdown.Item>
+            <Dropdown.Item>Earnings</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={logOut}>Cerrar sesion</Dropdown.Item>
+          </Dropdown>
+        </div>
+        <div className="mb-5">
+          <>
+            <Button onClick={() => setModal(!modal)}>Crear Trasferencia</Button>
+            <Modal
+              show={modal}
+              size="md"
+              popup={true}
+              onClose={() => setModal(!modal)}
+            >
+              <Modal.Header />
+              <Modal.Body>
+                <div className="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8">
+                  <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                    Sign in to our platform
+                  </h3>
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="email" value="Your email" />
+                    </div>
+                    <TextInput
+                      id="email"
+                      className="dark:border-gray-500 dark:bg-gray-600"
+                      placeholder="name@company.com"
+                      required={true}
+                    />
+                  </div>
+                  <div>
+                    <div className="mb-2 block">
+                      <Label htmlFor="password" value="Your password" />
+                    </div>
+                    <TextInput
+                      id="password"
+                      className="dark:border-gray-500 dark:bg-gray-600"
+                      type="password"
+                      required={true}
+                    />
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-2">
+                      <Checkbox id="remember" />
+                      <Label htmlFor="remember">Remember me</Label>
+                    </div>
+                    <a
+                      href="/modal"
+                      className="text-sm text-blue-700 hover:underline dark:text-blue-500"
+                    >
+                      Lost Password?
+                    </a>
+                  </div>
+                  <div className="w-full">
+                    <Button>Log in to your account</Button>
+                  </div>
+                  <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+                    Not registered?{' '}
+                    <a
+                      href="/modal"
+                      className="text-blue-700 hover:underline dark:text-blue-500"
+                    >
+                      Create account
+                    </a>
+                  </div>
+                </div>
+              </Modal.Body>
+            </Modal>
+          </>
+        </div>
         <div className=" overflow-x-auto w-full shadow-md sm:rounded-xl">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

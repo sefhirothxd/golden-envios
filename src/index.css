@@ -3,10 +3,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .fondo {
-  background-image: url(./assets/img/mundo2.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  border-radius: 50%;
-} */
+.barSide {
+  height: 100%;
+  z-index: 10;
+  transition: all 0.3s ease-in-out;
+}
+.barSide2 {
+  height: 100%;
+  z-index: 10;
+  transition: all 0.3s ease-in-out;
+}
+.h-modal {
+  height: 100vh;
+}
+
+@media screen and (max-width: 920px) {
+  .barSide {
+    position: absolute;
+    top: 0;
+    left: -300px;
+  }
+  .barSide2 {
+    position: absolute;
+    top: 0;
+    left: 0px;
+  }
+}
