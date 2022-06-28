@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import { UserContext } from './context/UserProvider';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Router } from 'react-router-dom';
 import Login from './routes/Login';
 import Home from './routes/Home';
-import Navbar from './components/Navbar';
-import RequiereAuth from './components/RequiereAuth';
+import Perfil from './routes/Perfil';
 import Register from './routes/Register';
+import LayoutRequiereAuth from './components/layout/LayoutRequiereAuth';
+import LayoutContainerForm from './components/layout/LayoutContainerForm';
+import NotFound from './routes/NotFound';
 const App = () => {
   const { user } = useContext(UserContext);
   if (user === false) {
@@ -15,16 +17,15 @@ const App = () => {
     <>
       {/* <Navbar /> */}
       <Routes>
-        <Route
-          path="/"
-          element={
-            <RequiereAuth>
-              <Home />
-            </RequiereAuth>
-          }
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<LayoutRequiereAuth />}>
+          <Route index element={<Home />} />
+          <Route path="perfil" element={<Perfil />} />
+        </Route>
+        <Route path="/" element={<LayoutContainerForm />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

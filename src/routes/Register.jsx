@@ -9,8 +9,13 @@ import FormInput from '../components/FormInput';
 const Register = () => {
   const { registerUser } = useContext(UserContext);
   //metodo que retorna la validacion de los campos
-  const { required, patternEmail, minLength, validateTrim, validateEquals } =
-    formValidate();
+  const {
+    required,
+    patternEmail,
+    minLengthValue,
+    validateTrim,
+    validateEquals,
+  } = formValidate();
   //navigate
   const navegate = useNavigate();
   //useForm
@@ -27,22 +32,23 @@ const Register = () => {
       await registerUser(email, password);
       navegate('/');
     } catch (error) {
-      console.log(error.code);
-      setError('firebase', {
-        message: erroresFirebase(error.code),
-      });
+      console.log(error);
+      const { code, message } = erroresFirebase(error.code);
+      setError(code, { message });
     }
   };
 
   return (
-    <>
-      <h1>Register</h1>
-      <FormError error={errors.firebase} />
+    <div className="h-screen flex justify-evenly items-center  overflow-hidden">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col w-1/2 justify-center items-center h-100"
+        className="flex flex-col w-full justify-center items-center h-100"
       >
+        <div className="w-full flex justify-center mb-8">
+          <h1 className="text-2xl font-bold text-botton-blue">Registrar</h1>
+        </div>
         <FormInput
+          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
           type="email"
           placeholder="Ingresar email"
           {...register('email', {
@@ -52,26 +58,33 @@ const Register = () => {
         ></FormInput>
         <FormError error={errors.email} />
         <FormInput
+          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
           type="password"
           placeholder="Ingresar contraseña"
           {...register('password', {
-            minLength,
+            minLength: minLengthValue(6),
             validate: validateTrim,
           })}
         ></FormInput>
         <FormError error={errors.password} />
         <FormInput
+          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
           type="password"
           placeholder="Ingresar contraseña"
           {...register('repassword', {
-            validate: validateEquals(getValues),
+            validate: validateEquals(getValues('password')),
           })}
         ></FormInput>
 
         <FormError error={errors.repassword} />
-        <button type="submit">Register</button>
+        <button
+          className="bg-botton-blue p-3 rounded-2xl w-11/12 xs:w-96 text-white text-xl mb-3 "
+          type="submit"
+        >
+          Enviar
+        </button>
       </form>
-    </>
+    </div>
   );
 };
 

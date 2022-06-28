@@ -8,9 +8,11 @@ import { erroresFirebase } from '../utils/erroresFirebase';
 import FormError from '../components/FormError';
 import FormInput from '../components/FormInput';
 import { formValidate } from '../utils/formValidate';
+import ButtonLoading from '../components/ButtonLoading';
 const login = () => {
   //context
-  const { loginUser, setUser } = useContext(UserContext);
+  const { loginUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
   //navigate
   const navegate = useNavigate();
   const { required, patternEmail, minLength, validateTrim, validateEquals } =
@@ -25,13 +27,15 @@ const login = () => {
   } = useForm();
   const onSubmit = async ({ email, password }) => {
     try {
+      setLoading(true);
       await loginUser(email, password);
       navegate('/');
     } catch (error) {
       console.log(error.code);
-      setError('firebase', {
-        message: erroresFirebase(error.code),
-      });
+      const { code, message } = erroresFirebase(error.code);
+      setError(code, { message });
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -43,7 +47,6 @@ const login = () => {
         <div className="w-full flex justify-center mb-8">
           <img src={Logo} alt="logo golden fast" className="w-44" />
         </div>
-        <FormError error={errors.firebase} />
         <FormInput
           className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
           type="email"
@@ -66,12 +69,17 @@ const login = () => {
           })}
         ></FormInput>
         <FormError error={errors.password} />
-        <button
-          type="submit"
-          className="bg-botton-blue p-3 rounded-2xl w-11/12 xs:w-96 text-white text-xl mb-3 "
-        >
-          Acceder
-        </button>
+        {loading ? (
+          <ButtonLoading />
+        ) : (
+          <button
+            type="submit"
+            className="bg-botton-blue p-3 rounded-2xl w-11/12 xs:w-96 text-white text-xl mb-3 "
+          >
+            Acceder
+          </button>
+        )}
+
         <a
           className=" text-grey-ancla text-xl font-normal text-center"
           href="#"

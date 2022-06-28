@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../context/UserProvider';
+import { useFirestoreState } from '../hooks/useFirestore';
 import Logo from '../assets/img/logoLogin2.png';
 import Campana from '../assets/img/campana.svg';
 import {
@@ -12,6 +13,7 @@ import {
   Checkbox,
 } from 'flowbite-react';
 import X from '../assets/img/x.svg';
+
 const Home = () => {
   const [showTrans, setShowTrans] = useState(false);
   const [showHabi, setShowHabi] = useState(false);
@@ -21,9 +23,17 @@ const Home = () => {
   const [bar, setBar] = useState(false);
   const [modal, setModal] = useState(false);
   const { logoutUser } = useContext(UserContext);
+  const { data, loading, error, getData } = useFirestoreState();
   const logOut = async () => {
     await logoutUser();
   };
+
+  useEffect(() => {
+    console.log(data);
+    getData();
+  }, []);
+  const loadingData = loading.getData && <p>Loading data...</p>;
+  const errorData = error && <p>{error}</p>;
 
   return (
     <div className="flex h-screen w-full relative">
@@ -475,7 +485,6 @@ const Home = () => {
           </ul>
         </div>
       </aside>
-
       <div className="flex flex-col h-screen w-full p-8 overflow-hidden">
         <div className="bg-white border-b flex justify-end items-center relative border-gray-300 rounded-xl mb-5 w-full h-14 px-2">
           <div className="flex justify-between w-full items-center gap-4">
@@ -650,61 +659,52 @@ const Home = () => {
               </tr>
             </thead>
             <tbody className="text-center">
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  20/20/2022
-                </th>
-                <td className="px-6 py-4">Nombre y apellido</td>
-                <td className="px-6 py-4">Golden fast</td>
-                <td className="px-6 py-4">Lima</td>
-                <td className="px-6 py-4">Ludwing</td>
-                <td className="px-6 py-4">s/2,022</td>
-                <td className="px-6 py-4">s/20</td>
-                <td className="px-6 py-4">x liquidar</td>
-                <td className="px-6 py-4 flex items-center justify-center gap-2">
-                  Pagado
-                  <span className="bg-green-500 h-1 w-1 inline-block rounded-full"></span>
-                </td>
-              </tr>
-              <tr className="bg-red-200 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  20/20/2022
-                </th>
-                <td className="px-6 py-4">Nombre y apellido</td>
-                <td className="px-6 py-4">Golden fast</td>
-                <td className="px-6 py-4">Lima</td>
-                <td className="px-6 py-4">Ludwing</td>
-                <td className="px-6 py-4">s/2,022</td>
-                <td className="px-6 py-4">s/20</td>
-                <td className="px-6 py-4">x liquidar</td>
-                <td className="px-6 py-4 flex items-center justify-center gap-2">
-                  Pendiente
-                </td>
-              </tr>
-              <tr className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th
-                  scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
-                >
-                  20/20/2022
-                </th>
-                <td className="px-6 py-4">Nombre y apellido</td>
-                <td className="px-6 py-4">Golden fast</td>
-                <td className="px-6 py-4">Lima</td>
-                <td className="px-6 py-4">Ludwing</td>
-                <td className="px-6 py-4">s/2,022</td>
-                <td className="px-6 py-4">s/20</td>
-                <td className="px-6 py-4">x liquidar</td>
-                <td className="px-6 py-4 flex items-center justify-center gap-2">
-                  pagado
-                </td>
-              </tr>
+              <div>{loadingData}</div>
+              <div>{errorData}</div>
+              {data?.map(
+                ({
+                  beneficiario,
+                  estado,
+                  solicitante,
+                  origen,
+                  asesor,
+                  fechaCreada,
+                  uid,
+                  monto,
+                  comision,
+                  obs,
+                }) => (
+                  <tr
+                    key={uid}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  >
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                    >
+                      {
+                        // firebase Timestamp full .toLocaleTimeString() hora
+                        fechaCreada.toDate().toLocaleDateString()
+                      }
+                    </th>
+                    <td className="px-6 py-4">{beneficiario}</td>
+                    <td className="px-6 py-4">{solicitante}</td>
+                    <td className="px-6 py-4">{origen}</td>
+                    <td className="px-6 py-4">{asesor}</td>
+                    <td className="px-6 py-4">S/{monto}</td>
+                    <td className="px-6 py-4">S/{comision}</td>
+                    <td className="px-6 py-4">{obs}</td>
+                    <td className="px-6 py-4 flex items-center justify-center gap-2">
+                      {estado ? 'Pagado' : 'pendiente'}
+                      {estado ? (
+                        <span className="bg-green-500 h-1 w-1 inline-block rounded-full"></span>
+                      ) : (
+                        <span className="bg-red-500 h-1 w-1 inline-block rounded-full"></span>
+                      )}
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </div>
