@@ -1,12 +1,24 @@
-import { collection, getDocs, query, where } from 'firebase/firestore/lite';
+import {
+  collection,
+  getDocs,
+  doc,
+  query,
+  where,
+  serverTimestamp,
+  Timestamp,
+  setDoc,
+} from 'firebase/firestore/lite';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
+import { nanoid } from 'nanoid';
 
 export const useFirestoreState = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState({});
   const uid = auth.currentUser.uid;
+
+  console.log(Timestamp.now());
 
   const getData = async () => {
     try {
@@ -26,11 +38,31 @@ export const useFirestoreState = () => {
     }
   };
 
-  const addData = async (url) => {
+  const addData = async ({
+    asesor,
+    beneficiario,
+    comision,
+    estado,
+    monto,
+    obs,
+    origen,
+    solicitante,
+  }) => {
     try {
       setLoading((prev) => ({ ...prev, addData: true }));
-      const newData = { nanoid: nanoid(6), origin: url, uid };
-      const docRef = doc(db, 'urls', newData.nanoid);
+      const newData = {
+        asesor,
+        beneficiario,
+        comision,
+        estado,
+        monto,
+        obs,
+        origen,
+        solicitante,
+        uid,
+        fechaCreada: Timestamp.now(),
+      };
+      const docRef = doc(db, 'transferencias', nanoid(6));
       await setDoc(docRef, newData);
       setData([...data, newData]);
     } catch (error) {

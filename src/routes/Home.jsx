@@ -3,6 +3,7 @@ import { UserContext } from '../context/UserProvider';
 import { useFirestoreState } from '../hooks/useFirestore';
 import Logo from '../assets/img/logoLogin2.png';
 import Campana from '../assets/img/campana.svg';
+import { useForm } from 'react-hook-form';
 import {
   Dropdown,
   Avatar,
@@ -13,6 +14,9 @@ import {
   Checkbox,
 } from 'flowbite-react';
 import X from '../assets/img/x.svg';
+import FormError from '../components/FormError';
+import FormInput from '../components/FormInput';
+import { formValidate } from '../utils/formValidate';
 
 const Home = () => {
   const [showTrans, setShowTrans] = useState(false);
@@ -20,12 +24,63 @@ const Home = () => {
   const [showRece, setShowRece] = useState(false);
   const [showCuentas, setShowCuentas] = useState(false);
   const [showCaja, setShowCaja] = useState(false);
+  const [notificacion, setNotificacion] = useState(false);
   const [bar, setBar] = useState(false);
   const [modal, setModal] = useState(false);
   const { logoutUser } = useContext(UserContext);
-  const { data, loading, error, getData } = useFirestoreState();
+  const { data, loading, error, getData, addData } = useFirestoreState();
+  const { required, patternEmail, minLength, validateTrim, validateEquals } =
+    formValidate();
+  //useForm
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+    setError,
+  } = useForm({
+    defaultValues: {
+      estado: true,
+    },
+  });
   const logOut = async () => {
     await logoutUser();
+  };
+
+  const onSubmit = async ({
+    asesor,
+    beneficiario,
+    comision,
+    estado,
+    monto,
+    obs,
+    origen,
+    solicitante,
+  }) => {
+    const obj = {
+      asesor,
+      beneficiario,
+      comision: parseFloat(comision),
+      estado,
+      monto: parseFloat(monto),
+      obs,
+      origen,
+      solicitante,
+    };
+    try {
+      await addData(obj);
+      console.log(obj);
+      setNotificacion(true);
+      setModal(false);
+      setTimeout(() => {
+        setNotificacion(false);
+      }, 3000);
+    } catch (error) {
+      console.log(error.code);
+      const { code, message } = erroresFirebase(error.code);
+      setError(code, { message });
+    } finally {
+    }
   };
 
   useEffect(() => {
@@ -486,7 +541,16 @@ const Home = () => {
         </div>
       </aside>
       <div className="flex flex-col h-screen w-full p-8 overflow-hidden">
-        <div className="bg-white border-b flex justify-end items-center relative border-gray-300 rounded-xl mb-5 w-full h-14 px-2">
+        <div className="bg-white  border-b flex justify-end items-center relative border-gray-300 rounded-xl mb-5 w-full h-14 px-2">
+          {notificacion && (
+            <div
+              class="absolute flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+              role="alert"
+            >
+              <span class="font-medium">Success alert!</span>La tranferencia se
+              creo con exito
+            </div>
+          )}
           <div className="flex justify-between w-full items-center gap-4">
             <div className="flex justify-center items-center gap-2">
               <div className="920:hidden ">
@@ -567,57 +631,127 @@ const Home = () => {
             >
               <Modal.Header />
               <Modal.Body>
-                <div className="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8"
+                >
                   <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                    Sign in to our platform
+                    Registrar Transferencia
                   </h3>
-                  <div>
-                    <div className="mb-2 block">
-                      <Label htmlFor="email" value="Your email" />
-                    </div>
-                    <TextInput
-                      id="email"
-                      className="dark:border-gray-500 dark:bg-gray-600"
-                      placeholder="name@company.com"
-                      required={true}
-                    />
-                  </div>
-                  <div>
-                    <div className="mb-2 block">
-                      <Label htmlFor="password" value="Your password" />
-                    </div>
-                    <TextInput
-                      id="password"
-                      className="dark:border-gray-500 dark:bg-gray-600"
-                      type="password"
-                      required={true}
-                    />
-                  </div>
-                  <div className="flex justify-between">
-                    <div className="flex items-center gap-2">
-                      <Checkbox id="remember" />
-                      <Label htmlFor="remember">Remember me</Label>
-                    </div>
-                    <a
-                      href="/modal"
-                      className="text-sm text-blue-700 hover:underline dark:text-blue-500"
+                  <div className="mb-6">
+                    <label
+                      htmlFor="beneficiario"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                     >
-                      Lost Password?
-                    </a>
+                      Beneficiario
+                    </label>
+
+                    <FormInput
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      type="text"
+                      name="beneficiario"
+                      placeholder="Ingrese el nombre del beneficiario"
+                      {...register('beneficiario')}
+                    ></FormInput>
                   </div>
+                  <div className="mb-6">
+                    <label
+                      htmlFor="solicitante"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      Solicitante
+                    </label>
+
+                    <FormInput
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      type="text"
+                      name="solicitante"
+                      placeholder="Ingrese el nombre del solicitante"
+                      {...register('solicitante')}
+                    ></FormInput>
+                  </div>
+                  <div className="mb-6">
+                    <label
+                      htmlFor="origen"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      Origen
+                    </label>
+                    <FormInput
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      type="text"
+                      name="origen"
+                      placeholder="Ingrese el origen"
+                      {...register('origen')}
+                    ></FormInput>
+                  </div>
+                  <div className="mb-6">
+                    <label
+                      htmlFor="asesor"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      Asesor
+                    </label>
+                    <FormInput
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      type="text"
+                      name="asesor"
+                      placeholder="Nombre del asesor"
+                      {...register('asesor')}
+                    ></FormInput>
+                  </div>
+                  <div className="mb-6">
+                    <label
+                      htmlFor="monto"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      Monto
+                    </label>
+                    <FormInput
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      type="text"
+                      name="monto"
+                      placeholder="Ingrese el monto"
+                      {...register('monto')}
+                    ></FormInput>
+                  </div>
+                  <div className="mb-6">
+                    <label
+                      htmlFor="comision"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      Comision
+                    </label>
+                    <FormInput
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      type="text"
+                      name="comision"
+                      placeholder="Ingrese una comision"
+                      {...register('comision')}
+                    ></FormInput>
+                  </div>
+                  <div className="mb-6">
+                    <label
+                      htmlFor="obs"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      Ingrese una observacion
+                    </label>
+                    <FormInput
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      type="text"
+                      name="obs"
+                      placeholder="Ingrese una observacion"
+                      {...register('obs')}
+                    ></FormInput>
+                  </div>
+
                   <div className="w-full">
-                    <Button>Log in to your account</Button>
+                    <Button onClose={() => setModal(!modal)} type="submit">
+                      Crear Trasferencia
+                    </Button>
                   </div>
-                  <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Not registered?{' '}
-                    <a
-                      href="/modal"
-                      className="text-blue-700 hover:underline dark:text-blue-500"
-                    >
-                      Create account
-                    </a>
-                  </div>
-                </div>
+                </form>
               </Modal.Body>
             </Modal>
           </>
@@ -662,20 +796,23 @@ const Home = () => {
               <div>{loadingData}</div>
               <div>{errorData}</div>
               {data?.map(
-                ({
-                  beneficiario,
-                  estado,
-                  solicitante,
-                  origen,
-                  asesor,
-                  fechaCreada,
-                  uid,
-                  monto,
-                  comision,
-                  obs,
-                }) => (
+                (
+                  {
+                    beneficiario,
+                    estado,
+                    solicitante,
+                    origen,
+                    asesor,
+                    fechaCreada,
+                    uid,
+                    monto,
+                    comision,
+                    obs,
+                  },
+                  index
+                ) => (
                   <tr
-                    key={uid}
+                    key={index}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
                     <th
@@ -695,7 +832,7 @@ const Home = () => {
                     <td className="px-6 py-4">S/{comision}</td>
                     <td className="px-6 py-4">{obs}</td>
                     <td className="px-6 py-4 flex items-center justify-center gap-2">
-                      {estado ? 'Pagado' : 'pendiente'}
+                      {estado ? 'Pendiente' : 'Cancelado'}
                       {estado ? (
                         <span className="bg-green-500 h-1 w-1 inline-block rounded-full"></span>
                       ) : (
