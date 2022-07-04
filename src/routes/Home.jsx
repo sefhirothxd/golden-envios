@@ -70,6 +70,7 @@ const Home = () => {
       setTimeout(() => {
         setNotificacion(false);
       }, 3000);
+      getData();
     } catch (error) {
       console.log(error.code);
       const { code, message } = erroresFirebase(error.code);
