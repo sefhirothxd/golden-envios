@@ -14,6 +14,10 @@ export const formValidate = (getValues) => {
         message: `La contraseña debe tener al menos ${num} caracteres`,
       };
     },
+    messageRequire: {
+      value: true,
+      message: 'El campo es requerido',
+    },
     validateTrim: {
       trim: (value) => {
         if (!value.trim()) {
@@ -21,6 +25,13 @@ export const formValidate = (getValues) => {
         }
         return true;
       },
+    },
+    validateSelection(value) {
+      console.log('valor del seleccionado', value);
+      if (value === '0') {
+        return 'Seleccione una opción';
+      }
+      return true;
     },
     validateEquals(getValues) {
       return {

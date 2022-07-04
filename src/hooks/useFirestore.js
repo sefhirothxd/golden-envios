@@ -4,9 +4,9 @@ import {
   doc,
   query,
   where,
-  serverTimestamp,
   Timestamp,
   setDoc,
+  orderBy,
 } from 'firebase/firestore/lite';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
@@ -25,6 +25,7 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, getData: true }));
       const q = query(
         collection(db, 'transferencias'),
+        orderBy('fechaCreada', 'desc'),
         where('uid', '==', uid)
       );
       const querySnapshot = await getDocs(q);
@@ -70,6 +71,25 @@ export const useFirestoreState = () => {
       setError(error.code);
     } finally {
       setLoading((prev) => ({ ...prev, addData: false }));
+    }
+  };
+
+  const addUserRegister = async (item) => {
+    console.log('SOY LO QUE MANDAS AL REGISTER', item);
+    try {
+      setLoading((prev) => ({ ...prev, addOrdersFire: true }));
+      const newData = {
+        ...item,
+        fechaCreada: Timestamp.now(),
+        rol: 'asesor',
+      };
+      const docRef = doc(db, 'registerUser', nanoid(6));
+      await setDoc(docRef, newData);
+    } catch (error) {
+      console.log(error);
+      setError(error.code);
+    } finally {
+      setLoading((prev) => ({ ...prev, addOrdersFire: false }));
     }
   };
 

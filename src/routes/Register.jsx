@@ -15,6 +15,8 @@ const Register = () => {
     minLengthValue,
     validateTrim,
     validateEquals,
+    validateSelection,
+    messageRequire,
   } = formValidate();
   //navigate
   const navegate = useNavigate();
@@ -70,13 +72,54 @@ const Register = () => {
         <FormInput
           className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
           type="password"
-          placeholder="Ingresar contraseña"
+          placeholder="Repite contraseña"
           {...register('repassword', {
             validate: validateEquals(getValues('password')),
           })}
         ></FormInput>
-
         <FormError error={errors.repassword} />
+        <FormInput
+          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
+          type="name"
+          placeholder="Nombres"
+          {...register('name', {
+            required: messageRequire,
+            minLength: minLengthValue(6),
+          })}
+        ></FormInput>
+        <FormError error={errors.name} />
+        <FormInput
+          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
+          type="apellidos"
+          placeholder="Apellidos"
+          {...register('apellidos', {
+            required: messageRequire,
+            minLength: minLengthValue(6),
+          })}
+        ></FormInput>
+        <FormError error={errors.apellidos} />
+        <FormInput
+          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
+          type="dni"
+          placeholder="ingrese su DNI"
+          {...register('dni', {
+            required: messageRequire,
+            minLength: minLengthValue(8),
+          })}
+        ></FormInput>
+        <FormError error={errors.apellidos} />
+        <select
+          {...register('region', {
+            validate: validateSelection,
+          })}
+          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
+        >
+          <option value="0">Seleciona la region</option>
+          <option value="lima">Lima</option>
+          <option value="cuzco">Cuzco</option>
+          <option value="piura">Piura</option>
+        </select>
+        <FormError error={errors.region} />
         <button
           className="bg-botton-blue p-3 rounded-2xl w-11/12 xs:w-96 text-white text-xl mb-3 "
           type="submit"
