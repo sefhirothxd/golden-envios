@@ -377,8 +377,20 @@ const Home = () => {
                     <td className="px-6 py-4">{solicitante}</td>
                     <td className="px-6 py-4">{origen}</td>
                     <td className="px-6 py-4">{asesor}</td>
-                    <td className="px-6 py-4">S/{monto}</td>
-                    <td className="px-6 py-4">S/{comision}</td>
+                    <td className="px-6 py-4">
+                      S/
+                      {monto.toLocaleString('en-ES', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
+                    <td className="px-6 py-4">
+                      S/
+                      {comision.toLocaleString('en-ES', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
                     <td className="px-6 py-4">{obs}</td>
                     <td className="px-6 py-4 flex items-center justify-center gap-2">
                       {estado ? 'Pendiente' : 'Cancelado'}
