@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import X from '../assets/img/x.svg';
 import Logo from '../assets/img/logoLogin2.png';
-const sideBar = ({ bar, setBar }) => {
+const sideBar = ({ bar, setBar, modal, setModal, getDataZona, getData }) => {
   const [showTrans, setShowTrans] = useState(false);
   const [showHabi, setShowHabi] = useState(false);
   const [showRece, setShowRece] = useState(false);
@@ -102,7 +102,7 @@ const sideBar = ({ bar, setBar }) => {
                 className="flex-1 ml-3 text-left whitespace-nowrap"
                 sidebar-toggle-item=""
               >
-                Transfarencias
+                Transferencias
               </span>
               <svg
                 sidebar-toggle-item=""
@@ -132,18 +132,26 @@ const sideBar = ({ bar, setBar }) => {
             >
               <li>
                 <a
-                  href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
+                  onClick={() => setModal(!modal)}
+                  className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   Crear transferencias
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
+                  onClick={() => getData()}
+                  className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
                 >
-                  Transfarencias creadas
+                  Transferencias creadas
+                </a>
+              </li>
+              <li>
+                <a
+                  onClick={() => getDataZona()}
+                  className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  Transferencias recibidas
                 </a>
               </li>
               <li>
@@ -151,15 +159,7 @@ const sideBar = ({ bar, setBar }) => {
                   href="#"
                   className="flex items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
                 >
-                  Transfarencias recibidos
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
-                >
-                  Transfarencias pagados
+                  Transferencias pagados
                 </a>
               </li>
             </ul>

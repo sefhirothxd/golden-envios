@@ -11,7 +11,7 @@ export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(false);
-
+  const [transferencias, setTransferencias] = useState(false);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log(user);
@@ -25,8 +25,9 @@ const UserProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const registerUser = (email, password) =>
+  const registerUser = async (email, password) =>
     createUserWithEmailAndPassword(auth, email, password);
+
   const loginUser = (email, password) =>
     signInWithEmailAndPassword(auth, email, password);
   const logoutUser = () => signOut(auth);

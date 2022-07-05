@@ -20,10 +20,10 @@ const App = () => {
         <Route path="/" element={<LayoutRequiereAuth />}>
           <Route index element={<Home />} />
           <Route path="perfil" element={<Perfil />} />
+          <Route path="/register" element={<Register />} />
         </Route>
         <Route path="/" element={<LayoutContainerForm />}>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

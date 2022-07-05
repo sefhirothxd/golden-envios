@@ -23,7 +23,16 @@ const Home = () => {
   const [notificacion, setNotificacion] = useState(false);
   const [bar, setBar] = useState(false);
   const { logoutUser } = useContext(UserContext);
-  const { data, loading, error, getData, addData } = useFirestoreState();
+  const {
+    data,
+    loading,
+    error,
+    getData,
+    addData,
+    getUserInfo,
+    dataUser,
+    getDataZona,
+  } = useFirestoreState();
   const { required, patternEmail, minLength, validateTrim, validateEquals } =
     formValidate();
   //useForm
@@ -43,28 +52,28 @@ const Home = () => {
   };
 
   const onSubmit = async ({
-    asesor,
     beneficiario,
     comision,
     estado,
     monto,
+    ciudad,
     obs,
-    origen,
     solicitante,
   }) => {
     const obj = {
-      asesor,
+      asesor: dataUser.nombres + ' ' + dataUser.apellidos,
       beneficiario,
       comision: parseFloat(comision),
       estado,
+      destino: ciudad,
       monto: parseFloat(monto),
       obs,
-      origen,
+      origen: dataUser.sede,
       solicitante,
     };
+    console.log(obj);
     try {
       await addData(obj);
-      console.log(obj);
       setNotificacion(true);
       setModal(false);
       setTimeout(() => {
@@ -82,13 +91,21 @@ const Home = () => {
   useEffect(() => {
     console.log(data);
     getData();
+    getUserInfo();
   }, []);
   const loadingData = loading.getData && <p>Loading data...</p>;
   const errorData = error && <p>{error}</p>;
 
   return (
     <div className="flex h-screen w-full relative">
-      <SideBar bar={bar} setBar={setBar} />
+      <SideBar
+        bar={bar}
+        setBar={setBar}
+        modal={modal}
+        setModal={setModal}
+        getDataZona={getDataZona}
+        getData={getData}
+      />
       <div className="flex flex-col h-screen w-full p-8 overflow-hidden">
         <div className="bg-white  border-b flex justify-end items-center relative border-gray-300 rounded-xl mb-5 w-full h-14 px-2">
           {notificacion && (
@@ -127,20 +144,14 @@ const Home = () => {
                 </button>
               </div>
               <p>Sede:</p>
-              <select
-                className="rounded-full py-1 px-2 w-32 "
-                name="sede"
-                id=""
-              >
-                <option value="1">Lima</option>
-                <option value="2">Pichanaqui</option>
-                <option value="3">Cusco</option>
-              </select>
+              <p className="text-transform: capitalize">
+                {dataUser?.sede || 'cargando...'}
+              </p>
             </div>
             <div className="flex items-center gap-4 justify-center">
               <h3>Saldo:</h3>
               <p className="px-2 py-1 bg-red-500 rounded-full">S/15,000.00</p>
-              <p className="px-2 py-1 bg-gray-200 rounded-full">$/15,000.00</p>
+              <p className="px-2 py-1 bg-gray-200 rounded-full">$ 0</p>
             </div>
           </div>
           <img className="h-6 mx-4" src={Campana} alt="campana" />
@@ -157,10 +168,8 @@ const Home = () => {
             inline={true}
           >
             <Dropdown.Header>
-              <span className="block text-sm">Ricardo milo</span>
-              <span className="block truncate text-sm font-medium">
-                admin@test.com
-              </span>
+              <span className="block text-sm">{}</span>
+              <span className="block truncate text-sm font-medium">{}</span>
             </Dropdown.Header>
             <Dropdown.Item>Dashboard</Dropdown.Item>
             <Dropdown.Item>Settings</Dropdown.Item>
@@ -221,33 +230,21 @@ const Home = () => {
                   </div>
                   <div className="mb-6">
                     <label
-                      htmlFor="origen"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                      Origen
-                    </label>
-                    <FormInput
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      type="text"
-                      name="origen"
-                      placeholder="Ingrese el origen"
-                      {...register('origen')}
-                    ></FormInput>
-                  </div>
-                  <div className="mb-6">
-                    <label
                       htmlFor="asesor"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                     >
-                      Asesor
+                      Destino
                     </label>
-                    <FormInput
+                    <select
+                      {...register('ciudad')}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      type="text"
-                      name="asesor"
-                      placeholder="Nombre del asesor"
-                      {...register('asesor')}
-                    ></FormInput>
+                    >
+                      <option value="0">Seleciona la ciudad</option>
+                      <option value="lima">Lima</option>
+                      <option value="cuzco">Cuzco</option>
+                      <option value="piura">Piura</option>
+                    </select>
+                    <FormError error={errors.ciudad} />
                   </div>
                   <div className="mb-6">
                     <label
@@ -322,6 +319,9 @@ const Home = () => {
                   Origen
                 </th>
                 <th scope="col" className="px-6 py-3">
+                  Destino
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Asesor
                 </th>
                 <th scope="col" className="px-6 py-3">
@@ -353,7 +353,7 @@ const Home = () => {
                     origen,
                     asesor,
                     fechaCreada,
-                    uid,
+                    destino,
                     monto,
                     comision,
                     obs,
@@ -376,6 +376,7 @@ const Home = () => {
                     <td className="px-6 py-4">{beneficiario}</td>
                     <td className="px-6 py-4">{solicitante}</td>
                     <td className="px-6 py-4">{origen}</td>
+                    <td className="px-6 py-4">{destino}</td>
                     <td className="px-6 py-4">{asesor}</td>
                     <td className="px-6 py-4">
                       S/

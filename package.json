@@ -2,6 +2,7 @@
   "name": "golden-envios",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://girosgoldenfast.com/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

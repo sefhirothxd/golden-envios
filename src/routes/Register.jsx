@@ -1,10 +1,12 @@
 import { useState, useContext } from 'react';
+import { useFirestoreState } from '../hooks/useFirestore';
 import { useForm } from 'react-hook-form';
 import { UserContext } from '../context/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { erroresFirebase } from '../utils/erroresFirebase';
 import FormError from '../components/FormError';
 import { formValidate } from '../utils/formValidate';
+
 import FormInput from '../components/FormInput';
 const Register = () => {
   const { registerUser } = useContext(UserContext);
@@ -18,6 +20,7 @@ const Register = () => {
     validateSelection,
     messageRequire,
   } = formValidate();
+  const { addUserRegister } = useFirestoreState();
   //navigate
   const navegate = useNavigate();
   //useForm
@@ -29,10 +32,21 @@ const Register = () => {
     setError,
   } = useForm();
 
-  const onSubmit = async ({ email, password }) => {
+  const onSubmit = async (e) => {
+    const { email, password } = e;
+    const item = {
+      email: e.email,
+      nombres: e.nombres,
+      apellidos: e.apellidos,
+      sede: e.ciudad,
+      direccion: e.direccion,
+      dni: e.dni,
+    };
+    console.log(e);
     try {
-      await registerUser(email, password);
-      navegate('/');
+      const res = await registerUser(email, password);
+      const reg = await addUserRegister(item, res.user.uid);
+      console.log('respuesta del registro', reg);
     } catch (error) {
       console.log(error);
       const { code, message } = erroresFirebase(error.code);
@@ -70,31 +84,20 @@ const Register = () => {
         ></FormInput>
         <FormError error={errors.password} />
         <FormInput
-          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
-          type="password"
-          placeholder="Repite contraseña"
-          {...register('repassword', {
-            validate: validateEquals(getValues('password')),
-          })}
-        ></FormInput>
-        <FormError error={errors.repassword} />
-        <FormInput
           className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
-          type="name"
           placeholder="Nombres"
-          {...register('name', {
+          {...register('nombres', {
             required: messageRequire,
-            minLength: minLengthValue(6),
+            minLength: minLengthValue(3),
           })}
         ></FormInput>
-        <FormError error={errors.name} />
+        <FormError error={errors.nombres} />
         <FormInput
           className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
-          type="apellidos"
           placeholder="Apellidos"
           {...register('apellidos', {
             required: messageRequire,
-            minLength: minLengthValue(6),
+            minLength: minLengthValue(3),
           })}
         ></FormInput>
         <FormError error={errors.apellidos} />
@@ -107,19 +110,35 @@ const Register = () => {
             minLength: minLengthValue(8),
           })}
         ></FormInput>
-        <FormError error={errors.apellidos} />
-        <select
-          {...register('region', {
-            validate: validateSelection,
+        <FormError error={errors.dni} />
+        <FormInput
+          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
+          placeholder="ingrese su dirección"
+          {...register('direccion', {
+            required: messageRequire,
           })}
-          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
-        >
-          <option value="0">Seleciona la region</option>
-          <option value="lima">Lima</option>
-          <option value="cuzco">Cuzco</option>
-          <option value="piura">Piura</option>
-        </select>
-        <FormError error={errors.region} />
+        ></FormInput>
+        <FormError error={errors.direccion} />
+        <div className="mb-6">
+          <label
+            htmlFor="sede"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            Selecciona la sede del usuario
+          </label>
+          <select
+            {...register('ciudad', {
+              validate: validateSelection,
+            })}
+            className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
+          >
+            <option value="0">Seleciona la ciudad</option>
+            <option value="lima">Lima</option>
+            <option value="cuzco">Cuzco</option>
+            <option value="piura">Piura</option>
+          </select>
+          <FormError error={errors.ciudad} />
+        </div>
         <button
           className="bg-botton-blue p-3 rounded-2xl w-11/12 xs:w-96 text-white text-xl mb-3 "
           type="submit"
