@@ -15,6 +15,7 @@ import { nanoid } from 'nanoid';
 export const useFirestoreState = () => {
   const [data, setData] = useState([]);
   const [dataUser, setDataUser] = useState({});
+  const [allUser, setAllUser] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState({});
   const uid = auth.currentUser.uid;
@@ -53,6 +54,20 @@ export const useFirestoreState = () => {
       setError(error.code);
     } finally {
       setLoading((prev) => ({ ...prev, getDataZona: false }));
+    }
+  };
+  const getAllUsers = async () => {
+    try {
+      setLoading((prev) => ({ ...prev, getAllUsers: true }));
+      const q = query(collection(db, 'registerUser'));
+      const querySnapshot = await getDocs(q);
+      const datos = querySnapshot.docs.map((doc) => doc.data());
+      setAllUser(datos);
+    } catch (error) {
+      console.log(error);
+      setError(error.code);
+    } finally {
+      setLoading((prev) => ({ ...prev, getAllUsers: false }));
     }
   };
   const getUserInfo = async () => {
@@ -120,5 +135,7 @@ export const useFirestoreState = () => {
     addUserRegister,
     getUserInfo,
     getDataZona,
+    getAllUsers,
+    allUser,
   };
 };
