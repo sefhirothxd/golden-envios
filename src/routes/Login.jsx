@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { UserContext } from '../context/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/img/logoLogin.svg';
-import Mundo from '../assets/img/mundo2.png';
+import Mundo from '../assets/img/mundoFinal.png';
 import { erroresFirebase } from '../utils/erroresFirebase';
 import FormError from '../components/FormError';
 import FormInput from '../components/FormInput';

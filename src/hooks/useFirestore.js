@@ -19,8 +19,6 @@ export const useFirestoreState = () => {
   const [loading, setLoading] = useState({});
   const uid = auth.currentUser.uid;
 
-  console.log('linea 22', dataUser);
-
   const getData = async () => {
     try {
       setLoading((prev) => ({ ...prev, getData: true }));
@@ -63,7 +61,6 @@ export const useFirestoreState = () => {
       const q = query(collection(db, 'registerUser'), where('uid', '==', uid));
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
-      console.log(datos[0]);
       setDataUser(datos[0]);
     } catch (error) {
       console.log(error);

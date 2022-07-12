@@ -3,6 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
+.monto {
+  left: calc(50% - 30px);
+}
+.solicitante {
+  left: calc(50% - 47.5px);
+}
+.beneficiario {
+  left: calc(50% - 50.68px);
+}
+
 .barSide {
   height: 100%;
   z-index: 10;

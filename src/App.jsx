@@ -8,6 +8,9 @@ import Register from './routes/Register';
 import LayoutRequiereAuth from './components/layout/LayoutRequiereAuth';
 import LayoutContainerForm from './components/layout/LayoutContainerForm';
 import NotFound from './routes/NotFound';
+import CrearTransferencias from './routes/CrearTransferencias';
+import TransferenciasCreadas from './routes/TransferenciasCreadas';
+import EnvioCaja from './routes/EnvioCaja';
 const App = () => {
   const { user } = useContext(UserContext);
   if (user === false) {
@@ -21,6 +24,15 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="perfil" element={<Perfil />} />
           <Route path="/register" element={<Register />} />
+          <Route
+            path="/crearTransferencias"
+            element={<CrearTransferencias />}
+          />
+          <Route
+            path="/TransferenciasCreadas"
+            element={<TransferenciasCreadas />}
+          />
+          <Route path="/envioCaja" element={<EnvioCaja />} />
         </Route>
         <Route path="/" element={<LayoutContainerForm />}>
           <Route path="/login" element={<Login />} />

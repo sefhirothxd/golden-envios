@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import X from '../assets/img/x.svg';
 import Logo from '../assets/img/logoLogin2.png';
-const sideBar = ({ bar, setBar, modal, setModal, getDataZona, getData }) => {
+import { NavLink } from 'react-router-dom';
+const sideBar = ({ bar, setBar }) => {
   const [showTrans, setShowTrans] = useState(false);
   const [showHabi, setShowHabi] = useState(false);
   const [showRece, setShowRece] = useState(false);
@@ -131,26 +132,23 @@ const sideBar = ({ bar, setBar, modal, setModal, getDataZona, getData }) => {
               }
             >
               <li>
-                <a
-                  onClick={() => setModal(!modal)}
+                <NavLink
+                  to="/crearTransferencias"
                   className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   Crear transferencias
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a
-                  onClick={() => getData()}
+                <NavLink
+                  to="/TransferenciasCreadas"
                   className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   Transferencias creadas
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a
-                  onClick={() => getDataZona()}
-                  className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
-                >
+                <a className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700">
                   Transferencias recibidas
                 </a>
               </li>
@@ -214,32 +212,24 @@ const sideBar = ({ bar, setBar, modal, setModal, getDataZona, getData }) => {
               id="dropdown-example"
               className={
                 showHabi
-                  ? 'inline-block py-2 space-y-2'
+                  ? 'inline-block py-2 space-y-2 w-full'
                   : 'hidden py-2 space-y-2'
               }
             >
               <li>
-                <a
-                  href="#"
+                <NavLink
+                  to="/envioCaja"
                   className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
-                  Products
-                </a>
+                  Envio de caja
+                </NavLink>
               </li>
               <li>
                 <a
                   href="#"
                   className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
-                  Billing
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Invoice
+                  Lista de Envios
                 </a>
               </li>
             </ul>

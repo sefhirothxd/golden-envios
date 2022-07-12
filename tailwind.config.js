@@ -13,8 +13,10 @@ module.exports = {
         'top-blue': '#0c1540',
         'white-fondo': '#F1F1F1',
         'grey-ancla': '#7B7B7B',
+        'grey-fondo': '#F8F8F8',
       },
       spacing: {
+        altoFormulario: '650px',
         anchoGlobo: '100rem',
         altoGlobo: '80rem',
       },
