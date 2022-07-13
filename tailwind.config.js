@@ -14,6 +14,7 @@ module.exports = {
         'white-fondo': '#F1F1F1',
         'grey-ancla': '#7B7B7B',
         'grey-fondo': '#F8F8F8',
+        'azul-resaltante': '#010066',
       },
       spacing: {
         altoFormulario: '650px',

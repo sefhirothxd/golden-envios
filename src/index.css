@@ -3,6 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.active {
+  background-color: #010066;
+}
 .monto {
   left: calc(50% - 30px);
 }

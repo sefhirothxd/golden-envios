@@ -52,7 +52,7 @@ const sideBar = ({ bar, setBar }) => {
 
   return (
     <aside className={!bar ? 'barSide' : 'barSide2'} aria-label="Sidebar">
-      <div className="overflow-y-auto h-full flex relative  items-center flex-col w-72  py-4 px-3 bg-sideblue rounded-tr-3xl dark:bg-gray-800">
+      <div className="overflow-y-auto h-full flex relative  items-center flex-col w-72  py-4  bg-sideblue rounded-tr-3xl dark:bg-gray-800">
         <button onClick={() => setBar(!bar)}>
           <img
             src={X}
@@ -127,7 +127,7 @@ const sideBar = ({ bar, setBar }) => {
               id="dropdown-example"
               className={
                 showTrans
-                  ? 'inline-block py-2 space-y-2 '
+                  ? 'inline-block py-2 space-y-2 w-full '
                   : 'hidden py-2 space-y-2 '
               }
             >
