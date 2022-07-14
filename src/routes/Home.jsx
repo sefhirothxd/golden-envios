@@ -2,13 +2,10 @@ import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../context/UserProvider';
 import { useFirestoreState } from '../hooks/useFirestore';
 import { useForm } from 'react-hook-form';
-import FormError from '../components/FormError';
-import FormInput from '../components/FormInput';
 import { formValidate } from '../utils/formValidate';
-import Table from '../components/Table';
 
 const Home = () => {
-  const { logoutUser } = useContext(UserContext);
+  const { logoutUser, user } = useContext(UserContext);
   const {
     data,
     loading,
@@ -37,14 +34,13 @@ const Home = () => {
   useEffect(() => {
     console.log(data);
     getData();
-    // getUserInfo();
   }, []);
 
   return (
     <div className="flex justify-center items-center h-full flex-col">
       <div className="text-sideblue text-center mb-28">
         <h1 className="text-5xl font-medium mb-6">
-          Hola, {dataUser.nombres?.toUpperCase() || 'Loading...'}
+          Hola, {user?.nombres?.toUpperCase() || 'Loading...'}
         </h1>
         <p className="text-3xl font-normal">
           Tienes un saldo disponible de S/5,000 de S/15,000

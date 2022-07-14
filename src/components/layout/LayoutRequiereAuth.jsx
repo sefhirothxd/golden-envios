@@ -52,7 +52,6 @@ const LayoutRequiereAuth = () => {
   };
 
   useEffect(() => {
-    getUserInfo(user.uid);
     getData();
   }, []);
 
@@ -90,7 +89,7 @@ const LayoutRequiereAuth = () => {
               </div>
               <p>Sede:</p>
               <p className="text-transform: capitalize">
-                {dataUser?.sede || 'cargando...'}
+                {user?.sede || 'cargando...'}
               </p>
             </div>
             <div className="flex items-center gap-4 justify-center">
