@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { formValidate } from '../utils/formValidate';
 import { useForm } from 'react-hook-form';
 import FormError from '../components/FormError';
@@ -10,6 +10,7 @@ const crearTransferencias = () => {
   const [notificacion, setNotificacion] = useState(false);
   const { required, patternEmail, minLength, validateTrim, validateEquals } =
     formValidate();
+  const { user } = useContext(UserContext);
   const {
     register,
     handleSubmit,
@@ -58,11 +59,11 @@ const crearTransferencias = () => {
     telefonoSoli,
   }) => {
     const obj = {
-      asesor: dataUser.nombres + ' ' + dataUser.apellidos,
+      asesor: user.nombres + ' ' + user.apellidos,
       comision: parseFloat(comision),
       destino: ciudad,
       monto: parseFloat(cantidad),
-      origen: dataUser.sede,
+      origen: user.sede,
       apeMaternoBene,
       apeMaternoSoli,
       apePaternoBene,
@@ -77,6 +78,7 @@ const crearTransferencias = () => {
       persona,
       telefonoBene,
       telefonoSoli,
+      uid: user.uid,
     };
     console.log(obj);
     setNotificacion(true);

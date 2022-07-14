@@ -101,7 +101,6 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, addData: true }));
       const newData = {
         ...obj,
-        uid,
         fechaCreada: Timestamp.now(),
       };
       const docRef = doc(db, 'transferencias', nanoid(6));
@@ -116,7 +115,6 @@ export const useFirestoreState = () => {
   };
 
   const addUserRegister = async (item, id) => {
-    console.log('SOY LO QUE MANDAS AL REGISTER', item);
     try {
       setLoading((prev) => ({ ...prev, addUserRegister: true }));
       const newData = {
