@@ -13,11 +13,9 @@ const TransferenciasCreadas = () => {
     getDataZona,
   } = useFirestoreState();
   useEffect(() => {
-    console.log(data);
     getData();
-    getUserInfo();
   }, []);
-  return <Table data={data} loading={loading} error={error} />;
+  return <Table data={data} loading={loading.getData} error={error} />;
 };
 
 export default TransferenciasCreadas;

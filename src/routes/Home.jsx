@@ -33,21 +33,18 @@ const Home = () => {
       estado: true,
     },
   });
-  const logOut = async () => {
-    await logoutUser();
-  };
 
   useEffect(() => {
     console.log(data);
     getData();
-    getUserInfo();
+    // getUserInfo();
   }, []);
 
   return (
     <div className="flex justify-center items-center h-full flex-col">
       <div className="text-sideblue text-center mb-28">
         <h1 className="text-5xl font-medium mb-6">
-          Hola, {dataUser.nombres.toUpperCase()}
+          Hola, {dataUser.nombres?.toUpperCase() || 'Loading...'}
         </h1>
         <p className="text-3xl font-normal">
           Tienes un saldo disponible de S/5,000 de S/15,000

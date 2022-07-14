@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import X from '../assets/img/x.svg';
 import Logo from '../assets/img/logoLogin2.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 const sideBar = ({ bar, setBar }) => {
   const [showTrans, setShowTrans] = useState(false);
   const [showHabi, setShowHabi] = useState(false);
@@ -60,7 +60,9 @@ const sideBar = ({ bar, setBar }) => {
             alt="aspa"
           />
         </button>
-        <img src={Logo} className="mt-10" alt="logo golden fast" />
+        <Link to="/">
+          <img src={Logo} className="mt-10" alt="logo golden fast" />
+        </Link>
         <hr className="bg-white  w-full mt-7 mb-7" />
         <ul className="space-y-2 w-full">
           <li>
@@ -148,9 +150,12 @@ const sideBar = ({ bar, setBar }) => {
                 </NavLink>
               </li>
               <li>
-                <a className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700">
+                <NavLink
+                  to="/TransferenciasRecibidas"
+                  className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
+                >
                   Transferencias recibidas
-                </a>
+                </NavLink>
               </li>
               <li>
                 <a

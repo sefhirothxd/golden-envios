@@ -10,6 +10,7 @@ import LayoutContainerForm from './components/layout/LayoutContainerForm';
 import NotFound from './routes/NotFound';
 import CrearTransferencias from './routes/CrearTransferencias';
 import TransferenciasCreadas from './routes/TransferenciasCreadas';
+import TransferenciasRecibidas from './routes/TransferenciasRecibidas';
 import EnvioCaja from './routes/EnvioCaja';
 const App = () => {
   const { user } = useContext(UserContext);
@@ -31,6 +32,10 @@ const App = () => {
           <Route
             path="/TransferenciasCreadas"
             element={<TransferenciasCreadas />}
+          />
+          <Route
+            path="/TransferenciasRecibidas"
+            element={<TransferenciasRecibidas />}
           />
           <Route path="/envioCaja" element={<EnvioCaja />} />
         </Route>

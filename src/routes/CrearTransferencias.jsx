@@ -96,7 +96,7 @@ const crearTransferencias = () => {
   };
 
   useEffect(() => {
-    getUserInfo();
+    // getUserInfo();
   }, []);
 
   return (

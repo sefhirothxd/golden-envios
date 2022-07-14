@@ -7,6 +7,7 @@ import {
   Timestamp,
   setDoc,
   orderBy,
+  getDoc,
 } from 'firebase/firestore/lite';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
@@ -14,11 +15,12 @@ import { nanoid } from 'nanoid';
 
 export const useFirestoreState = () => {
   const [data, setData] = useState([]);
+  const [zonaData, setZonaData] = useState([]);
   const [dataUser, setDataUser] = useState({});
   const [allUser, setAllUser] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState({});
-  const uid = auth.currentUser.uid;
+  const uid = auth?.currentUser?.uid;
 
   const getData = async () => {
     try {
@@ -38,17 +40,20 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, getData: false }));
     }
   };
-  const getDataZona = async () => {
+  const getDataZona = async (e) => {
+    console.log(e);
     try {
       setLoading((prev) => ({ ...prev, getDataZona: true }));
       const q = query(
         collection(db, 'transferencias'),
         // orderBy('fechaCreada', 'desc'),
-        where('destino', '==', dataUser.sede)
+        where('destino', '==', e)
       );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
-      setData(datos);
+      console.log(datos);
+      setZonaData(datos);
+      return datos;
     } catch (error) {
       console.log(error);
       setError(error.code);
@@ -70,14 +75,19 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, getAllUsers: false }));
     }
   };
-  const getUserInfo = async () => {
+  const getUserInfo = async (u) => {
+    console.log(u);
     try {
       setLoading((prev) => ({ ...prev, getUserInfo: true }));
-      const q = query(collection(db, 'registerUser'), where('uid', '==', uid));
+      const q = await query(
+        collection(db, 'registerUser'),
+        where('uid', '==', u || uid)
+      );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
       console.log(datos[0]);
       setDataUser(datos[0]);
+      return datos[0];
     } catch (error) {
       console.log(error);
       setError(error.code);
@@ -138,5 +148,6 @@ export const useFirestoreState = () => {
     getDataZona,
     getAllUsers,
     allUser,
+    zonaData,
   };
 };

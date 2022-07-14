@@ -6,22 +6,20 @@ import Campana from '../../assets/img/campana.svg';
 import { formValidate } from '../../utils/formValidate';
 import { useForm } from 'react-hook-form';
 import SideBar from '../../components/SideBar';
+import Modal from '../Modal';
 import {
   Dropdown,
   Avatar,
   Button,
-  Modal,
   Label,
   TextInput,
   Checkbox,
 } from 'flowbite-react';
 const LayoutRequiereAuth = () => {
-  const { user } = useContext(UserContext);
+  const { user, modalContent, modal } = useContext(UserContext);
   if (!user) {
     return <Navigate to="/login" />;
   }
-
-  const [modal, setModal] = useState(false);
 
   const [bar, setBar] = useState(false);
   const { logoutUser } = useContext(UserContext);
@@ -54,14 +52,14 @@ const LayoutRequiereAuth = () => {
   };
 
   useEffect(() => {
-    console.log(data);
+    getUserInfo(user.uid);
     getData();
-    getUserInfo();
   }, []);
 
   return (
     <div className="flex h-screen w-full relative">
       <SideBar bar={bar} setBar={setBar} />
+      {modal && <Modal>{modalContent}</Modal>}
       <div className="flex flex-col h-screen w-full p-8 overflow-hidden">
         <div className="bg-white  border-b flex justify-end items-center relative border-gray-300 rounded-xl mb-5 w-full h-14 px-2">
           <div className="flex justify-between w-full items-center gap-4">
