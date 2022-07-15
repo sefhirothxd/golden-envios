@@ -30,7 +30,9 @@ const Register = () => {
     formState: { errors },
     getValues,
     setError,
-  } = useForm();
+  } = useForm({
+    saldo: 15000,
+  });
 
   const onSubmit = async (e) => {
     const { email, password } = e;

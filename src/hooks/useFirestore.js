@@ -8,7 +8,7 @@ import {
   setDoc,
   deleteDoc,
   orderBy,
-  getDoc,
+  updateDoc,
 } from 'firebase/firestore/lite';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
@@ -130,6 +130,19 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, [nid]: false }));
     }
   };
+
+  const updateData = async (uid, nuevoSaldo) => {
+    try {
+      setLoading((prev) => ({ ...prev, updateData: true }));
+      const docRef = doc(db, 'registerUser', uid);
+      await updateDoc(docRef, { saldo: nuevoSaldo });
+    } catch (error) {
+      console.log(error);
+      setError(error.code);
+    } finally {
+      setLoading((prev) => ({ ...prev, updateData: false }));
+    }
+  };
   const addUserRegister = async (item, id) => {
     try {
       setLoading((prev) => ({ ...prev, addUserRegister: true }));
@@ -138,8 +151,9 @@ export const useFirestoreState = () => {
         fechaCreada: Timestamp.now(),
         rol: 'asesor',
         uid: id,
+        nanoid: nanoid(12),
       };
-      const docRef = doc(db, 'registerUser', nanoid(6));
+      const docRef = doc(db, 'registerUser', newData.nanoid);
       await setDoc(docRef, newData);
     } catch (error) {
       console.log(error);
@@ -164,5 +178,6 @@ export const useFirestoreState = () => {
     allUser,
     zonaData,
     deleteData,
+    updateData,
   };
 };

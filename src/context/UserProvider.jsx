@@ -23,7 +23,7 @@ const UserProvider = ({ children }) => {
       console.log(user);
       if (user) {
         const { email, uid, displayName, photoURL } = user;
-        const { apellidos, direccion, dni, nombres, rol, sede } =
+        const { apellidos, direccion, dni, nombres, rol, sede, saldo, nanoid } =
           await getUserInfo(uid);
         setUser({
           email,
@@ -36,6 +36,8 @@ const UserProvider = ({ children }) => {
           nombres,
           rol,
           sede,
+          saldo,
+          nanoid,
         });
         const res = await getData();
         console.log(res);
@@ -64,6 +66,10 @@ const UserProvider = ({ children }) => {
     const recibidad = await getData();
     setTrasferencias(recibidad);
   };
+  const refreshUser = async () => {
+    const { saldo } = await getUserInfo(user.uid);
+    setUser({ ...user, saldo });
+  };
 
   return (
     <UserContext.Provider
@@ -83,6 +89,7 @@ const UserProvider = ({ children }) => {
         setModalContent,
         refreshTrasfereZona,
         refreshTrasferencias,
+        refreshUser,
       }}
     >
       {children}

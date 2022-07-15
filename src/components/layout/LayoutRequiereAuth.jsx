@@ -94,7 +94,13 @@ const LayoutRequiereAuth = () => {
             </div>
             <div className="flex items-center gap-4 justify-center">
               <h3>Saldo:</h3>
-              <p className="px-2 py-1 bg-red-500 rounded-full">S/15,000.00</p>
+              <p className="px-2 py-1 bg-red-500 rounded-full">
+                S/
+                {user?.saldo.toLocaleString('en-ES', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }) || 'cargando...'}
+              </p>
               <p className="px-2 py-1 bg-gray-200 rounded-full">$ 0</p>
             </div>
           </div>

@@ -5,6 +5,7 @@ import FormError from '../components/FormError';
 import FormInput from '../components/FormInput';
 import { UserContext } from '../context/UserProvider';
 import { useFirestoreState } from '../hooks/useFirestore';
+import { erroresFirebase } from '../utils/erroresFirebase';
 import { Button } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 const crearTransferencias = () => {
@@ -12,7 +13,7 @@ const crearTransferencias = () => {
   const [notificacionCiudad, setNotificacionCiudad] = useState(false);
   const { required, patternEmail, minLength, validateTrim, validateEquals } =
     formValidate();
-  const { user } = useContext(UserContext);
+  const { user, refreshUser } = useContext(UserContext);
   const navegate = useNavigate();
   const {
     register,
@@ -34,6 +35,7 @@ const crearTransferencias = () => {
     getUserInfo,
     dataUser,
     getDataZona,
+    updateData,
   } = useFirestoreState();
 
   const probando = (e) => {
@@ -61,7 +63,11 @@ const crearTransferencias = () => {
     telefonoBene,
     telefonoSoli,
   }) => {
-    if (ciudad == user.sede) {
+    if (
+      ciudad == user.sede ||
+      user.saldo < parseFloat(cantidad) ||
+      ciudad == '0'
+    ) {
       setNotificacionCiudad(true);
       setTimeout(() => {
         setNotificacionCiudad(false);
@@ -91,13 +97,21 @@ const crearTransferencias = () => {
       };
 
       console.log(obj);
+      const nuevoSaldo = user.saldo - parseFloat(cantidad);
+      console.log('resta : ', nuevoSaldo);
       setNotificacion(true);
       try {
         await addData(obj);
+        console.log('aun no');
+        await updateData(user.nanoid, nuevoSaldo);
+        console.log('mori');
         setTimeout(() => {
           setNotificacion(false);
         }, 3000);
-        getData();
+        console.log('get data');
+        await getData();
+        console.log('get user');
+        await refreshUser();
         navegate('/TransferenciasCreadas');
       } catch (error) {
         console.log(error.code);
@@ -440,13 +454,13 @@ const crearTransferencias = () => {
       </div>
       <div
         className={
-          `absolute -right-altoFormulario transform bottom-28  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-red-700 bg-red-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
+          `absolute -right-altoFormulario transform bottom-28 w-96  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-red-700 bg-red-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
           (notificacionCiudad && ' -translate-x-altoFormulario')
         }
         role="alert"
       >
-        <span className="font-medium">Error!</span>No se puede crear una
-        trasferencia para la misma ubicacion.
+        <span className="font-medium">Error!</span>No puede superar el saldo
+        actual y no olvide de seleccionar una zona distinta a la suya.
       </div>
     </div>
   );
