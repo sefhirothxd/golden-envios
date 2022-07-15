@@ -14,9 +14,10 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(false);
   const [userMore, setUserMore] = useState(false);
   const [transferenciasRecibidas, setTransferenciasRecibidas] = useState([]);
+  const [trasferencias, setTrasferencias] = useState([]);
   const [modal, setModal] = useState(false);
   const [modalContent, setModalContent] = useState({});
-  const { getUserInfo, getDataZona } = useFirestoreState();
+  const { getUserInfo, getDataZona, getData } = useFirestoreState();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       console.log(user);
@@ -36,6 +37,9 @@ const UserProvider = ({ children }) => {
           rol,
           sede,
         });
+        const res = await getData();
+        console.log(res);
+        setTrasferencias(res);
         const recibidad = await getDataZona(sede);
         setTransferenciasRecibidas(recibidad);
       } else {
@@ -51,6 +55,16 @@ const UserProvider = ({ children }) => {
   const loginUser = (email, password) =>
     signInWithEmailAndPassword(auth, email, password);
   const logoutUser = () => signOut(auth);
+
+  const refreshTrasfereZona = async () => {
+    const recibidad = await getDataZona(user.sede);
+    setTransferenciasRecibidas(recibidad);
+  };
+  const refreshTrasferencias = async () => {
+    const recibidad = await getData();
+    setTrasferencias(recibidad);
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -62,10 +76,13 @@ const UserProvider = ({ children }) => {
         userMore,
         setUserMore,
         transferenciasRecibidas,
+        trasferencias,
         modal,
         setModal,
         modalContent,
         setModalContent,
+        refreshTrasfereZona,
+        refreshTrasferencias,
       }}
     >
       {children}

@@ -1,8 +1,30 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../context/UserProvider';
 import { Button } from 'flowbite-react';
+import { useLocation } from 'react-router-dom';
+import { useFirestoreState } from '../hooks/useFirestore';
+
 const Modal = ({ children }) => {
-  const { setModal } = useContext(UserContext);
+  const { setModal, refreshTrasferencias } = useContext(UserContext);
+  let { pathname } = useLocation();
+  const {
+    data,
+    loading,
+    error,
+    getData,
+    addData,
+    getUserInfo,
+    dataUser,
+    getDataZona,
+    deleteData,
+  } = useFirestoreState();
+
+  const deleteTrasf = async () => {
+    console.log('funciono');
+    await deleteData(children.nanoid);
+    refreshTrasferencias();
+    setModal(false);
+  };
   return (
     <div className="absolute h-screen z-20 flex justify-center items-center w-full bg-black bg-opacity-60">
       <div className="bg-white w-full max-w-3xl px-10 rounded-xl relative">
@@ -111,8 +133,12 @@ const Modal = ({ children }) => {
             </div>
           </div>
           <div className="flex justify-end items-center gap-5 mb-5">
-            <Button onClick={() => setModal(false)}>Cancelar</Button>
-            <Button onClick={() => setModal(false)}>Pagar</Button>
+            <Button onClick={() => setModal(false)}>Imprimir</Button>
+            {pathname === '/TransferenciasCreadas' ? (
+              <Button onClick={() => deleteTrasf()}>Extornar</Button>
+            ) : (
+              <Button onClick={() => setModal(false)}>Pagar</Button>
+            )}
           </div>
         </div>
       </div>

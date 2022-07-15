@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { UserContext } from '../context/UserProvider';
 import Table from '../components/Table';
 import { useFirestoreState } from '../hooks/useFirestore';
 const TransferenciasCreadas = () => {
+  const { refreshTrasferencias, trasferencias } = useContext(UserContext);
   const {
     data,
     loading,
@@ -13,9 +15,9 @@ const TransferenciasCreadas = () => {
     getDataZona,
   } = useFirestoreState();
   useEffect(() => {
-    getData();
+    refreshTrasferencias();
   }, []);
-  return <Table data={data} loading={loading.getData} error={error} />;
+  return <Table data={trasferencias} loading={loading.getData} error={error} />;
 };
 
 export default TransferenciasCreadas;

@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { useFirestoreState } from '../hooks/useFirestore';
 import { UserContext } from '../context/UserProvider';
+
 const Table = ({ data, error, loading }) => {
   const { setModalContent, setModal } = useContext(UserContext);
+
   const getTrasf = (data) => {
     console.log(data);
     setModalContent(data);
@@ -55,10 +57,12 @@ const Table = ({ data, error, loading }) => {
           <tbody className="text-center">
             <div>{loadingData}</div>
             <div>{errorData}</div>
-            {data.length > 0 ? (
+            {data?.length > 0 ? (
               data?.map(
                 (
                   {
+                    nanoid,
+                    uid,
                     nomSolicitante,
                     apePaternoSoli,
                     apeMaternoSoli,
@@ -81,6 +85,8 @@ const Table = ({ data, error, loading }) => {
                   <tr
                     onClick={() =>
                       getTrasf({
+                        nanoid,
+                        uid,
                         nomSolicitante,
                         apePaternoSoli,
                         apeMaternoSoli,

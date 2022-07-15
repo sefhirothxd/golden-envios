@@ -6,6 +6,7 @@ import {
   where,
   Timestamp,
   setDoc,
+  deleteDoc,
   orderBy,
   getDoc,
 } from 'firebase/firestore/lite';
@@ -33,6 +34,7 @@ export const useFirestoreState = () => {
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
       setData(datos);
+      return datos;
     } catch (error) {
       console.log(error);
       setError(error.code);
@@ -41,7 +43,6 @@ export const useFirestoreState = () => {
     }
   };
   const getDataZona = async (e) => {
-    console.log(e);
     try {
       setLoading((prev) => ({ ...prev, getDataZona: true }));
       const q = query(
@@ -101,9 +102,10 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, addData: true }));
       const newData = {
         ...obj,
+        nanoid: nanoid(12),
         fechaCreada: Timestamp.now(),
       };
-      const docRef = doc(db, 'transferencias', nanoid(6));
+      const docRef = doc(db, 'transferencias', newData.nanoid);
       await setDoc(docRef, newData);
       setData([...data, newData]);
     } catch (error) {
@@ -113,7 +115,21 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, addData: false }));
     }
   };
-
+  const deleteData = async (nid) => {
+    console.log(nid);
+    try {
+      setLoading((prev) => ({ ...prev, [nid]: true }));
+      const docRef = doc(db, 'transferencias', nid);
+      await deleteDoc(docRef);
+      setData(data.filter((item) => item.nanoid !== nid));
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    } finally {
+      setLoading((prev) => ({ ...prev, [nid]: false }));
+    }
+  };
   const addUserRegister = async (item, id) => {
     try {
       setLoading((prev) => ({ ...prev, addUserRegister: true }));
@@ -147,5 +163,6 @@ export const useFirestoreState = () => {
     getAllUsers,
     allUser,
     zonaData,
+    deleteData,
   };
 };

@@ -3,7 +3,8 @@ import { UserContext } from '../context/UserProvider';
 import Table from '../components/Table';
 import { useFirestoreState } from '../hooks/useFirestore';
 const TransferenciasRecibidas = () => {
-  const { transferenciasRecibidas } = useContext(UserContext);
+  const { transferenciasRecibidas, user, refreshTrasfereZona } =
+    useContext(UserContext);
   const {
     data,
     zonaData,
@@ -15,6 +16,10 @@ const TransferenciasRecibidas = () => {
     dataUser,
     getDataZona,
   } = useFirestoreState();
+  useEffect(() => {
+    refreshTrasfereZona();
+  }, []);
+
   return (
     <Table
       data={transferenciasRecibidas}

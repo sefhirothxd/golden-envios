@@ -6,11 +6,14 @@ import FormInput from '../components/FormInput';
 import { UserContext } from '../context/UserProvider';
 import { useFirestoreState } from '../hooks/useFirestore';
 import { Button } from 'flowbite-react';
+import { useNavigate } from 'react-router-dom';
 const crearTransferencias = () => {
   const [notificacion, setNotificacion] = useState(false);
+  const [notificacionCiudad, setNotificacionCiudad] = useState(false);
   const { required, patternEmail, minLength, validateTrim, validateEquals } =
     formValidate();
   const { user } = useContext(UserContext);
+  const navegate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -58,42 +61,51 @@ const crearTransferencias = () => {
     telefonoBene,
     telefonoSoli,
   }) => {
-    const obj = {
-      asesor: user.nombres + ' ' + user.apellidos,
-      comision: parseFloat(comision),
-      destino: ciudad,
-      monto: parseFloat(cantidad),
-      origen: user.sede,
-      apeMaternoBene,
-      apeMaternoSoli,
-      apePaternoBene,
-      apePaternoSoli,
-      dniBene,
-      dniSoli,
-      estado,
-      moneda,
-      nomBeneficiario,
-      nomSolicitante,
-      obs,
-      persona,
-      telefonoBene,
-      telefonoSoli,
-      uid: user.uid,
-    };
-    console.log(obj);
-    setNotificacion(true);
-    try {
-      await addData(obj);
+    if (ciudad == user.sede) {
+      setNotificacionCiudad(true);
       setTimeout(() => {
-        setNotificacion(false);
+        setNotificacionCiudad(false);
       }, 3000);
-      getData();
-    } catch (error) {
-      console.log(error.code);
-      const { code, message } = erroresFirebase(error.code);
-      setError(code, { message });
-      console.log(code, message);
-    } finally {
+    } else {
+      const obj = {
+        asesor: user.nombres + ' ' + user.apellidos,
+        comision: parseFloat(comision),
+        destino: ciudad,
+        monto: parseFloat(cantidad),
+        origen: user.sede,
+        apeMaternoBene,
+        apeMaternoSoli,
+        apePaternoBene,
+        apePaternoSoli,
+        dniBene,
+        dniSoli,
+        estado,
+        moneda,
+        nomBeneficiario,
+        nomSolicitante,
+        obs,
+        persona,
+        telefonoBene,
+        telefonoSoli,
+        uid: user.uid,
+      };
+
+      console.log(obj);
+      setNotificacion(true);
+      try {
+        await addData(obj);
+        setTimeout(() => {
+          setNotificacion(false);
+        }, 3000);
+        getData();
+        navegate('/TransferenciasCreadas');
+      } catch (error) {
+        console.log(error.code);
+        const { code, message } = erroresFirebase(error.code);
+        setError(code, { message });
+        console.log(code, message);
+      } finally {
+      }
     }
   };
 
@@ -425,6 +437,16 @@ const crearTransferencias = () => {
       >
         <span className="font-medium">Exito!</span>El giro se realido de manera
         satisfactoria.
+      </div>
+      <div
+        className={
+          `absolute -right-altoFormulario transform bottom-28  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-red-700 bg-red-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
+          (notificacionCiudad && ' -translate-x-altoFormulario')
+        }
+        role="alert"
+      >
+        <span className="font-medium">Error!</span>No se puede crear una
+        trasferencia para la misma ubicacion.
       </div>
     </div>
   );
