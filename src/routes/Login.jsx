@@ -26,9 +26,10 @@ const login = () => {
     setError,
   } = useForm();
   const onSubmit = async ({ email, password }) => {
+    const user = email + '@skillien.com';
     try {
       setLoading(true);
-      await loginUser(email, password);
+      await loginUser(user, password);
       navegate('/');
     } catch (error) {
       console.log(error.code);
@@ -49,12 +50,11 @@ const login = () => {
         </div>
         <FormInput
           className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
-          type="email"
+          type="text"
           name="email"
           placeholder="Usuario"
           {...register('email', {
             required,
-            pattern: patternEmail,
           })}
         ></FormInput>
         <FormError error={errors.email} />

@@ -23,7 +23,7 @@ const crearTransferencias = () => {
     setError,
   } = useForm({
     defaultValues: {
-      estado: true,
+      estado: 'Pendiente',
     },
   });
   const {
@@ -160,6 +160,7 @@ const crearTransferencias = () => {
                   {...register('persona')}
                   type="radio"
                   value="natural"
+                  checked
                 />
               </label>
               <label

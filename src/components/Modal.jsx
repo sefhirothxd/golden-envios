@@ -3,9 +3,12 @@ import { UserContext } from '../context/UserProvider';
 import { Button } from 'flowbite-react';
 import { useLocation } from 'react-router-dom';
 import { useFirestoreState } from '../hooks/useFirestore';
+import Logo from '../assets/img/logoLogin.svg';
+import printJS from 'print-js';
 
 const Modal = ({ children }) => {
-  const { setModal, refreshTrasferencias } = useContext(UserContext);
+  const { setModal, refreshTrasferencias, refreshTrasfereZona } =
+    useContext(UserContext);
   let { pathname } = useLocation();
   const {
     data,
@@ -16,17 +19,72 @@ const Modal = ({ children }) => {
     getUserInfo,
     dataUser,
     getDataZona,
-    deleteData,
+    updateEstate,
   } = useFirestoreState();
 
-  const deleteTrasf = async () => {
+  const someJSONdata = () => {
+    //print react component to pdf
+    printJS({
+      printable: document.getElementById('probando'),
+      properties: [
+        {
+          name: 'width',
+          value: '100px',
+        },
+        {
+          name: 'height',
+          value: '100%',
+        },
+      ],
+      type: 'html',
+      style: '<style>body {color: red;}</style>',
+      showModal: true,
+    });
+  };
+  const changeEstate = async (e) => {
     console.log('funciono');
-    await deleteData(children.nanoid);
+    await updateEstate(children.nanoid, e);
     refreshTrasferencias();
+    refreshTrasfereZona();
     setModal(false);
+  };
+  const fecha = () => {
+    return new Date().toLocaleString();
   };
   return (
     <div className="absolute h-screen z-20 flex justify-center items-center w-full bg-black bg-opacity-60">
+      <div id="probando" className="-z-10 absolute">
+        <img src={Logo} alt="logo" />
+        <h1 className="text-red-500 text-center">Golden Fast</h1>
+        <hr />
+        <div>
+          <p>Fecha: {fecha()}</p>
+          <p>Destino: {children.origen} </p>
+          <p>
+            Solicitante:{' '}
+            {children.nomSolicitante +
+              ' ' +
+              children.apePaternoSoli +
+              ' ' +
+              children.apeMaternoSoli}
+          </p>
+          <p>
+            Beneficiario:{' '}
+            {children.nomBeneficiario +
+              ' ' +
+              children.apePaternoBene +
+              ' ' +
+              children.apeMaternoBene}
+          </p>
+          <p>
+            Monto: S/
+            {children.monto.toLocaleString('en-ES', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </p>
+        </div>
+      </div>
       <div className="bg-white w-full max-w-3xl px-10 rounded-xl relative">
         <div className="modal-header">
           <div className="flex justify-end px-2 py-5">
@@ -37,7 +95,7 @@ const Modal = ({ children }) => {
               X
             </button>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center" id="probando">
             <div className="">
               <h3 className="font-medium text-xl text-black mb-5 text-center">
                 Origen
@@ -109,7 +167,11 @@ const Modal = ({ children }) => {
                 <div>
                   <h4 className="font-medium text-xl text-black">Nombres</h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.nomSolicitante + ' ' + children.apePaternoSoli}
+                    {children.nomSolicitante +
+                      ' ' +
+                      children.apePaternoSoli +
+                      ' ' +
+                      children.apeMaternoSoli}
                   </p>
                 </div>
                 <div>
@@ -121,7 +183,11 @@ const Modal = ({ children }) => {
                 <div>
                   <h4 className="font-medium text-xl text-black">Nombres</h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.nomBeneficiario + ' ' + children.apePaternoBene}
+                    {children.nomBeneficiario +
+                      ' ' +
+                      children.apePaternoBene +
+                      ' ' +
+                      children.apeMaternoBene}
                   </p>
                 </div>
                 <div>
@@ -133,11 +199,56 @@ const Modal = ({ children }) => {
             </div>
           </div>
           <div className="flex justify-end items-center gap-5 mb-5">
-            <Button onClick={() => setModal(false)}>Imprimir</Button>
             {pathname === '/TransferenciasCreadas' ? (
-              <Button onClick={() => deleteTrasf()}>Extornar</Button>
+              children.estado === 'Pendiente' ? (
+                <>
+                  <Button
+                    onClick={() =>
+                      printJS({
+                        printable: someJSONdata,
+                        properties: [
+                          { field: 'name', displayName: 'Full Name' },
+                          { field: 'email', displayName: 'E-mail' },
+                          { field: 'phone', displayName: 'Phone' },
+                        ],
+                        type: 'json',
+                      })
+                    }
+                  >
+                    Imprimir
+                  </Button>
+                  <Button onClick={() => changeEstate('Extornado')}>
+                    Extornar
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button onClick={() => setModal(false)}>Imprimir</Button>
+                </>
+              )
+            ) : children.estado === 'Pendiente' ? (
+              <>
+                <Button
+                  onClick={() =>
+                    printJS({
+                      printable: someJSONdata,
+                      properties: [
+                        { field: 'name', displayName: 'Full Name' },
+                        { field: 'email', displayName: 'E-mail' },
+                        { field: 'phone', displayName: 'Phone' },
+                      ],
+                      type: 'json',
+                    })
+                  }
+                >
+                  Imprimir
+                </Button>
+                <Button onClick={() => changeEstate('Pagado')}>Pagar</Button>
+              </>
             ) : (
-              <Button onClick={() => setModal(false)}>Pagar</Button>
+              <>
+                <Button onClick={someJSONdata}>Imprimir</Button>
+              </>
             )}
           </div>
         </div>

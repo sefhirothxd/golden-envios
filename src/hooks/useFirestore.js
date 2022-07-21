@@ -104,6 +104,7 @@ export const useFirestoreState = () => {
         ...obj,
         nanoid: nanoid(12),
         fechaCreada: Timestamp.now(),
+        fechaCierre: Timestamp.now(),
       };
       const docRef = doc(db, 'transferencias', newData.nanoid);
       await setDoc(docRef, newData);
@@ -115,19 +116,16 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, addData: false }));
     }
   };
-  const deleteData = async (nid) => {
-    console.log(nid);
+  const updateEstate = async (uid, estate) => {
     try {
-      setLoading((prev) => ({ ...prev, [nid]: true }));
-      const docRef = doc(db, 'transferencias', nid);
-      await deleteDoc(docRef);
-      setData(data.filter((item) => item.nanoid !== nid));
-      console.log(data);
+      setLoading((prev) => ({ ...prev, updateEstate: true }));
+      const docRef = doc(db, 'transferencias', uid);
+      await updateDoc(docRef, { estado: estate, fechaCierre: Timestamp.now() });
     } catch (error) {
       console.log(error);
-      setError(error.message);
+      setError(error.code);
     } finally {
-      setLoading((prev) => ({ ...prev, [nid]: false }));
+      setLoading((prev) => ({ ...prev, updateEstate: false }));
     }
   };
 
@@ -177,7 +175,7 @@ export const useFirestoreState = () => {
     getAllUsers,
     allUser,
     zonaData,
-    deleteData,
+    updateEstate,
     updateData,
   };
 };

@@ -30,23 +30,22 @@ const Register = () => {
     formState: { errors },
     getValues,
     setError,
-  } = useForm({
-    saldo: 15000,
-  });
+  } = useForm();
 
   const onSubmit = async (e) => {
     const { email, password } = e;
     const item = {
-      email: e.email,
+      email: e.email + '@skillien.com',
       nombres: e.nombres,
       apellidos: e.apellidos,
       sede: e.ciudad,
       direccion: e.direccion,
       dni: e.dni,
+      saldo: Number(e.saldo),
     };
     console.log(e);
     try {
-      const res = await registerUser(email, password);
+      const res = await registerUser(item.email, password);
       const reg = await addUserRegister(item, res.user.uid);
       console.log('respuesta del registro', reg);
     } catch (error) {
@@ -67,11 +66,11 @@ const Register = () => {
         </div>
         <FormInput
           className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
-          type="email"
-          placeholder="Ingresar email"
+          type="text"
+          autoComplete="off"
+          placeholder="Ingresar usuario"
           {...register('email', {
             required,
-            pattern: patternEmail,
           })}
         ></FormInput>
         <FormError error={errors.email} />
@@ -113,6 +112,16 @@ const Register = () => {
           })}
         ></FormInput>
         <FormError error={errors.dni} />
+        <FormInput
+          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
+          type="dni"
+          placeholder="Ingrese el saldo"
+          {...register('saldo', {
+            required: messageRequire,
+            minLength: minLengthValue(3),
+          })}
+        ></FormInput>
+        <FormError error={errors.saldo} />
         <FormInput
           className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
           placeholder="ingrese su dirección"

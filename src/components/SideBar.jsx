@@ -239,7 +239,7 @@ const sideBar = ({ bar, setBar }) => {
               </li>
             </ul>
           </li>
-          {/* <li>
+          <li>
             <button
               type="button"
               onClick={(e) => handleCordion(3)}
@@ -513,7 +513,7 @@ const sideBar = ({ bar, setBar }) => {
                 </a>
               </li>
             </ul>
-          </li> */}
+          </li>
         </ul>
       </div>
     </aside>

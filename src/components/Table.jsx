@@ -11,6 +11,25 @@ const Table = ({ data, error, loading }) => {
     setModal(true);
   };
 
+  const getStatus = (status) => {
+    if (status === 'Pendiente') {
+      return 'bg-green-300';
+    } else if (status === 'Extornado') {
+      return 'bg-red-300';
+    } else if (status === 'Pagado') {
+      return 'bg-white';
+    }
+  };
+  const getLights = (status) => {
+    if (status === 'Pendiente') {
+      return 'bg-green-500';
+    } else if (status === 'Extornado') {
+      return 'bg-red-500';
+    } else if (status === 'Pagado') {
+      return 'bg-black';
+    }
+  };
+
   const loadingData = loading && <p>Loading data...</p>;
   const errorData = error && <p>{error}</p>;
   return (
@@ -106,11 +125,13 @@ const Table = ({ data, error, loading }) => {
                       })
                     }
                     key={index}
-                    className="bg-white cursor-pointer border-b hover:bg-green-300 dark:bg-gray-800 dark:border-gray-700  dark:hover:bg-gray-600"
+                    className={`${getStatus(
+                      estado
+                    )} cursor-pointer border-b text-black  dark:bg-gray-800 dark:border-gray-700  dark:hover:bg-gray-600`}
                   >
                     <th
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+                      className="px-6 py-4 font-medium text-black dark:text-white whitespace-nowrap"
                     >
                       {
                         // firebase Timestamp full .toLocaleTimeString() hora
@@ -119,8 +140,8 @@ const Table = ({ data, error, loading }) => {
                           fechaCreada.toDate().toLocaleTimeString()
                       }
                     </th>
-                    <td className="px-6 py-4">{`${nomBeneficiario} ${apePaternoBene} ${apeMaternoBene}`}</td>
-                    <td className="px-6 py-4">{`${nomSolicitante} ${apePaternoSoli} ${apeMaternoSoli}`}</td>
+                    <td className="px-6 py-4">{`${nomBeneficiario} ${apePaternoBene}`}</td>
+                    <td className="px-6 py-4">{`${nomSolicitante} ${apePaternoSoli}`}</td>
                     <td className="px-6 py-4">{origen}</td>
                     <td className="px-6 py-4">{destino}</td>
                     <td className="px-6 py-4">{asesor}</td>
@@ -139,13 +160,13 @@ const Table = ({ data, error, loading }) => {
                       })}
                     </td>
                     <td className="px-6 py-4">{obs}</td>
-                    <td className="px-6 py-4 flex items-center justify-center gap-2">
-                      {estado ? 'Pendiente' : 'Cancelado'}
-                      {estado ? (
-                        <span className="bg-green-500 h-1 w-1 inline-block rounded-full"></span>
-                      ) : (
-                        <span className="bg-red-500 h-1 w-1 inline-block rounded-full"></span>
-                      )}
+                    <td className="px-6 py-4 flex items-center justify-center gap-1">
+                      {estado}
+                      <span
+                        className={`${getLights(
+                          estado
+                        )} h-1 w-1 inline-block rounded-full`}
+                      ></span>
                     </td>
                   </tr>
                 )
