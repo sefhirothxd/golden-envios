@@ -2,8 +2,20 @@ export const formValidate = (getValues) => {
   return {
     required: {
       value: true,
-      message: 'El correo es requerido',
+      message: 'Este campo es requerido',
     },
+    validateRequired(field) {
+      return {
+        esquals: (value) =>
+          value === '' ? `El campo "${field}" es requerido` : true,
+      };
+    },
+    validateRequiredSelect() {
+      return {
+        esquals: (value) => (value === '0' ? `Seleccione un campo` : true),
+      };
+    },
+
     patternEmail: {
       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,15}$/i,
       message: 'El correo no es valido',
@@ -11,7 +23,7 @@ export const formValidate = (getValues) => {
     minLengthValue(num) {
       return {
         value: num,
-        message: `La contraseña debe tener al menos ${num} caracteres`,
+        message: `Debe de tener al menos ${num} caracteres`,
       };
     },
     messageRequire: {

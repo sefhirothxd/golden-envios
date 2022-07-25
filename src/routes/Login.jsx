@@ -67,8 +67,9 @@ const login = () => {
             minLength,
             validate: validateTrim,
           })}
-        ></FormInput>
-        <FormError error={errors.password} />
+        >
+          <FormError error={errors.password} />
+        </FormInput>
         {loading ? (
           <ButtonLoading />
         ) : (

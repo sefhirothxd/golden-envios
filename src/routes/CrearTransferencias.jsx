@@ -11,8 +11,16 @@ import { useNavigate } from 'react-router-dom';
 const crearTransferencias = () => {
   const [notificacion, setNotificacion] = useState(false);
   const [notificacionCiudad, setNotificacionCiudad] = useState(false);
-  const { required, patternEmail, minLength, validateTrim, validateEquals } =
-    formValidate();
+  const {
+    required,
+    patternEmail,
+    minLength,
+    minLengthValue,
+    validateTrim,
+    validateEquals,
+    validateRequired,
+    validateRequiredSelect,
+  } = formValidate();
   const { user, refreshUser } = useContext(UserContext);
   const navegate = useNavigate();
   const {
@@ -189,8 +197,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="nomSolicitante"
                 placeholder="Nombre"
-                {...register('nomSolicitante')}
+                {...register('nomSolicitante', {
+                  validate: validateRequired('Nombre Solicitante'),
+                })}
               ></FormInput>
+              <FormError error={errors.nomSolicitante} />
             </div>
             <div className="mb-6">
               <label
@@ -205,8 +216,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="apePaternoSoli"
                 placeholder="Apellido Paterno"
-                {...register('apePaternoSoli')}
+                {...register('apePaternoSoli', {
+                  validate: validateRequired('Apellido Paterno'),
+                })}
               ></FormInput>
+              <FormError error={errors.apePaternoSoli} />
             </div>
             <div className="mb-6">
               <label
@@ -221,8 +235,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="apeMaternoSoli"
                 placeholder="Apellido Materno"
-                {...register('apeMaternoSoli')}
+                {...register('apeMaternoSoli', {
+                  validate: validateRequired('Apellido Materno'),
+                })}
               ></FormInput>
+              <FormError error={errors.apeMaternoSoli} />
             </div>
             <div className="mb-6">
               <label
@@ -236,8 +253,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="dniSoli"
                 placeholder="DNI"
-                {...register('dniSoli')}
+                {...register('dniSoli', {
+                  validate: validateRequired('DNI'),
+                })}
               ></FormInput>
+              <FormError error={errors.dniSoli} />
             </div>
             <div className="mb-6">
               <label
@@ -251,8 +271,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="telefonoSoli"
                 placeholder="Telefono"
-                {...register('telefonoSoli')}
+                {...register('telefonoSoli', {
+                  validate: validateRequired('Telefono'),
+                })}
               ></FormInput>
+              <FormError error={errors.telefonoSoli} />
             </div>
           </div>
           <div className=" bg-white rounded-2xl  p-5 relative  w-96">
@@ -278,8 +301,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="nomBeneficiario"
                 placeholder="Nombre"
-                {...register('nomBeneficiario')}
+                {...register('nomBeneficiario', {
+                  validate: validateRequired('Nombre Beneficiario'),
+                })}
               ></FormInput>
+              <FormError error={errors.nomBeneficiario} />
             </div>
             <div className="mb-6">
               <label
@@ -294,8 +320,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="apePaternoBene"
                 placeholder="Apellido Paterno"
-                {...register('apePaternoBene')}
+                {...register('apePaternoBene', {
+                  validate: validateRequired('Apellido Paterno'),
+                })}
               ></FormInput>
+              <FormError error={errors.apePaternoBene} />
             </div>
             <div className="mb-6">
               <label
@@ -310,8 +339,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="apeMaternoBene"
                 placeholder="Apellido Materno"
-                {...register('apeMaternoBene')}
+                {...register('apeMaternoBene', {
+                  validate: validateRequired('Apellido Materno'),
+                })}
               ></FormInput>
+              <FormError error={errors.apeMaternoBene} />
             </div>
             <div className="mb-6">
               <label
@@ -325,8 +357,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="dniBene"
                 placeholder="DNI"
-                {...register('dniBene')}
+                {...register('dniBene', {
+                  validate: validateRequired('DNI'),
+                })}
               ></FormInput>
+              <FormError error={errors.dniBene} />
             </div>
             <div className="mb-6">
               <label
@@ -340,8 +375,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="telefonoBene"
                 placeholder="Telefono"
-                {...register('telefonoBene')}
+                {...register('telefonoBene', {
+                  validate: validateRequired('Telefono'),
+                })}
               ></FormInput>
+              <FormError error={errors.telefonoBene} />
             </div>
           </div>
           <div className=" bg-white rounded-2xl  p-5 relative  w-96">
@@ -362,7 +400,9 @@ const crearTransferencias = () => {
                 Oficina de destino
               </label>
               <select
-                {...register('ciudad')}
+                {...register('ciudad', {
+                  validate: validateRequiredSelect(),
+                })}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option value="0">Seleciona la ciudad</option>
@@ -380,7 +420,9 @@ const crearTransferencias = () => {
                 Tipo de moneda
               </label>
               <select
-                {...register('moneda')}
+                {...register('moneda', {
+                  validate: validateRequiredSelect(),
+                })}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option value="0">Seleciona la moneda</option>
@@ -401,8 +443,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="cantidad"
                 placeholder="Ingrese el cantidad"
-                {...register('cantidad')}
+                {...register('cantidad', {
+                  validate: validateRequired('Cantidad'),
+                })}
               ></FormInput>
+              <FormError error={errors.cantidad} />
             </div>
             <div className="mb-6">
               <label
@@ -416,8 +461,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="comision"
                 placeholder="Ingrese una comision"
-                {...register('comision')}
+                {...register('comision', {
+                  validate: validateRequired('Comision'),
+                })}
               ></FormInput>
+              <FormError error={errors.comision} />
             </div>
             <div className="mb-6">
               <label
@@ -431,8 +479,11 @@ const crearTransferencias = () => {
                 type="text"
                 name="obs"
                 placeholder="Ingrese una observacion"
-                {...register('obs')}
+                {...register('obs', {
+                  validate: validateRequired('Observacion'),
+                })}
               ></FormInput>
+              <FormError error={errors.obs} />
             </div>
           </div>
         </div>
