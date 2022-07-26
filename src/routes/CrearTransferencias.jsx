@@ -20,6 +20,9 @@ const crearTransferencias = () => {
     validateEquals,
     validateRequired,
     validateRequiredSelect,
+    validateRequiredNumber,
+    validateRequiredDni,
+    validateRequiredTelefono,
   } = formValidate();
   const { user, refreshUser } = useContext(UserContext);
   const navegate = useNavigate();
@@ -29,6 +32,7 @@ const crearTransferencias = () => {
     formState: { errors },
     getValues,
     setError,
+    reset,
   } = useForm({
     defaultValues: {
       estado: 'Pendiente',
@@ -254,7 +258,8 @@ const crearTransferencias = () => {
                 name="dniSoli"
                 placeholder="DNI"
                 {...register('dniSoli', {
-                  validate: validateRequired('DNI'),
+                  required,
+                  validate: validateRequiredDni('Dni'),
                 })}
               ></FormInput>
               <FormError error={errors.dniSoli} />
@@ -268,14 +273,11 @@ const crearTransferencias = () => {
               </label>
               <FormInput
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                type="text"
+                type="number"
                 name="telefonoSoli"
                 placeholder="Telefono"
-                {...register('telefonoSoli', {
-                  validate: validateRequired('Telefono'),
-                })}
+                {...register('telefonoSoli')}
               ></FormInput>
-              <FormError error={errors.telefonoSoli} />
             </div>
           </div>
           <div className=" bg-white rounded-2xl  p-5 relative  w-96">
@@ -358,7 +360,8 @@ const crearTransferencias = () => {
                 name="dniBene"
                 placeholder="DNI"
                 {...register('dniBene', {
-                  validate: validateRequired('DNI'),
+                  required,
+                  validate: validateRequiredDni('Dni'),
                 })}
               ></FormInput>
               <FormError error={errors.dniBene} />
@@ -372,14 +375,11 @@ const crearTransferencias = () => {
               </label>
               <FormInput
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                type="text"
+                type="number"
                 name="telefonoBene"
                 placeholder="Telefono"
-                {...register('telefonoBene', {
-                  validate: validateRequired('Telefono'),
-                })}
+                {...register('telefonoBene')}
               ></FormInput>
-              <FormError error={errors.telefonoBene} />
             </div>
           </div>
           <div className=" bg-white rounded-2xl  p-5 relative  w-96">
@@ -425,7 +425,7 @@ const crearTransferencias = () => {
                 })}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
-                <option value="0">Seleciona la moneda</option>
+                {/* <option value="0">Seleciona la moneda</option> */}
                 <option value="Sol">Soles</option>
                 <option value="Dolar">Dolares</option>
               </select>
@@ -444,7 +444,8 @@ const crearTransferencias = () => {
                 name="cantidad"
                 placeholder="Ingrese el cantidad"
                 {...register('cantidad', {
-                  validate: validateRequired('Cantidad'),
+                  required,
+                  validate: validateRequiredNumber('cantidad'),
                 })}
               ></FormInput>
               <FormError error={errors.cantidad} />
@@ -462,7 +463,8 @@ const crearTransferencias = () => {
                 name="comision"
                 placeholder="Ingrese una comision"
                 {...register('comision', {
-                  validate: validateRequired('Comision'),
+                  required,
+                  validate: validateRequiredNumber('Comision'),
                 })}
               ></FormInput>
               <FormError error={errors.comision} />
@@ -479,17 +481,14 @@ const crearTransferencias = () => {
                 type="text"
                 name="obs"
                 placeholder="Ingrese una observacion"
-                {...register('obs', {
-                  validate: validateRequired('Observacion'),
-                })}
+                {...register('obs')}
               ></FormInput>
-              <FormError error={errors.obs} />
             </div>
           </div>
         </div>
         <div className="w-full my-5 flex justify-center items-center gap-10">
-          <Button type="submit" onClick={(e) => probando(e)}>
-            Imprimir
+          <Button type="submit" onClick={() => reset()}>
+            Limpiar
           </Button>
           <Button type="submit">Trasferencia</Button>
         </div>

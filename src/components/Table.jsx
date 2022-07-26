@@ -1,9 +1,32 @@
-import React, { useState, useContext } from 'react';
-import { useFirestoreState } from '../hooks/useFirestore';
+import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../context/UserProvider';
+import DatePicker from 'react-datepicker';
+import { Button } from 'flowbite-react';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Table = ({ data, error, loading }) => {
   const { setModalContent, setModal } = useContext(UserContext);
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [startDate, endDate] = dateRange;
+
+  const [filter, setFilter] = useState(data);
+
+  const handleFilter = (e) => {
+    e.preventDefault();
+    console.log(e.target[0].value);
+    const { value } = e.target[0];
+
+    const filtered = data.filter(
+      (entry) =>
+        entry.nomBeneficiario.toLowerCase().includes(value) ||
+        entry.dniBene === value
+    );
+    // const filtered = data.filter((item) =>
+    //   item.nomBeneficiario.toLowerCase().includes(value.toLowerCase())
+    // );
+    setFilter(filtered);
+    console.log(filtered);
+  };
 
   const getTrasf = (data) => {
     console.log(data);
@@ -30,11 +53,67 @@ const Table = ({ data, error, loading }) => {
     }
   };
 
+  const filterDateRage = (update) => {
+    if (update[1] === null) {
+      return;
+    }
+    const filtered = data.filter((item) => {
+      const date = new Date(item.fechaCreada.toDate());
+      const start = new Date(update[0]);
+      const end = new Date(update[1]);
+      const format =
+        date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
+      console.log('soy el array formateado ', Date.parse(format));
+      const format2 = Date.parse(start);
+      console.log('soy lo seleccionado formateado ', format2);
+      const format3 = Date.parse(end);
+      console.log('soy lo seleccionado formateado end', format3);
+      return Date.parse(format) >= format2 && Date.parse(format) <= format3;
+    });
+    console.log(filtered, 'soy el filtro');
+    setFilter(filtered);
+  };
+
+  useEffect(() => {
+    setFilter(data);
+  }, [data]);
+  useEffect(() => {
+    if (startDate === null && endDate === null) {
+      setFilter(data);
+    }
+  }, [dateRange]);
   const loadingData = loading && <p>Loading data...</p>;
   const errorData = error && <p>{error}</p>;
   return (
     <>
       <div className=" overflow-x-auto w-full mt-5 shadow-md sm:rounded-xl">
+        <div className=" flex justify-center items-center w-full gap-7 my-2 ">
+          <div>
+            <DatePicker
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              selectsRange={true}
+              startDate={startDate}
+              endDate={endDate}
+              onChange={(update) => {
+                filterDateRage(update);
+                setDateRange(update);
+              }}
+              isClearable={true}
+            />
+          </div>
+          <form
+            className="flex justify-center items-center gap-5"
+            onSubmit={handleFilter}
+          >
+            <input
+              type="text"
+              placeholder="Buscar por Nombre o DNI"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            />
+
+            <Button type="submit">Buscar</Button>
+          </form>
+        </div>
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="text-center">
@@ -76,8 +155,8 @@ const Table = ({ data, error, loading }) => {
           <tbody className="text-center">
             <div>{loadingData}</div>
             <div>{errorData}</div>
-            {data?.length > 0 ? (
-              data?.map(
+            {filter?.length > 0 ? (
+              filter?.map(
                 (
                   {
                     nanoid,

@@ -28,8 +28,8 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, getData: true }));
       const q = query(
         collection(db, 'transferencias'),
-        orderBy('fechaCreada', 'desc'),
-        where('uid', '==', uid)
+        orderBy('fechaCreada', 'desc')
+        // where('uid', '==', uid)
       );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());

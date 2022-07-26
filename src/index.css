@@ -46,3 +46,6 @@
 #accordion {
   background: #000;
 }
+.react-datepicker__close-icon {
+  right: -30px !important;
+}

@@ -10,6 +10,36 @@ export const formValidate = (getValues) => {
           value === '' ? `El campo "${field}" es requerido` : true,
       };
     },
+    validateRequiredNumber(field) {
+      return {
+        esquals: (value) =>
+          value.match(
+            /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+          )
+            ? true
+            : `En el campo "${field}" debe ingresar solo numeros`,
+      };
+    },
+    validateRequiredDni(field) {
+      return {
+        esquals: (value) =>
+          value.match(
+            /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+          ) && value.length === 8
+            ? true
+            : `En el campo "${field}" debe ingresar solo numeros y debe de tener  8 digitos`,
+      };
+    },
+    validateRequiredTelefono(field) {
+      return {
+        esquals: (value) =>
+          value.match(
+            /^(?:0\.(?:0[0-9]|[0-9]\d?)|[0-9]\d*(?:\.\d{1,2})?)(?:e[+-]?\d+)?$/
+          ) && value.length === 9
+            ? true
+            : `En el campo "${field}" debe ingresar solo numeros y debe de tener  9 digitos`,
+      };
+    },
     validateRequiredSelect() {
       return {
         esquals: (value) => (value === '0' ? `Seleccione un campo` : true),

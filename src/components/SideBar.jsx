@@ -8,6 +8,7 @@ const sideBar = ({ bar, setBar }) => {
   const [showRece, setShowRece] = useState(false);
   const [showCuentas, setShowCuentas] = useState(false);
   const [showCaja, setShowCaja] = useState(false);
+  const [showAdmini, setAdmini] = useState(false);
 
   const handleCordion = (e) => {
     const probando = {
@@ -17,6 +18,7 @@ const sideBar = ({ bar, setBar }) => {
         setShowRece(false);
         setShowCuentas(false);
         setShowCaja(false);
+        setAdmini(false);
       },
       2: () => {
         setShowTrans(false);
@@ -24,6 +26,7 @@ const sideBar = ({ bar, setBar }) => {
         setShowRece(false);
         setShowCuentas(false);
         setShowCaja(false);
+        setAdmini(false);
       },
       3: () => {
         setShowTrans(false);
@@ -31,6 +34,7 @@ const sideBar = ({ bar, setBar }) => {
         setShowRece(!showRece);
         setShowCuentas(false);
         setShowCaja(false);
+        setAdmini(false);
       },
       4: () => {
         setShowTrans(false);
@@ -38,6 +42,7 @@ const sideBar = ({ bar, setBar }) => {
         setShowRece(false);
         setShowCuentas(!showCuentas);
         setShowCaja(false);
+        setAdmini(false);
       },
       5: () => {
         setShowTrans(false);
@@ -45,6 +50,15 @@ const sideBar = ({ bar, setBar }) => {
         setShowRece(false);
         setShowCuentas(false);
         setShowCaja(!showCaja);
+        setAdmini(false);
+      },
+      6: () => {
+        setShowTrans(false);
+        setShowHabi(false);
+        setShowRece(false);
+        setShowCuentas(false);
+        setShowCaja(false);
+        setAdmini(!showAdmini);
       },
     };
     probando[e]();
@@ -510,6 +524,100 @@ const sideBar = ({ bar, setBar }) => {
                   className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Invoice
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <button
+              type="button"
+              onClick={(e) => handleCordion(6)}
+              className="flex items-center p-2 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+              aria-controls="dropdown-example"
+              data-collapse-toggle="dropdown-example"
+            >
+              <svg
+                className="flex-shrink-0 w-6 h-6  text-white transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
+                viewBox="0 0 20 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 7C14.9706 7 19 5.65685 19 4C19 2.34315 14.9706 1 10 1C5.02944 1 1 2.34315 1 4C1 5.65685 5.02944 7 10 7Z"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M19 11C19 12.66 15 14 10 14C5 14 1 12.66 1 11"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M1 4V18C1 19.66 5 21 10 21C15 21 19 19.66 19 18V4"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span
+                className="flex-1 ml-3 text-left whitespace-nowrap"
+                sidebar-toggle-item=""
+              >
+                Administración
+              </span>
+              <svg
+                sidebar-toggle-item=""
+                className={
+                  showAdmini
+                    ? 'w-6 h-6 transform rotate-180 transition duration-300'
+                    : 'w-6 h-6 transition duration-300'
+                }
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clipRule="evenodd"
+                ></path>
+              </svg>
+            </button>
+            <ul
+              id="dropdown-example"
+              className={
+                showAdmini
+                  ? 'inline-block py-2 space-y-2'
+                  : 'hidden py-2 space-y-2'
+              }
+            >
+              <li>
+                <a
+                  href="#"
+                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                >
+                  Usuarios
+                </a>
+              </li>
+              <li>
+                <NavLink
+                  to="/register"
+                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                >
+                  Crear usuarios
+                </NavLink>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                >
+                  Crear oficina
                 </a>
               </li>
             </ul>
