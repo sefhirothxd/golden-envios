@@ -597,12 +597,12 @@ const sideBar = ({ bar, setBar }) => {
               }
             >
               <li>
-                <a
-                  href="#"
+                <NavLink
+                  to="/usuariosCreados"
                   className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Usuarios
-                </a>
+                </NavLink>
               </li>
               <li>
                 <NavLink
