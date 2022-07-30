@@ -202,47 +202,19 @@ const Modal = ({ children }) => {
             {pathname === '/TransferenciasCreadas' ? (
               children.estado === 'Pendiente' ? (
                 <>
-                  <Button
-                    onClick={() =>
-                      printJS({
-                        printable: someJSONdata,
-                        properties: [
-                          { field: 'name', displayName: 'Full Name' },
-                          { field: 'email', displayName: 'E-mail' },
-                          { field: 'phone', displayName: 'Phone' },
-                        ],
-                        type: 'json',
-                      })
-                    }
-                  >
-                    Imprimir
-                  </Button>
+                  <Button onClick={someJSONdata}>Imprimir</Button>
                   <Button onClick={() => changeEstate('Extornado')}>
                     Extornar
                   </Button>
                 </>
               ) : (
                 <>
-                  <Button onClick={() => setModal(false)}>Imprimir</Button>
+                  <Button onClick={someJSONdata}>Imprimir</Button>
                 </>
               )
             ) : children.estado === 'Pendiente' ? (
               <>
-                <Button
-                  onClick={() =>
-                    printJS({
-                      printable: someJSONdata,
-                      properties: [
-                        { field: 'name', displayName: 'Full Name' },
-                        { field: 'email', displayName: 'E-mail' },
-                        { field: 'phone', displayName: 'Phone' },
-                      ],
-                      type: 'json',
-                    })
-                  }
-                >
-                  Imprimir
-                </Button>
+                <Button onClick={someJSONdata}>Imprimir</Button>
                 <Button onClick={() => changeEstate('Pagado')}>Pagar</Button>
               </>
             ) : (
