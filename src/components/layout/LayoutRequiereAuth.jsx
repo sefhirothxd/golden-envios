@@ -126,10 +126,7 @@ const LayoutRequiereAuth = () => {
               </span>
               <span className="block truncate text-sm font-medium">{}</span>
             </Dropdown.Header>
-            <Dropdown.Item>Dashboard</Dropdown.Item>
-            <Dropdown.Item>Settings</Dropdown.Item>
-            <Dropdown.Item>Earnings</Dropdown.Item>
-            <Dropdown.Divider />
+            <Dropdown.Item>Configuración</Dropdown.Item>
             <Dropdown.Item onClick={logOut}>Cerrar sesion</Dropdown.Item>
           </Dropdown>
         </div>
