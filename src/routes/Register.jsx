@@ -10,6 +10,7 @@ import { formValidate } from '../utils/formValidate';
 import FormInput from '../components/FormInput';
 const Register = () => {
   const { registerUser } = useContext(UserContext);
+  const [notificacion, setNotificacion] = useState(false);
   //metodo que retorna la validacion de los campos
   const {
     required,
@@ -34,32 +35,36 @@ const Register = () => {
 
   const onSubmit = async (e) => {
     const { email, password } = e;
-    const item = {
-      email: e.email + '@skillien.com',
-      nombres: e.nombres,
-      apellidos: e.apellidos,
-      sede: e.ciudad,
-      direccion: e.direccion,
-      dni: e.dni,
-      saldo: Number(e.saldo),
-    };
-    console.log(e);
-    try {
-      const res = await registerUser(item.email, password);
-      const reg = await addUserRegister(item, res.user.uid);
-      console.log('respuesta del registro', reg);
-    } catch (error) {
-      console.log(error);
-      const { code, message } = erroresFirebase(error.code);
-      setError(code, { message });
-    }
+    // const item = {
+    //   email: e.email + '@skillien.com',
+    //   nombres: e.nombres,
+    //   apellidos: e.apellidos,
+    //   sede: e.ciudad,
+    //   direccion: e.direccion,
+    //   dni: e.dni,
+    //   saldo: Number(e.saldo),
+    // };
+    // console.log(e);
+    // try {
+    //   const res = await registerUser(item.email, password);
+    //   const reg = await addUserRegister(item, res.user.uid);
+    //   console.log('respuesta del registro', reg);
+    // } catch (error) {
+    //   console.log(error);
+    //   const { code, message } = erroresFirebase(error.code);
+    //   setError(code, { message });
+    // }
+    setNotificacion(true);
+    setTimeout(() => {
+      setNotificacion(false);
+    }, 3000);
   };
 
   return (
-    <div className="h-screen flex justify-evenly items-center  overflow-hidden">
+    <div className="overflow-auto ">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col w-full justify-center items-center h-100"
+        className="flex flex-col w-full justify-center items-center relative overflow-hidden"
       >
         <div className="w-full flex justify-center mb-8">
           <h1 className="text-2xl font-bold text-botton-blue">Registrar</h1>
@@ -156,6 +161,16 @@ const Register = () => {
         >
           Enviar
         </button>
+        <div
+          className={
+            `absolute -right-96 transform bottom-28  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-green-700 bg-green-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
+            (notificacion && ' -translate-x-96')
+          }
+          role="alert"
+        >
+          <span className="font-medium">Exito!</span>La cuenta ha sido
+          creada..!!
+        </div>
       </form>
     </div>
   );

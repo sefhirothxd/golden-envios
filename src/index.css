@@ -16,6 +16,10 @@
   left: calc(50% - 50.68px);
 }
 
+/* .des {
+  height: calc(100% - 33px);
+} */
+
 .barSide {
   height: 100%;
   z-index: 10;

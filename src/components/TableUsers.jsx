@@ -167,14 +167,6 @@ const Table = ({ data, error, loading }) => {
                     <td className="px-6 py-4">
                       {email.slice(0, email.indexOf('@'))}
                     </td>
-                    {/* <td className="px-6 py-4 flex items-center justify-center gap-1">
-                      {estado}
-                      <span
-                        className={`${getLights(
-                          estado
-                        )} h-1 w-1 inline-block rounded-full`}
-                      ></span>
-                    </td> */}
                   </tr>
                 )
               )}

@@ -171,14 +171,6 @@ const sideBar = ({ bar, setBar }) => {
                   Transferencias recibidas
                 </NavLink>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
-                >
-                  Transferencias pagados
-                </a>
-              </li>
             </ul>
           </li>
           <li>
