@@ -99,6 +99,7 @@ const Table = ({ data, error, loading }) => {
                 setDateRange(update);
               }}
               isClearable={true}
+              placeholderText="Buscar por fecha"
             />
           </div>
           <form

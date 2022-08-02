@@ -101,9 +101,9 @@ const Table = ({ data, error, loading }) => {
               <th scope="col" className="px-6 py-3">
                 Nombre de usuario
               </th>
-              {/* <th scope="col" className="px-6 py-3">
-                  <span className="sr-only">Edit</span>
-                </th> */}
+              <th scope="col" className="px-6 py-3">
+                Rol
+              </th>
             </tr>
           </thead>
           <tbody className="text-center">
@@ -122,6 +122,7 @@ const Table = ({ data, error, loading }) => {
                     uid,
                     nanoid,
                     fechaCreada,
+                    rol,
                   },
                   index
                 ) => (
@@ -167,6 +168,7 @@ const Table = ({ data, error, loading }) => {
                     <td className="px-6 py-4">
                       {email.slice(0, email.indexOf('@'))}
                     </td>
+                    <td className="px-6 py-4">{rol}</td>
                   </tr>
                 )
               )}

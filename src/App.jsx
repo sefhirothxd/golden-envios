@@ -13,6 +13,7 @@ import TransferenciasCreadas from './routes/TransferenciasCreadas';
 import TransferenciasRecibidas from './routes/TransferenciasRecibidas';
 import EnvioCaja from './routes/EnvioCaja';
 import UsuariosCreados from './routes/UsuariosCreados';
+import CrearOficinas from './routes/CrearOficinas';
 const App = () => {
   const { user } = useContext(UserContext);
   if (user === false) {
@@ -40,6 +41,7 @@ const App = () => {
           />
           <Route path="/envioCaja" element={<EnvioCaja />} />
           <Route path="/usuariosCreados" element={<UsuariosCreados />} />
+          <Route path="/crearOficinas" element={<CrearOficinas />} />
         </Route>
         <Route path="/" element={<LayoutContainerForm />}>
           <Route path="/login" element={<Login />} />

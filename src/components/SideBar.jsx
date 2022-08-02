@@ -66,7 +66,7 @@ const sideBar = ({ bar, setBar }) => {
 
   return (
     <aside className={!bar ? 'barSide' : 'barSide2'} aria-label="Sidebar">
-      <div className="overflow-y-auto h-full flex relative  items-center flex-col w-72  py-4  bg-sideblue rounded-tr-3xl dark:bg-gray-800">
+      <div className="overflow-y-auto h-full flex relative  items-center flex-col w-72  py-4  bg-sideblue rounded-r-3xl dark:bg-gray-800">
         <button onClick={() => setBar(!bar)}>
           <img
             src={X}
@@ -78,12 +78,12 @@ const sideBar = ({ bar, setBar }) => {
           <img src={Logo} className="mt-10" alt="logo golden fast" />
         </Link>
         <hr className="bg-white  w-full mt-7 mb-7" />
-        <ul className="space-y-2 w-full">
+        <ul className="space-y-2 w-full ">
           <li>
             <button
               type="button"
               onClick={(e) => handleCordion(1)}
-              className="flex items-center p-2 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+              className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
             >
@@ -150,7 +150,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <NavLink
                   to="/crearTransferencias"
-                  className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
+                  className="flex cursor-pointer items-center p-2 pl-14 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   Crear transferencias
                 </NavLink>
@@ -158,7 +158,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <NavLink
                   to="/TransferenciasCreadas"
-                  className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
+                  className="flex cursor-pointer items-center p-2 pl-14 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   Transferencias creadas
                 </NavLink>
@@ -166,7 +166,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <NavLink
                   to="/TransferenciasRecibidas"
-                  className="flex cursor-pointer items-center p-2 pl-11 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
+                  className="flex cursor-pointer items-center p-2 pl-14 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   Transferencias recibidas
                 </NavLink>
@@ -177,7 +177,7 @@ const sideBar = ({ bar, setBar }) => {
             <button
               type="button"
               onClick={(e) => handleCordion(2)}
-              className="flex items-center p-2 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+              className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
             >
@@ -230,7 +230,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <NavLink
                   to="/envioCaja"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Envio de caja
                 </NavLink>
@@ -238,7 +238,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Lista de Envios
                 </a>
@@ -249,7 +249,7 @@ const sideBar = ({ bar, setBar }) => {
             <button
               type="button"
               onClick={(e) => handleCordion(3)}
-              className="flex items-center p-2 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+              className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
             >
@@ -316,7 +316,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Products
                 </a>
@@ -324,7 +324,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Billing
                 </a>
@@ -332,7 +332,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Invoice
                 </a>
@@ -343,7 +343,7 @@ const sideBar = ({ bar, setBar }) => {
             <button
               type="button"
               onClick={(e) => handleCordion(4)}
-              className="flex items-center p-2 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+              className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
             >
@@ -410,7 +410,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Products
                 </a>
@@ -418,7 +418,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Billing
                 </a>
@@ -426,7 +426,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Invoice
                 </a>
@@ -437,7 +437,7 @@ const sideBar = ({ bar, setBar }) => {
             <button
               type="button"
               onClick={(e) => handleCordion(5)}
-              className="flex items-center p-2 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+              className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
             >
@@ -497,7 +497,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Products
                 </a>
@@ -505,7 +505,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Billing
                 </a>
@@ -513,7 +513,7 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <a
                   href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Invoice
                 </a>
@@ -524,7 +524,7 @@ const sideBar = ({ bar, setBar }) => {
             <button
               type="button"
               onClick={(e) => handleCordion(6)}
-              className="flex items-center p-2 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+              className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
             >
@@ -557,7 +557,7 @@ const sideBar = ({ bar, setBar }) => {
                 />
               </svg>
               <span
-                className="flex-1 ml-3 text-left whitespace-nowrap"
+                className="flex-1 ml-3 text-left whitespace-nowrap "
                 sidebar-toggle-item=""
               >
                 Administración
@@ -584,14 +584,14 @@ const sideBar = ({ bar, setBar }) => {
               id="dropdown-example"
               className={
                 showAdmini
-                  ? 'inline-block py-2 space-y-2'
+                  ? 'inline-block py-2 space-y-2 w-full'
                   : 'hidden py-2 space-y-2'
               }
             >
               <li>
                 <NavLink
                   to="/usuariosCreados"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Usuarios
                 </NavLink>
@@ -599,18 +599,18 @@ const sideBar = ({ bar, setBar }) => {
               <li>
                 <NavLink
                   to="/register"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Crear usuarios
                 </NavLink>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-11 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                <NavLink
+                  to="/crearOficinas"
+                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                 >
                   Crear oficina
-                </a>
+                </NavLink>
               </li>
             </ul>
           </li>

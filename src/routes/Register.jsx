@@ -35,25 +35,24 @@ const Register = () => {
 
   const onSubmit = async (e) => {
     const { email, password } = e;
-    // const item = {
-    //   email: e.email + '@skillien.com',
-    //   nombres: e.nombres,
-    //   apellidos: e.apellidos,
-    //   sede: e.ciudad,
-    //   direccion: e.direccion,
-    //   dni: e.dni,
-    //   saldo: Number(e.saldo),
-    // };
-    // console.log(e);
-    // try {
-    //   const res = await registerUser(item.email, password);
-    //   const reg = await addUserRegister(item, res.user.uid);
-    //   console.log('respuesta del registro', reg);
-    // } catch (error) {
-    //   console.log(error);
-    //   const { code, message } = erroresFirebase(error.code);
-    //   setError(code, { message });
-    // }
+    const item = {
+      email: e.email + '@skillien.com',
+      nombres: e.nombres,
+      apellidos: e.apellidoP + ' ' + e.apellidoM,
+      sede: e.ciudad,
+      dni: e.dni,
+      rol: e.rol,
+    };
+    console.log(e);
+    try {
+      const res = await registerUser(item.email, password);
+      const reg = await addUserRegister(item, res.user.uid);
+      console.log('respuesta del registro', reg);
+    } catch (error) {
+      console.log(error);
+      const { code, message } = erroresFirebase(error.code);
+      setError(code, { message });
+    }
     setNotificacion(true);
     setTimeout(() => {
       setNotificacion(false);
@@ -67,99 +66,159 @@ const Register = () => {
         className="flex flex-col w-full justify-center items-center relative overflow-hidden"
       >
         <div className="w-full flex justify-center mb-8">
-          <h1 className="text-2xl font-bold text-botton-blue">Registrar</h1>
+          <h1 className="text-2xl font-bold text-botton-blue">
+            Registrar Usuario
+          </h1>
         </div>
-        <FormInput
-          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
-          type="text"
-          autoComplete="off"
-          placeholder="Ingresar usuario"
-          {...register('email', {
-            required,
-          })}
-        ></FormInput>
-        <FormError error={errors.email} />
-        <FormInput
-          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
-          type="password"
-          placeholder="Ingresar contraseña"
-          {...register('password', {
-            minLength: minLengthValue(6),
-            validate: validateTrim,
-          })}
-        ></FormInput>
-        <FormError error={errors.password} />
-        <FormInput
-          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
-          placeholder="Nombres"
-          {...register('nombres', {
-            required: messageRequire,
-            minLength: minLengthValue(3),
-          })}
-        ></FormInput>
-        <FormError error={errors.nombres} />
-        <FormInput
-          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
-          placeholder="Apellidos"
-          {...register('apellidos', {
-            required: messageRequire,
-            minLength: minLengthValue(3),
-          })}
-        ></FormInput>
-        <FormError error={errors.apellidos} />
-        <FormInput
-          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
-          type="dni"
-          placeholder="ingrese su DNI"
-          {...register('dni', {
-            required: messageRequire,
-            minLength: minLengthValue(8),
-          })}
-        ></FormInput>
-        <FormError error={errors.dni} />
-        <FormInput
-          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
-          type="dni"
-          placeholder="Ingrese el saldo"
-          {...register('saldo', {
-            required: messageRequire,
-            minLength: minLengthValue(3),
-          })}
-        ></FormInput>
-        <FormError error={errors.saldo} />
-        <FormInput
-          className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5 border-gray-500 border outline-blue-600"
-          placeholder="ingrese su dirección"
-          {...register('direccion', {
-            required: messageRequire,
-          })}
-        ></FormInput>
-        <FormError error={errors.direccion} />
-        <div className="mb-6">
-          <label
-            htmlFor="sede"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-          >
-            Selecciona la sede del usuario
-          </label>
-          <select
-            {...register('ciudad', {
-              validate: validateSelection,
-            })}
-            className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
-          >
-            <option value="0">Seleciona la ciudad</option>
-            <option value="lima">Lima</option>
-            <option value="cuzco">Cuzco</option>
-            <option value="piura">Piura</option>
-          </select>
-          <FormError error={errors.ciudad} />
+        <div className=" grid place-content-center grid-cols-2 gap-5">
+          <div className="mb-3">
+            <label
+              htmlFor="nomSolicitante"
+              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+            >
+              Usuario
+            </label>
+            <FormInput
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              type="text"
+              autoComplete="off"
+              placeholder="Ingresar usuario"
+              {...register('email', {
+                required,
+              })}
+            ></FormInput>
+            <FormError error={errors.email} />
+          </div>
+          <div className="mb-3">
+            <label
+              htmlFor="nomSolicitante"
+              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+            >
+              Contraseña
+            </label>
+            <FormInput
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              type="password"
+              placeholder="Ingresar contraseña"
+              {...register('password', {
+                minLength: minLengthValue(6),
+                validate: validateTrim,
+              })}
+            ></FormInput>
+            <FormError error={errors.password} />
+          </div>
+          <div className="mb-3">
+            <label
+              htmlFor="nomSolicitante"
+              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+            >
+              Nombres
+            </label>
+            <FormInput
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Ingrese Nombres"
+              {...register('nombres', {
+                required: messageRequire,
+                minLength: minLengthValue(3),
+              })}
+            ></FormInput>
+            <FormError error={errors.nombres} />
+          </div>
+          <div className="mb-3">
+            <label
+              htmlFor="nomSolicitante"
+              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+            >
+              Apellido Parterno
+            </label>
+            <FormInput
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Ingresar apellido"
+              {...register('apellidoP', {
+                required: messageRequire,
+                minLength: minLengthValue(3),
+              })}
+            ></FormInput>
+            <FormError error={errors.apellidoP} />
+          </div>
+          <div className="mb-3">
+            <label
+              htmlFor="nomSolicitante"
+              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+            >
+              Apellido Materno
+            </label>
+            <FormInput
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Ingresar apellido"
+              {...register('apellidoM', {
+                required: messageRequire,
+                minLength: minLengthValue(3),
+              })}
+            ></FormInput>
+            <FormError error={errors.apellidoM} />
+          </div>
+          <div className="mb-3">
+            <label
+              htmlFor="nomSolicitante"
+              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+            >
+              DNI
+            </label>
+            <FormInput
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              type="dni"
+              placeholder="ingrese su DNI"
+              {...register('dni', {
+                required: messageRequire,
+                minLength: minLengthValue(8),
+              })}
+            ></FormInput>
+            <FormError error={errors.dni} />
+          </div>
+          <div className="mb-3">
+            <label
+              htmlFor="sede"
+              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+            >
+              Selecciona la sede del usuario
+            </label>
+            <select
+              {...register('ciudad', {
+                validate: validateSelection,
+              })}
+              className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
+            >
+              <option value="0">Seleciona la ciudad</option>
+              <option value="lima">Lima</option>
+              <option value="cuzco">Cuzco</option>
+              <option value="piura">Piura</option>
+            </select>
+            <FormError error={errors.ciudad} />
+          </div>
+          <div className="mb-3">
+            <label
+              htmlFor="sede"
+              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+            >
+              Rol
+            </label>
+            <select
+              {...register('rol', {
+                validate: validateSelection,
+              })}
+              className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
+            >
+              <option value="asesor">Asesor</option>
+            </select>
+            <FormError error={errors.rol} />
+          </div>
         </div>
         <button
-          className="bg-botton-blue p-3 rounded-2xl w-11/12 xs:w-96 text-white text-xl mb-3 "
+          className="bg-celeste p-3 rounded-lg w-11/12 xs:w-48 text-white text-xl mb-3 "
           type="submit"
         >
-          Enviar
+          Crear usuario
         </button>
         <div
           className={

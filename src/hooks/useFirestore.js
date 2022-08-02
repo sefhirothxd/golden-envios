@@ -148,6 +148,7 @@ export const useFirestoreState = () => {
         ...item,
         fechaCreada: Timestamp.now(),
         rol: 'asesor',
+        saldo: 0,
         uid: id,
         nanoid: nanoid(12),
       };
