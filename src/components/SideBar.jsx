@@ -179,7 +179,9 @@ const sideBar = ({ bar, setBar }) => {
           <li>
             <button
               type="button"
-              onClick={(e) => handleCordion(2)}
+              onClick={
+                user.rol === 'administrador' ? () => handleCordion(2) : ''
+              }
               className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
@@ -222,7 +224,7 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            {user.rol === 'admin' && (
+            {user.rol === 'administrador' && (
               <ul
                 id="dropdown-example"
                 className={
@@ -253,7 +255,9 @@ const sideBar = ({ bar, setBar }) => {
           <li>
             <button
               type="button"
-              onClick={(e) => handleCordion(3)}
+              onClick={
+                user.rol === 'administrador' ? () => handleCordion(3) : ''
+              }
               className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
@@ -310,7 +314,7 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            {user.rol === 'admin' && (
+            {user.rol === 'administrador' && (
               <ul
                 id="dropdown-example"
                 className={
@@ -349,7 +353,9 @@ const sideBar = ({ bar, setBar }) => {
           <li>
             <button
               type="button"
-              onClick={(e) => handleCordion(4)}
+              onClick={
+                user.rol === 'administrador' ? () => handleCordion(4) : ''
+              }
               className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
@@ -406,7 +412,7 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            {user.rol === 'admin' && (
+            {user.rol === 'administrador' && (
               <ul
                 id="dropdown-example"
                 className={
@@ -445,7 +451,9 @@ const sideBar = ({ bar, setBar }) => {
           <li>
             <button
               type="button"
-              onClick={(e) => handleCordion(5)}
+              onClick={
+                user.rol === 'administrador' ? () => handleCordion(5) : ''
+              }
               className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
@@ -495,7 +503,7 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            {user.rol === 'admin' && (
+            {user.rol === 'administrador' && (
               <ul
                 id="dropdown-example"
                 className={
@@ -534,7 +542,9 @@ const sideBar = ({ bar, setBar }) => {
           <li>
             <button
               type="button"
-              onClick={(e) => handleCordion(6)}
+              onClick={
+                user.rol === 'administrador' ? () => handleCordion(6) : ''
+              }
               className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown-example"
               data-collapse-toggle="dropdown-example"
@@ -591,7 +601,7 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            {user.rol === 'admin' && (
+            {user.rol === 'administrador' && (
               <ul
                 id="dropdown-example"
                 className={
