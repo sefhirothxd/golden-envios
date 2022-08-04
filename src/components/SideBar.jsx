@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../context/UserProvider';
 import X from '../assets/img/x.svg';
 import Logo from '../assets/img/logoLogin2.png';
 import { NavLink, Link } from 'react-router-dom';
@@ -9,6 +10,8 @@ const sideBar = ({ bar, setBar }) => {
   const [showCuentas, setShowCuentas] = useState(false);
   const [showCaja, setShowCaja] = useState(false);
   const [showAdmini, setAdmini] = useState(false);
+
+  const { user } = useContext(UserContext);
 
   const handleCordion = (e) => {
     const probando = {
@@ -219,31 +222,33 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            <ul
-              id="dropdown-example"
-              className={
-                showHabi
-                  ? 'inline-block py-2 space-y-2 w-full'
-                  : 'hidden py-2 space-y-2'
-              }
-            >
-              <li>
-                <NavLink
-                  to="/envioCaja"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Envio de caja
-                </NavLink>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Lista de Envios
-                </a>
-              </li>
-            </ul>
+            {user.rol === 'admin' && (
+              <ul
+                id="dropdown-example"
+                className={
+                  showHabi
+                    ? 'inline-block py-2 space-y-2 w-full'
+                    : 'hidden py-2 space-y-2'
+                }
+              >
+                <li>
+                  <NavLink
+                    to="/envioCaja"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Envio de caja
+                  </NavLink>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Lista de Envios
+                  </a>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <button
@@ -305,39 +310,41 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            <ul
-              id="dropdown-example"
-              className={
-                showRece
-                  ? 'inline-block py-2 space-y-2'
-                  : 'hidden py-2 space-y-2'
-              }
-            >
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Products
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Billing
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Invoice
-                </a>
-              </li>
-            </ul>
+            {user.rol === 'admin' && (
+              <ul
+                id="dropdown-example"
+                className={
+                  showRece
+                    ? 'inline-block py-2 space-y-2'
+                    : 'hidden py-2 space-y-2'
+                }
+              >
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Products
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Billing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Invoice
+                  </a>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <button
@@ -399,39 +406,41 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            <ul
-              id="dropdown-example"
-              className={
-                showCuentas
-                  ? 'inline-block py-2 space-y-2'
-                  : 'hidden py-2 space-y-2'
-              }
-            >
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Products
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Billing
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Invoice
-                </a>
-              </li>
-            </ul>
+            {user.rol === 'admin' && (
+              <ul
+                id="dropdown-example"
+                className={
+                  showCuentas
+                    ? 'inline-block py-2 space-y-2'
+                    : 'hidden py-2 space-y-2'
+                }
+              >
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Products
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Billing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Invoice
+                  </a>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <button
@@ -486,39 +495,41 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            <ul
-              id="dropdown-example"
-              className={
-                showCaja
-                  ? 'inline-block py-2 space-y-2'
-                  : 'hidden py-2 space-y-2'
-              }
-            >
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Products
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Billing
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Invoice
-                </a>
-              </li>
-            </ul>
+            {user.rol === 'admin' && (
+              <ul
+                id="dropdown-example"
+                className={
+                  showCaja
+                    ? 'inline-block py-2 space-y-2'
+                    : 'hidden py-2 space-y-2'
+                }
+              >
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Products
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Billing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Invoice
+                  </a>
+                </li>
+              </ul>
+            )}
           </li>
           <li>
             <button
@@ -580,39 +591,41 @@ const sideBar = ({ bar, setBar }) => {
                 ></path>
               </svg>
             </button>
-            <ul
-              id="dropdown-example"
-              className={
-                showAdmini
-                  ? 'inline-block py-2 space-y-2 w-full'
-                  : 'hidden py-2 space-y-2'
-              }
-            >
-              <li>
-                <NavLink
-                  to="/usuariosCreados"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Usuarios
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/register"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Crear usuarios
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/crearOficinas"
-                  className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                >
-                  Crear oficina
-                </NavLink>
-              </li>
-            </ul>
+            {user.rol === 'admin' && (
+              <ul
+                id="dropdown-example"
+                className={
+                  showAdmini
+                    ? 'inline-block py-2 space-y-2 w-full'
+                    : 'hidden py-2 space-y-2'
+                }
+              >
+                <li>
+                  <NavLink
+                    to="/usuariosCreados"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Usuarios
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/register"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Crear usuarios
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/crearOficinas"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Crear oficina
+                  </NavLink>
+                </li>
+              </ul>
+            )}
           </li>
         </ul>
       </div>
