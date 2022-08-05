@@ -89,26 +89,6 @@ const CrearOficinas = () => {
               htmlFor="nomSolicitante"
               className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
             >
-              Ciudad
-            </label>
-            <select
-              {...register('ciudad', {
-                validate: validateRequiredSelect(),
-              })}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option value="0">Seleciona la Ciudad</option>
-              <option value="lima">Lima</option>
-              <option value="cuzco">Cuzco</option>
-              <option value="piura">Piura</option>
-            </select>
-            <FormError error={errors.Ciudad} />
-          </div>
-          <div className="mb-3">
-            <label
-              htmlFor="nomSolicitante"
-              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
-            >
               Departamento
             </label>
             <select
@@ -146,6 +126,27 @@ const CrearOficinas = () => {
             </select>
             <FormError error={errors.departamento} />
           </div>
+          <div className="mb-3">
+            <label
+              htmlFor="nomSolicitante"
+              className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+            >
+              Ciudad
+            </label>
+            <select
+              {...register('ciudad', {
+                validate: validateRequiredSelect(),
+              })}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="0">Seleciona la Ciudad</option>
+              <option value="lima">Lima</option>
+              <option value="cuzco">Cuzco</option>
+              <option value="piura">Piura</option>
+            </select>
+            <FormError error={errors.Ciudad} />
+          </div>
+
           <div className="mb-3">
             <label
               htmlFor="nomSolicitante"
