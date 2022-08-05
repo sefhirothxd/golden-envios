@@ -8,7 +8,7 @@ import FormError from '../components/FormError';
 import { formValidate } from '../utils/formValidate';
 import FormInput from '../components/FormInput';
 const CrearOficinas = () => {
-  const { registerUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [notificacion, setNotificacion] = useState(false);
   //metodo que retorna la validacion de los campos
   const {
@@ -18,9 +18,10 @@ const CrearOficinas = () => {
     validateTrim,
     validateEquals,
     validateSelection,
+    validateRequiredSelect,
     messageRequire,
   } = formValidate();
-  const { addUserRegister } = useFirestoreState();
+  const { addOffice } = useFirestoreState();
   //navigate
   const navegate = useNavigate();
   //useForm
@@ -33,17 +34,15 @@ const CrearOficinas = () => {
   } = useForm();
   const onSubmit = async (e) => {
     console.log(e);
-    // const item = {
-    //   email: e.email + '@skillien.com',
-    //   nombres: e.nombres,
-    //   apellidos: e.apellidoP + ' ' + e.apellidoM,
-    //   sede: e.ciudad,
-    //   dni: e.dni,
-    //   rol: e.rol,
-    // };
-    // console.log(e);
+    const item = {
+      alias: e.alias,
+      direccion: e.direccion,
+      ciudad: e.ciudad,
+      departamento: e.departamento,
+      uid: user.uid,
+    };
     // try {
-    //   const reg = await addUserRegister(item, res.user.uid);
+    //   const reg = await addOffice(item);
     // } catch (error) {
     //   console.log(error);
     //   const { code, message } = erroresFirebase(error.code);
@@ -83,7 +82,7 @@ const CrearOficinas = () => {
                 required,
               })}
             ></FormInput>
-            <FormError error={errors.email} />
+            <FormError error={errors.direccion} />
           </div>
           <div className="mb-3">
             <label
@@ -92,16 +91,18 @@ const CrearOficinas = () => {
             >
               Ciudad
             </label>
-            <FormInput
-              className="bg-gray-50 border max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              type="text"
-              placeholder="Ingresar ciudad"
+            <select
               {...register('ciudad', {
-                required: messageRequire,
-                minLength: minLengthValue(3),
+                validate: validateRequiredSelect(),
               })}
-            ></FormInput>
-            <FormError error={errors.password} />
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="0">Seleciona la Ciudad</option>
+              <option value="lima">Lima</option>
+              <option value="cuzco">Cuzco</option>
+              <option value="piura">Piura</option>
+            </select>
+            <FormError error={errors.Ciudad} />
           </div>
           <div className="mb-3">
             <label
@@ -110,16 +111,40 @@ const CrearOficinas = () => {
             >
               Departamento
             </label>
-            <FormInput
-              className="bg-gray-50 border max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              type="text"
-              placeholder="Ingrese departamento"
+            <select
               {...register('departamento', {
-                required: messageRequire,
-                minLength: minLengthValue(3),
+                validate: validateRequiredSelect(),
               })}
-            ></FormInput>
-            <FormError error={errors.nombres} />
+              className="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+              <option value="0">Seleciona el departamento</option>
+              <option value="lima">Amazonas</option>
+              <option value="cuzco">Áncash</option>
+              <option value="piura">Apurímac</option>
+              <option value="piura">Arequipa</option>
+              <option value="piura">Ayacucho</option>
+              <option value="piura">Cajamarca</option>
+              <option value="piura">Callao</option>
+              <option value="piura">Cusco</option>
+              <option value="piura">Huancavelica</option>
+              <option value="piura">Huánuco</option>
+              <option value="piura">Ica</option>
+              <option value="piura">Junín</option>
+              <option value="piura">La Libertad</option>
+              <option value="piura">Lambayeque</option>
+              <option value="piura">Lima (departamento)</option>
+              <option value="piura">Loreto</option>
+              <option value="piura">Madre de Dios</option>
+              <option value="piura">Moquegua</option>
+              <option value="piura">Pasco</option>
+              <option value="piura">Piura</option>
+              <option value="piura">Puno</option>
+              <option value="piura">San Martín</option>
+              <option value="piura">Tacna</option>
+              <option value="piura">Tumbes</option>
+              <option value="piura">Ucayali</option>
+            </select>
+            <FormError error={errors.departamento} />
           </div>
           <div className="mb-3">
             <label
@@ -137,7 +162,7 @@ const CrearOficinas = () => {
                 minLength: minLengthValue(3),
               })}
             ></FormInput>
-            <FormError error={errors.apellidoP} />
+            <FormError error={errors.alias} />
           </div>
         </div>
         <button

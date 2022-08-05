@@ -16,6 +16,7 @@ import { nanoid } from 'nanoid';
 
 export const useFirestoreState = () => {
   const [data, setData] = useState([]);
+  const [offices, setOffices] = useState([]);
   const [zonaData, setZonaData] = useState([]);
   const [dataUser, setDataUser] = useState({});
   const [allUser, setAllUser] = useState([]);
@@ -116,6 +117,24 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, addData: false }));
     }
   };
+  const addOffice = async (obj) => {
+    try {
+      setLoading((prev) => ({ ...prev, addOffice: true }));
+      const newData = {
+        ...obj,
+        nanoid: nanoid(12),
+        fechaCreada: Timestamp.now(),
+      };
+      const docRef = doc(db, 'oficinas', newData.nanoid);
+      await setDoc(docRef, newData);
+      setOffices([...data, newData]);
+    } catch (error) {
+      console.log(error);
+      setError(error.code);
+    } finally {
+      setLoading((prev) => ({ ...prev, addOffice: false }));
+    }
+  };
   const updateEstate = async (uid, estate) => {
     try {
       setLoading((prev) => ({ ...prev, updateEstate: true }));
@@ -163,6 +182,7 @@ export const useFirestoreState = () => {
   };
 
   return {
+    addOffice,
     data,
     error,
     loading,

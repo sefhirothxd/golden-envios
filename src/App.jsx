@@ -14,6 +14,7 @@ import TransferenciasRecibidas from './routes/TransferenciasRecibidas';
 import EnvioCaja from './routes/EnvioCaja';
 import UsuariosCreados from './routes/UsuariosCreados';
 import CrearOficinas from './routes/CrearOficinas';
+import ListCaja from './routes/ListCaja';
 const App = () => {
   const { user } = useContext(UserContext);
   if (user === false) {
@@ -40,6 +41,7 @@ const App = () => {
             element={<TransferenciasRecibidas />}
           />
           <Route path="/envioCaja" element={<EnvioCaja />} />
+          <Route path="/listCaja" element={<ListCaja />} />
           <Route path="/usuariosCreados" element={<UsuariosCreados />} />
           <Route path="/crearOficinas" element={<CrearOficinas />} />
         </Route>
