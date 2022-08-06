@@ -140,13 +140,10 @@ const crearTransferencias = () => {
   }, []);
 
   return (
-    <div className="mb-5 pt-5 pb-20 min-h-screen flex justify-center flex-grow items-center w-full bg-grey-fondo rounded-2xl  relative">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full h-full  flex justify-center  flex-col "
-      >
-        <div className="flex justify-center items-center  w-full py-5 overflow-y-auto flex-wrap gap-5">
-          <div className=" bg-white rounded-2xl  p-5 relative  w-96">
+    <div className="mb-5 pt-5 pb-20 min-h-screen  overflow-y-auto  bg-grey-fondo rounded-2xl  relative">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full  ">
+        <div className="w-full h-full m-auto grid grid-cols-1 items-center xl:grid-cols-2 content-center  2xl:grid-cols-3 justify-center gap-10">
+          <div className=" bg-white rounded-2xl  p-5 relative justify-self-center  w-96">
             <h3
               className={
                 'text-xl text-center font-medium absolute -top-4  text-sideblue dark:text-white' +
@@ -280,7 +277,7 @@ const crearTransferencias = () => {
               ></FormInput>
             </div>
           </div>
-          <div className=" bg-white rounded-2xl  p-5 relative  w-96">
+          <div className=" bg-white rounded-2xl  p-5 relative justify-self-center  w-96">
             <h3
               className={
                 'text-xl text-center font-medium absolute -top-4  text-sideblue dark:text-white' +
@@ -382,7 +379,7 @@ const crearTransferencias = () => {
               ></FormInput>
             </div>
           </div>
-          <div className=" bg-white rounded-2xl  p-5 relative  w-96">
+          <div className=" bg-white rounded-2xl  p-5 relative justify-self-center  w-96">
             <h3
               className={
                 'text-xl text-center font-medium absolute -top-4  text-sideblue dark:text-white' +
@@ -487,9 +484,7 @@ const crearTransferencias = () => {
           </div>
         </div>
         <div className="w-full my-5 flex justify-center items-center gap-10">
-          <Button type="submit" onClick={() => reset()}>
-            Limpiar
-          </Button>
+          <Button onClick={() => reset()}>Limpiar</Button>
           <Button type="submit">Trasferencia</Button>
         </div>
       </form>
