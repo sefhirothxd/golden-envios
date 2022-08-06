@@ -102,33 +102,36 @@ const LayoutRequiereAuth = () => {
                   maximumFractionDigits: 2,
                 }) || 'cargando...'}
               </p>
-              <p className="px-2 py-1 bg-gray-200 rounded-full">$ 0</p>
+              {/* <p className="px-2 py-1 bg-gray-200 rounded-full">$ 0</p> */}
             </div>
           </div>
-          <img className="h-6 mx-4" src={Campana} alt="campana" />
-          <Dropdown
-            size={'sm'}
-            label={
-              <Avatar
-                alt="User settings"
-                size="xs"
-                img={UserIcon}
-                rounded={true}
-                className="cursor-pointer outline-none"
-              />
-            }
-            arrowIcon={false}
-            inline={true}
-          >
-            <Dropdown.Header>
-              <span className="block text-sm">
-                {user.email.slice(0, user.email.indexOf('@'))}
-              </span>
-              <span className="block truncate text-sm font-medium">{}</span>
-            </Dropdown.Header>
-            <Dropdown.Item>Configuración</Dropdown.Item>
-            <Dropdown.Item onClick={logOut}>Cerrar sesion</Dropdown.Item>
-          </Dropdown>
+          {/* <img className="h-6 mx-4" src={Campana} alt="campana" /> */}
+          <div className="bg-gray-200 ml-3 rounded-full p-2">
+            <Dropdown
+              size={'sm'}
+              color={'gray'}
+              label={
+                <Avatar
+                  alt="User settings"
+                  size="xs"
+                  img={UserIcon}
+                  rounded={true}
+                  className="cursor-pointer outline-none "
+                />
+              }
+              arrowIcon={false}
+              inline={true}
+            >
+              <Dropdown.Header>
+                <span className="block text-sm">
+                  {user.email.slice(0, user.email.indexOf('@'))}
+                </span>
+                <span className="block truncate text-sm font-medium">{}</span>
+              </Dropdown.Header>
+              {/* <Dropdown.Item>Configuración</Dropdown.Item> */}
+              <Dropdown.Item onClick={logOut}>Cerrar sesion</Dropdown.Item>
+            </Dropdown>
+          </div>
         </div>
         <Outlet />
       </div>
