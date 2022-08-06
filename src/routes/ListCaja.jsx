@@ -1,23 +1,20 @@
 import React, { useEffect, useContext } from 'react';
 import { UserContext } from '../context/UserProvider';
-import Table from '../components/Table';
+import TableListHistory from '../components/TableListHistory';
 import { useFirestoreState } from '../hooks/useFirestore';
 const TransferenciasCreadas = () => {
-  const { refreshTrasferencias, trasferencias } = useContext(UserContext);
-  const {
-    data,
-    loading,
-    error,
-    getData,
-    addData,
-    getUserInfo,
-    dataUser,
-    getDataZona,
-  } = useFirestoreState();
+  const { loading, error, getAllHistoryBox, officesHistoryAll } =
+    useFirestoreState();
   useEffect(() => {
-    refreshTrasferencias();
+    getAllHistoryBox();
   }, []);
-  return <Table data={trasferencias} loading={loading.getData} error={error} />;
+  return (
+    <TableListHistory
+      data={officesHistoryAll}
+      loading={loading.getAllHistoryBox}
+      error={error}
+    />
+  );
 };
 
 export default TransferenciasCreadas;

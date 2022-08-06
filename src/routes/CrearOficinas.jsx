@@ -41,13 +41,13 @@ const CrearOficinas = () => {
       departamento: e.departamento,
       uid: user.uid,
     };
-    // try {
-    //   const reg = await addOffice(item);
-    // } catch (error) {
-    //   console.log(error);
-    //   const { code, message } = erroresFirebase(error.code);
-    //   setError(code, { message });
-    // }
+    try {
+      const reg = await addOffice(item);
+    } catch (error) {
+      console.log(error);
+      const { code, message } = erroresFirebase(error.code);
+      setError(code, { message });
+    }
     setNotificacion(true);
     setTimeout(() => {
       setNotificacion(false);
@@ -91,39 +91,15 @@ const CrearOficinas = () => {
             >
               Departamento
             </label>
-            <select
+            <FormInput
+              className="bg-gray-50 border w-full max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              type="text"
+              autoComplete="off"
+              placeholder="Ingresa el departamento"
               {...register('departamento', {
-                validate: validateRequiredSelect(),
+                required,
               })}
-              className="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option value="0">Seleciona el departamento</option>
-              <option value="lima">Amazonas</option>
-              <option value="cuzco">Áncash</option>
-              <option value="piura">Apurímac</option>
-              <option value="piura">Arequipa</option>
-              <option value="piura">Ayacucho</option>
-              <option value="piura">Cajamarca</option>
-              <option value="piura">Callao</option>
-              <option value="piura">Cusco</option>
-              <option value="piura">Huancavelica</option>
-              <option value="piura">Huánuco</option>
-              <option value="piura">Ica</option>
-              <option value="piura">Junín</option>
-              <option value="piura">La Libertad</option>
-              <option value="piura">Lambayeque</option>
-              <option value="piura">Lima (departamento)</option>
-              <option value="piura">Loreto</option>
-              <option value="piura">Madre de Dios</option>
-              <option value="piura">Moquegua</option>
-              <option value="piura">Pasco</option>
-              <option value="piura">Piura</option>
-              <option value="piura">Puno</option>
-              <option value="piura">San Martín</option>
-              <option value="piura">Tacna</option>
-              <option value="piura">Tumbes</option>
-              <option value="piura">Ucayali</option>
-            </select>
+            ></FormInput>
             <FormError error={errors.departamento} />
           </div>
           <div className="mb-3">
@@ -133,18 +109,16 @@ const CrearOficinas = () => {
             >
               Ciudad
             </label>
-            <select
+            <FormInput
+              className="bg-gray-50 border w-full max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              type="text"
+              autoComplete="off"
+              placeholder="Ingresa la ciudad"
               {...register('ciudad', {
-                validate: validateRequiredSelect(),
+                required,
               })}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option value="0">Seleciona la Ciudad</option>
-              <option value="lima">Lima</option>
-              <option value="cuzco">Cuzco</option>
-              <option value="piura">Piura</option>
-            </select>
-            <FormError error={errors.Ciudad} />
+            ></FormInput>
+            <FormError error={errors.ciudad} />
           </div>
 
           <div className="mb-3">
@@ -152,7 +126,7 @@ const CrearOficinas = () => {
               htmlFor="nomSolicitante"
               className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
             >
-              Alias
+              Nombre de oficina
             </label>
             <FormInput
               className="bg-gray-50 border max-w-md border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

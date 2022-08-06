@@ -17,6 +17,9 @@ import { nanoid } from 'nanoid';
 export const useFirestoreState = () => {
   const [data, setData] = useState([]);
   const [offices, setOffices] = useState([]);
+  const [historyMoney, setHistoryMoney] = useState([]);
+  const [officesAll, setOfficesALL] = useState([]);
+  const [officesHistoryAll, setOfficesHistoryALL] = useState([]);
   const [zonaData, setZonaData] = useState([]);
   const [dataUser, setDataUser] = useState({});
   const [allUser, setAllUser] = useState([]);
@@ -66,7 +69,10 @@ export const useFirestoreState = () => {
   const getAllUsers = async () => {
     try {
       setLoading((prev) => ({ ...prev, getAllUsers: true }));
-      const q = query(collection(db, 'registerUser'));
+      const q = query(
+        collection(db, 'registerUser'),
+        orderBy('fechaCreada', 'desc')
+      );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
       setAllUser(datos);
@@ -127,12 +133,43 @@ export const useFirestoreState = () => {
       };
       const docRef = doc(db, 'oficinas', newData.nanoid);
       await setDoc(docRef, newData);
-      setOffices([...data, newData]);
+      setOffices([...offices, newData]);
     } catch (error) {
       console.log(error);
       setError(error.code);
     } finally {
       setLoading((prev) => ({ ...prev, addOffice: false }));
+    }
+  };
+  const getAllOffice = async () => {
+    try {
+      setLoading((prev) => ({ ...prev, getAllOffice: true }));
+      const q = query(collection(db, 'oficinas'));
+      const querySnapshot = await getDocs(q);
+      const datos = querySnapshot.docs.map((doc) => doc.data());
+      setOfficesALL(datos);
+    } catch (error) {
+      console.log(error);
+      setError(error.code);
+    } finally {
+      setLoading((prev) => ({ ...prev, getAllOffice: false }));
+    }
+  };
+  const getAllHistoryBox = async () => {
+    try {
+      setLoading((prev) => ({ ...prev, getAllHistoryBox: true }));
+      const q = query(
+        collection(db, 'historialCaja'),
+        orderBy('fechaCreada', 'desc')
+      );
+      const querySnapshot = await getDocs(q);
+      const datos = querySnapshot.docs.map((doc) => doc.data());
+      setOfficesHistoryALL(datos);
+    } catch (error) {
+      console.log(error);
+      setError(error.code);
+    } finally {
+      setLoading((prev) => ({ ...prev, getAllHistoryBox: false }));
     }
   };
   const updateEstate = async (uid, estate) => {
@@ -147,12 +184,17 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, updateEstate: false }));
     }
   };
+  //agregar saldo a usuarios
+  const updateData = async (uid, nuevoSaldo, anterioSaldo) => {
+    console.log(uid, nuevoSaldo, anterioSaldo);
+    const newData = anterioSaldo + nuevoSaldo;
+    console.log(newData);
+    console.log(typeof newData);
 
-  const updateData = async (uid, nuevoSaldo) => {
     try {
       setLoading((prev) => ({ ...prev, updateData: true }));
       const docRef = doc(db, 'registerUser', uid);
-      await updateDoc(docRef, { saldo: nuevoSaldo });
+      await updateDoc(docRef, { saldo: newData });
     } catch (error) {
       console.log(error);
       setError(error.code);
@@ -160,6 +202,28 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, updateData: false }));
     }
   };
+
+  //genera un historial al asignar saldo al usuario
+
+  const addhostoryMoney = async (obj) => {
+    try {
+      setLoading((prev) => ({ ...prev, addhostoryMoney: true }));
+      const newData = {
+        ...obj,
+        nanoid: nanoid(12),
+        fechaCreada: Timestamp.now(),
+      };
+      const docRef = doc(db, 'historialCaja', newData.nanoid);
+      await setDoc(docRef, newData);
+      setHistoryMoney([...historyMoney, newData]);
+    } catch (error) {
+      console.log(error);
+      setError(error.code);
+    } finally {
+      setLoading((prev) => ({ ...prev, addhostoryMoney: false }));
+    }
+  };
+
   const addUserRegister = async (item, id) => {
     try {
       setLoading((prev) => ({ ...prev, addUserRegister: true }));
@@ -182,6 +246,11 @@ export const useFirestoreState = () => {
   };
 
   return {
+    getAllHistoryBox,
+    officesHistoryAll,
+    addhostoryMoney,
+    officesAll,
+    getAllOffice,
     addOffice,
     data,
     error,

@@ -6,37 +6,66 @@ import { useFirestoreState } from '../hooks/useFirestore';
 import { Button } from 'flowbite-react';
 const EnvioCaja = () => {
   const [filterUser, setfilterUser] = useState([]);
+  const [filterUserSelect, setfilterUserSelect] = useState([]);
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
     setError,
+    reset,
   } = useForm();
-  const { allUser, getAllUsers } = useFirestoreState();
+  const {
+    allUser,
+    getAllUsers,
+    officesAll,
+    getAllOffice,
+    addhostoryMoney,
+    updateData,
+  } = useFirestoreState();
   const probando = (e) => {
     console.log(e.target.value);
-
-    const obj = {
-      lima: () => {
-        setfilterUser(allUser.filter((user) => user.sede === 'lima'));
-      },
-      piura: () => {
-        setfilterUser(allUser.filter((user) => user.sede === 'piura'));
-      },
-      cuzco: () => {
-        setfilterUser(allUser.filter((user) => user.sede === 'cuzco'));
-      },
+    setfilterUser(allUser.filter((user) => user.sede === e.target.value));
+  };
+  const onSubmit = async (e) => {
+    console.log(e);
+    const officeNew = {
+      ...e,
+      uid: filterUser[0].nanoid,
+      nombres: filterUser[0].nombres,
+      apellidos: filterUser[0].apellidos,
     };
-    obj[e.target.value]();
+    console.log(officeNew);
+    console.log(filterUser[0].nanoid);
+    console.log(Number(e.cantidad));
+    console.log(Number(filterUser[0].saldo));
+
+    try {
+      await updateData(
+        filterUser[0].nanoid,
+        Number(e.cantidad),
+        Number(filterUser[0].saldo)
+      );
+      await addhostoryMoney(officeNew);
+    } catch (error) {
+      console.log(error);
+      const { code, message } = erroresFirebase(error.code);
+      setError(code, { message });
+    }
+    reset();
+    // setNotificacion(true);
+    // setTimeout(() => {
+    //   setNotificacion(false);
+    // }, 3000);
   };
   useEffect(() => {
     getAllUsers();
+    getAllOffice();
   }, []);
 
   return (
     <div className=" flex md:pt-56 pt-10 justify-center items-center">
-      <form className="w-full max-w-4xl">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl">
         <div className="flex items-center gap-4 mb-6 ">
           <div className="w-full">
             <label
@@ -51,9 +80,13 @@ const EnvioCaja = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option value="0">Seleciona la oficina</option>
-              <option value="lima">Lima</option>
-              <option value="cuzco">Cuzco</option>
-              <option value="piura">Piura</option>
+              {officesAll.map((user) => {
+                return (
+                  <option key={user.nanoid} value={user.alias}>
+                    {user.alias.toUpperCase()}
+                  </option>
+                );
+              })}
             </select>
             <FormError error={errors.oficina} />
           </div>
@@ -71,7 +104,7 @@ const EnvioCaja = () => {
               <option value="0">Seleciona la caja</option>
               {filterUser.map((user) => {
                 return (
-                  <option key={user.uid} value={user.uid}>
+                  <option key={user.uid} value={user.nanoid}>
                     {user.nombres.toUpperCase()} {user.apellidos.toUpperCase()}
                   </option>
                 );
@@ -108,7 +141,7 @@ const EnvioCaja = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option value="0">Seleciona la moneda</option>
-              <option value="Sol">Soles</option>
+              <option value="Soles">Soles</option>
               <option value="Dolar">Dolares</option>
             </select>
             <FormError error={errors.moneda} />
@@ -120,15 +153,15 @@ const EnvioCaja = () => {
               htmlFor="dniSoli"
               className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
             >
-              DNI
+              Observacion
             </label>
-            <FormInput
+            <textarea
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               type="text"
-              name="dniSoli"
-              placeholder="DNI"
-              {...register('dniSoli')}
-            ></FormInput>
+              name="obs"
+              placeholder="Observacion"
+              {...register('obs')}
+            ></textarea>
           </div>
         </div>
         <div className="flex justify-center items-center">

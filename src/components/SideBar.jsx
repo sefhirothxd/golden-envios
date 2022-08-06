@@ -332,13 +332,13 @@ const sideBar = ({ bar, setBar }) => {
                     Envio de caja
                   </NavLink>
                 </li>
-                <li>
-                  <a
-                    href="#"
+                <li onClick={() => setBar(false)}>
+                  <NavLink
+                    to="/listCaja"
                     className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                   >
                     Lista de Envios
-                  </a>
+                  </NavLink>
                 </li>
               </ul>
             )}
