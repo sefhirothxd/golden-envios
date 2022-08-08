@@ -176,7 +176,7 @@ const EnvioCaja = () => {
       </form>
       <div
         className={
-          `absolute -right-altoFormulario transform bottom-28 w-96  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-green-700 bg-green-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
+          `absolute -right-altoFormulario transform top-0 w-96  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-green-700 bg-green-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
           (notificacion && ' -translate-x-altoFormulario')
         }
         role="alert"
