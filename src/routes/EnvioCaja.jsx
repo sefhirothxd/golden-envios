@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import FormError from '../components/FormError';
 import FormInput from '../components/FormInput';
 import { useFirestoreState } from '../hooks/useFirestore';
 import { Button } from 'flowbite-react';
+import { UserContext } from '../context/UserProvider';
 const EnvioCaja = () => {
+  const [notificacion, setNotificacion] = useState(false);
   const [filterUser, setfilterUser] = useState([]);
   const [filterUserSelect, setfilterUserSelect] = useState([]);
+  const { refreshUser } = useContext(UserContext);
   const {
     register,
     handleSubmit,
@@ -52,11 +55,12 @@ const EnvioCaja = () => {
       const { code, message } = erroresFirebase(error.code);
       setError(code, { message });
     }
+    refreshUser();
     reset();
-    // setNotificacion(true);
-    // setTimeout(() => {
-    //   setNotificacion(false);
-    // }, 3000);
+    setNotificacion(true);
+    setTimeout(() => {
+      setNotificacion(false);
+    }, 3000);
   };
   useEffect(() => {
     getAllUsers();
@@ -64,7 +68,7 @@ const EnvioCaja = () => {
   }, []);
 
   return (
-    <div className=" flex md:pt-56 pt-10 justify-center items-center">
+    <div className=" flex md:pt-56 pt-10 justify-center items-center relative">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-4xl">
         <div className="flex items-center gap-4 mb-6 ">
           <div className="w-full">
@@ -170,6 +174,16 @@ const EnvioCaja = () => {
           </Button>
         </div>
       </form>
+      <div
+        className={
+          `absolute -right-altoFormulario transform bottom-28 w-96  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-green-700 bg-green-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
+          (notificacion && ' -translate-x-altoFormulario')
+        }
+        role="alert"
+      >
+        <span className="font-medium">Exito!</span>Se añadio el saldo de manera
+        satisfactoria.
+      </div>
     </div>
   );
 };

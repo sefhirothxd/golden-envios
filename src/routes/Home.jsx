@@ -48,8 +48,7 @@ const Home = () => {
             {user?.saldo.toLocaleString('en-ES', {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
-            }) || 'cargando...'}{' '}
-            de S/15,000
+            }) || 'cargando...'}
           </p>
         </div>
         <div className="flex justify-center items-center flex-wrap  gap-4">
@@ -98,10 +97,7 @@ const Home = () => {
                   }) || 'cargando...'}
                 </h3>
               </div>
-              <div>
-                <p className="font-medium text-2xl">Saldo actual</p>
-                <h3 className="font-bold text-3xl">S/15,000</h3>
-              </div>
+              <div className="h-16"></div>
             </div>
           </div>
         </div>
