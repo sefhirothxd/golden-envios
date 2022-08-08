@@ -106,7 +106,7 @@ const LayoutRequiereAuth = () => {
             </div>
           </div>
           {/* <img className="h-6 mx-4" src={Campana} alt="campana" /> */}
-          <div className="bg-gray-200 ml-3 rounded-full p-2">
+          <div className="bg-gray-200 ml-3 rounded-full p-2 z-10">
             <Dropdown
               size={'sm'}
               color={'gray'}

@@ -140,7 +140,7 @@ const crearTransferencias = () => {
   }, []);
 
   return (
-    <div className="mb-5 pt-5 pb-20 min-h-screen  overflow-y-auto  bg-grey-fondo rounded-2xl  relative">
+    <div className="mb-5 pt-5 pb-20 min-h-screen black 2xl:flex  overflow-y-auto  bg-grey-fondo rounded-2xl  relative">
       <form onSubmit={handleSubmit(onSubmit)} className="w-full  ">
         <div className="w-full h-full m-auto grid pb-20 grid-cols-1 items-center xl:grid-cols-2 content-center  2xl:grid-cols-3 justify-center gap-10">
           <div className=" bg-white rounded-2xl  p-5 relative justify-self-center  w-96">
