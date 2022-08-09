@@ -62,19 +62,11 @@ const Modal = ({ children }) => {
           <p>Destino: {children.origen} </p>
           <p>
             Solicitante:{' '}
-            {children.nomSolicitante +
-              ' ' +
-              children.apePaternoSoli +
-              ' ' +
-              children.apeMaternoSoli}
+            {children.nomSolicitante + ' ' + children.soliApellidos}
           </p>
           <p>
             Beneficiario:{' '}
-            {children.nomBeneficiario +
-              ' ' +
-              children.apePaternoBene +
-              ' ' +
-              children.apeMaternoBene}
+            {children.nomBeneficiario + ' ' + children.beneApellidos}
           </p>
           <p>
             Monto: S/
@@ -167,11 +159,7 @@ const Modal = ({ children }) => {
                 <div>
                   <h4 className="font-medium text-xl text-black">Nombres</h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.nomSolicitante +
-                      ' ' +
-                      children.apePaternoSoli +
-                      ' ' +
-                      children.apeMaternoSoli}
+                    {children.nomSolicitante + ' ' + children.soliApellidos}
                   </p>
                 </div>
                 <div>
@@ -183,11 +171,7 @@ const Modal = ({ children }) => {
                 <div>
                   <h4 className="font-medium text-xl text-black">Nombres</h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.nomBeneficiario +
-                      ' ' +
-                      children.apePaternoBene +
-                      ' ' +
-                      children.apeMaternoBene}
+                    {children.nomBeneficiario + ' ' + children.beneApellidos}
                   </p>
                 </div>
                 <div>

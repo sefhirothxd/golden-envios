@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useFirestoreState } from '../hooks/useFirestore';
 import { useForm } from 'react-hook-form';
 import { UserContext } from '../context/UserProvider';
@@ -21,7 +21,7 @@ const Register = () => {
     validateSelection,
     messageRequire,
   } = formValidate();
-  const { addUserRegister } = useFirestoreState();
+  const { addUserRegister, officesAll, getAllOffice } = useFirestoreState();
   //navigate
   const navegate = useNavigate();
   //useForm
@@ -58,6 +58,9 @@ const Register = () => {
       setNotificacion(false);
     }, 3000);
   };
+  useEffect(() => {
+    getAllOffice();
+  }, []);
 
   return (
     <div className="overflow-auto ">
@@ -190,9 +193,13 @@ const Register = () => {
               className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
             >
               <option value="0">Seleciona la ciudad</option>
-              <option value="lima">Lima</option>
-              <option value="cuzco">Cuzco</option>
-              <option value="piura">Piura</option>
+              {officesAll.map((office) => {
+                return (
+                  <option key={office.nanoid} value={office.alias}>
+                    {office.alias.toUpperCase()}
+                  </option>
+                );
+              })}
             </select>
             <FormError error={errors.ciudad} />
           </div>

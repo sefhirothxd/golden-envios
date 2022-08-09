@@ -32,8 +32,8 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, getData: true }));
       const q = query(
         collection(db, 'transferencias'),
-        orderBy('fechaCreada', 'desc')
-        // where('uid', '==', uid)
+        orderBy('fechaCreada', 'desc'),
+        where('uid', '==', uid)
       );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
@@ -202,6 +202,22 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, updateData: false }));
     }
   };
+  const updateDataRestarSaldo = async (uid, nuevoSaldo) => {
+    console.log(uid, nuevoSaldo);
+    const newData = nuevoSaldo;
+    console.log(newData);
+    console.log(typeof newData);
+    try {
+      setLoading((prev) => ({ ...prev, updateDataRestarSaldo: true }));
+      const docRef = doc(db, 'registerUser', uid);
+      await updateDoc(docRef, { saldo: newData });
+    } catch (error) {
+      console.log(error);
+      setError(error.code);
+    } finally {
+      setLoading((prev) => ({ ...prev, updateDataRestarSaldo: false }));
+    }
+  };
 
   //genera un historial al asignar saldo al usuario
 
@@ -246,6 +262,7 @@ export const useFirestoreState = () => {
   };
 
   return {
+    updateDataRestarSaldo,
     getAllHistoryBox,
     officesHistoryAll,
     addhostoryMoney,

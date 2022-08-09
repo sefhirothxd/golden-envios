@@ -8,9 +8,25 @@ import { useFirestoreState } from '../hooks/useFirestore';
 import { erroresFirebase } from '../utils/erroresFirebase';
 import { Button } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNTkxLCJjb3JyZW8iOiJidmVyYWNhY2hheUBnbWFpbC5jb20iLCJpYXQiOjE2NjAwNjE3NjJ9.EEiD81bUFdlC5E-cqVjNGTo_qXNQ9fGxMfA_9PRuGVo';
+
 const crearTransferencias = () => {
   const [notificacion, setNotificacion] = useState(false);
   const [notificacionCiudad, setNotificacionCiudad] = useState(false);
+  const [fullNameSoli, setFullNameSoli] = useState({
+    nombres: '',
+    paterno: '',
+    materno: '',
+  });
+  const [fullNameBene, setFullNameBene] = useState({
+    nombres: '',
+    paterno: '',
+    materno: '',
+  });
+
   const {
     required,
     patternEmail,
@@ -36,18 +52,23 @@ const crearTransferencias = () => {
   } = useForm({
     defaultValues: {
       estado: 'Pendiente',
+      moneda: 'Soles',
+      comision: '0',
     },
   });
   const {
     data,
     loading,
     error,
+    officesAll,
+    getAllOffice,
     getData,
     addData,
     getUserInfo,
     dataUser,
     getDataZona,
     updateData,
+    updateDataRestarSaldo,
   } = useFirestoreState();
 
   const probando = (e) => {
@@ -56,11 +77,46 @@ const crearTransferencias = () => {
     window.print();
   };
 
+  const soliDni = async (e) => {
+    console.log(e.target.value);
+    if (e.target.value.length === 8) {
+      const datos = await axios.post(
+        'https://www.softwarelion.xyz/api/reniec/reniec-dni',
+        {
+          dni: e.target.value,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      );
+
+      console.log(datos.data.result);
+      setFullNameSoli(datos.data.result);
+    }
+  };
+  const beneDni = async (e) => {
+    console.log(e.target.value);
+    if (e.target.value.length === 8) {
+      const datos = await axios.post(
+        'https://www.softwarelion.xyz/api/reniec/reniec-dni',
+        {
+          dni: e.target.value,
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        }
+      );
+
+      console.log(datos.data.result);
+      setFullNameBene(datos.data.result);
+    }
+  };
+
   const onSubmit = async ({
-    apeMaternoBene,
-    apeMaternoSoli,
-    apePaternoBene,
-    apePaternoSoli,
     cantidad,
     ciudad,
     comision,
@@ -68,13 +124,12 @@ const crearTransferencias = () => {
     dniSoli,
     estado,
     moneda,
-    nomBeneficiario,
-    nomSolicitante,
     obs,
-    persona,
     telefonoBene,
     telefonoSoli,
   }) => {
+    console.log(fullNameSoli);
+    console.log(fullNameBene);
     if (
       ciudad == user.sede ||
       user.saldo < parseFloat(cantidad) ||
@@ -91,18 +146,15 @@ const crearTransferencias = () => {
         destino: ciudad,
         monto: parseFloat(cantidad),
         origen: user.sede,
-        apeMaternoBene,
-        apeMaternoSoli,
-        apePaternoBene,
-        apePaternoSoli,
+        soliApellidos: fullNameSoli.paterno + ' ' + fullNameSoli.materno,
+        beneApellidos: fullNameBene.paterno + ' ' + fullNameBene.materno,
         dniBene,
         dniSoli,
         estado,
         moneda,
-        nomBeneficiario,
-        nomSolicitante,
+        nomBeneficiario: fullNameBene.nombres,
+        nomSolicitante: fullNameSoli.nombres,
         obs,
-        persona,
         telefonoBene,
         telefonoSoli,
         uid: user.uid,
@@ -110,12 +162,13 @@ const crearTransferencias = () => {
 
       console.log(obj);
       const nuevoSaldo = user.saldo - parseFloat(cantidad);
-      console.log('resta : ', nuevoSaldo);
+      console.log('saldo actul : ', user.saldo);
+      console.log('resta saldo nuevo : ', nuevoSaldo);
       setNotificacion(true);
       try {
         await addData(obj);
         console.log('aun no');
-        await updateData(user.nanoid, nuevoSaldo);
+        await updateDataRestarSaldo(user.nanoid, nuevoSaldo);
         console.log('mori');
         setTimeout(() => {
           setNotificacion(false);
@@ -130,13 +183,12 @@ const crearTransferencias = () => {
         const { code, message } = erroresFirebase(error.code);
         setError(code, { message });
         console.log(code, message);
-      } finally {
       }
     }
   };
 
   useEffect(() => {
-    // getUserInfo();
+    getAllOffice();
   }, []);
 
   return (
@@ -152,96 +204,6 @@ const crearTransferencias = () => {
             >
               Solicitante
             </h3>
-            <div className="my-3 flex items-center">
-              <label
-                htmlFor="beneficiario"
-                className="block mr-6  text-lg font-medium text-sideblue dark:text-gray-300"
-              >
-                Persona
-              </label>
-              <label
-                htmlFor="beneficiario"
-                className="block  text-sm font-medium text-sideblue dark:text-gray-300"
-              >
-                Natural
-                <input
-                  className="ml-2"
-                  {...register('persona')}
-                  type="radio"
-                  value="natural"
-                  checked
-                />
-              </label>
-              <label
-                htmlFor="beneficiario"
-                className="block ml-2 text-sm font-medium text-sideblue dark:text-gray-300"
-              >
-                Juridica
-                <input
-                  className="ml-2"
-                  {...register('persona')}
-                  type="radio"
-                  value="juridica"
-                />
-              </label>
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="nomSolicitante"
-                className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
-              >
-                Nombre
-              </label>
-
-              <FormInput
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                type="text"
-                name="nomSolicitante"
-                placeholder="Nombre"
-                {...register('nomSolicitante', {
-                  validate: validateRequired('Nombre Solicitante'),
-                })}
-              ></FormInput>
-              <FormError error={errors.nomSolicitante} />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="apePaternoSoli"
-                className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
-              >
-                Apellido Paterno
-              </label>
-
-              <FormInput
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                type="text"
-                name="apePaternoSoli"
-                placeholder="Apellido Paterno"
-                {...register('apePaternoSoli', {
-                  validate: validateRequired('Apellido Paterno'),
-                })}
-              ></FormInput>
-              <FormError error={errors.apePaternoSoli} />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="apeMaternoSoli"
-                className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
-              >
-                Apellido Materno
-              </label>
-
-              <FormInput
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                type="text"
-                name="apeMaternoSoli"
-                placeholder="Apellido Materno"
-                {...register('apeMaternoSoli', {
-                  validate: validateRequired('Apellido Materno'),
-                })}
-              ></FormInput>
-              <FormError error={errors.apeMaternoSoli} />
-            </div>
             <div className="mb-6">
               <label
                 htmlFor="dniSoli"
@@ -254,13 +216,60 @@ const crearTransferencias = () => {
                 type="text"
                 name="dniSoli"
                 placeholder="DNI"
+                onChange={(e) => beneDni(e)}
                 {...register('dniSoli', {
                   required,
-                  validate: validateRequiredDni('Dni'),
+                  validate: validateRequiredDni('dniSoli'),
+                  onChange: (e) => {
+                    soliDni(e);
+                  },
                 })}
               ></FormInput>
               <FormError error={errors.dniSoli} />
             </div>
+            <div className="mb-6">
+              <label
+                htmlFor="nomSolicitante"
+                className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+              >
+                Nombres
+              </label>
+
+              <FormInput
+                disabled
+                value={fullNameSoli.nombres}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                type="text"
+                name="nomSolicitante"
+                placeholder="Nombres"
+                {...register('nomSolicitante', {
+                  validate: validateRequired('Nombre Solicitante'),
+                })}
+              ></FormInput>
+              <FormError error={errors.nomSolicitante} />
+            </div>
+            <div className="mb-6">
+              <label
+                htmlFor="Apellidos"
+                className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+              >
+                Apellidos
+              </label>
+
+              <FormInput
+                disabled
+                value={fullNameSoli.paterno + ' ' + fullNameSoli.materno}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                type="text"
+                name="Apellidos"
+                placeholder="Apellidos"
+                {...register('soliApellidos', {
+                  validate: validateRequired('soliApellidos'),
+                })}
+              ></FormInput>
+              <FormError error={errors.soliApellidos} />
+            </div>
+
             <div className="mb-6">
               <label
                 htmlFor="telefonoSoli"
@@ -286,20 +295,42 @@ const crearTransferencias = () => {
             >
               Beneficiario
             </h3>
-            <div className="my-3 h-7"></div>
+            <div className="mb-6">
+              <label
+                htmlFor="dniBene"
+                className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
+              >
+                DNI
+              </label>
+              <FormInput
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                type="text"
+                placeholder="DNI"
+                {...register('dniBene', {
+                  required,
+                  validate: validateRequiredDni('dniBene'),
+                  onChange: (e) => {
+                    beneDni(e);
+                  },
+                })}
+              ></FormInput>
+              <FormError error={errors.dniBene} />
+            </div>
             <div className="mb-6">
               <label
                 htmlFor="nomBeneficiario"
                 className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
               >
-                Nombre
+                Nombres
               </label>
 
               <FormInput
+                disabled
+                value={fullNameBene.nombres}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 name="nomBeneficiario"
-                placeholder="Nombre"
+                placeholder="Nombres"
                 {...register('nomBeneficiario', {
                   validate: validateRequired('Nombre Beneficiario'),
                 })}
@@ -311,57 +342,21 @@ const crearTransferencias = () => {
                 htmlFor="apePaternoBene"
                 className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
               >
-                Apellido Paterno
+                Apellidos
               </label>
 
               <FormInput
+                disabled
+                value={fullNameBene.paterno + ' ' + fullNameBene.materno}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 name="apePaternoBene"
-                placeholder="Apellido Paterno"
-                {...register('apePaternoBene', {
-                  validate: validateRequired('Apellido Paterno'),
+                placeholder="Apellidos"
+                {...register('beneApellidos', {
+                  validate: validateRequired('beneApellidos'),
                 })}
               ></FormInput>
-              <FormError error={errors.apePaternoBene} />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="apeMaternoBene"
-                className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
-              >
-                Apellido Materno
-              </label>
-
-              <FormInput
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                type="text"
-                name="apeMaternoBene"
-                placeholder="Apellido Materno"
-                {...register('apeMaternoBene', {
-                  validate: validateRequired('Apellido Materno'),
-                })}
-              ></FormInput>
-              <FormError error={errors.apeMaternoBene} />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="dniBene"
-                className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
-              >
-                DNI
-              </label>
-              <FormInput
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                type="text"
-                name="dniBene"
-                placeholder="DNI"
-                {...register('dniBene', {
-                  required,
-                  validate: validateRequiredDni('Dni'),
-                })}
-              ></FormInput>
-              <FormError error={errors.dniBene} />
+              <FormError error={errors.beneApellidos} />
             </div>
             <div className="mb-6">
               <label
@@ -388,7 +383,6 @@ const crearTransferencias = () => {
             >
               Monto
             </h3>
-            <div className="my-3 h-7"></div>
             <div className="mb-6">
               <label
                 htmlFor="asesor"
@@ -403,43 +397,28 @@ const crearTransferencias = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option value="0">Seleciona la ciudad</option>
-                <option value="lima">Lima</option>
-                <option value="cuzco">Cuzco</option>
-                <option value="piura">Piura</option>
+                {officesAll.map((office) => {
+                  return (
+                    <option key={office.nanoid} value={office.alias}>
+                      {office.alias.toUpperCase()}
+                    </option>
+                  );
+                })}
               </select>
               <FormError error={errors.ciudad} />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="Moneda"
-                className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
-              >
-                Tipo de moneda
-              </label>
-              <select
-                {...register('moneda', {
-                  validate: validateRequiredSelect(),
-                })}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              >
-                {/* <option value="0">Seleciona la moneda</option> */}
-                <option value="Sol">Soles</option>
-                <option value="Dolar">Dolares</option>
-              </select>
-              <FormError error={errors.moneda} />
             </div>
             <div className="mb-6">
               <label
                 htmlFor="cantidad"
                 className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
               >
-                Cantidad
+                Monto
               </label>
               <FormInput
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 name="cantidad"
-                placeholder="Ingrese el cantidad"
+                placeholder="Ingrese un monto"
                 {...register('cantidad', {
                   required,
                   validate: validateRequiredNumber('cantidad'),
@@ -459,19 +438,15 @@ const crearTransferencias = () => {
                 type="text"
                 name="comision"
                 placeholder="Ingrese una comision"
-                {...register('comision', {
-                  required,
-                  validate: validateRequiredNumber('Comision'),
-                })}
+                {...register('comision')}
               ></FormInput>
-              <FormError error={errors.comision} />
             </div>
             <div className="mb-6">
               <label
                 htmlFor="obs"
                 className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
               >
-                Ingrese una observación
+                Observación
               </label>
               <FormInput
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

@@ -18,8 +18,8 @@ const Table = ({ data, error, loading }) => {
 
     const filtered = data.filter(
       (entry) =>
-        entry.nomBeneficiario.toLowerCase().includes(value) ||
-        entry.dniBene === value
+        entry.nomSolicitante.toLowerCase().includes(value) ||
+        entry.dniSoli === value
     );
     // const filtered = data.filter((item) =>
     //   item.nomBeneficiario.toLowerCase().includes(value.toLowerCase())
@@ -163,11 +163,9 @@ const Table = ({ data, error, loading }) => {
                     nanoid,
                     uid,
                     nomSolicitante,
-                    apePaternoSoli,
-                    apeMaternoSoli,
+                    soliApellidos,
                     nomBeneficiario,
-                    apePaternoBene,
-                    apeMaternoBene,
+                    beneApellidos,
                     estado,
                     origen,
                     asesor,
@@ -187,11 +185,9 @@ const Table = ({ data, error, loading }) => {
                         nanoid,
                         uid,
                         nomSolicitante,
-                        apePaternoSoli,
-                        apeMaternoSoli,
+                        soliApellidos,
                         nomBeneficiario,
-                        apePaternoBene,
-                        apeMaternoBene,
+                        beneApellidos,
                         estado,
                         origen,
                         asesor,
@@ -220,8 +216,12 @@ const Table = ({ data, error, loading }) => {
                           fechaCreada.toDate().toLocaleTimeString()
                       }
                     </th>
-                    <td className="px-6 py-4">{`${nomBeneficiario} ${apePaternoBene}`}</td>
-                    <td className="px-6 py-4">{`${nomSolicitante} ${apePaternoSoli}`}</td>
+                    <td className="px-6 py-4">
+                      {nomBeneficiario} {beneApellidos}
+                    </td>
+                    <td className="px-6 py-4">
+                      {nomSolicitante} {soliApellidos}
+                    </td>
                     <td className="px-6 py-4">{origen}</td>
                     <td className="px-6 py-4">{destino}</td>
                     <td className="px-6 py-4">{asesor}</td>
