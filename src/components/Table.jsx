@@ -13,6 +13,8 @@ const Table = ({ data, error, loading }) => {
   const [startDate, endDate] = dateRange;
   let { pathname } = useLocation();
   const [filter, setFilter] = useState(data);
+  const [pageInitial, setPageInitial] = useState([]);
+  const [pageFinal, setPageFinal] = useState(1);
 
   const handleFilter = (e) => {
     e.preventDefault();
@@ -40,6 +42,24 @@ const Table = ({ data, error, loading }) => {
     }, 0);
     const TotalSuma = girosSuma + ComisionSuma;
     return { girosSuma, ComisionSuma, TotalSuma };
+  };
+
+  const paginator = (items, current_page, per_page_items) => {
+    console.log('aqui toy');
+    let page = current_page || pageFinal,
+      per_page = per_page_items || 10,
+      offset = (page - 1) * per_page,
+      paginatedItems = items.slice(offset).slice(0, per_page_items),
+      total_pages = Math.ceil(items.length / per_page);
+    setPageInitial({
+      page: page,
+      per_page: per_page,
+      pre_page: page - 1 ? page - 1 : null,
+      next_page: total_pages > page ? page + 1 : null,
+      total: items.length,
+      total_pages: total_pages,
+      data: paginatedItems,
+    });
   };
 
   const exportExcel = () => {
@@ -108,6 +128,7 @@ const Table = ({ data, error, loading }) => {
 
   useEffect(() => {
     setFilter(data);
+    paginator(data, 1, 2);
   }, [data]);
   useEffect(() => {
     if (startDate === null && endDate === null) {
@@ -188,8 +209,8 @@ const Table = ({ data, error, loading }) => {
           <tbody className="text-center">
             <div>{loadingData}</div>
             <div>{errorData}</div>
-            {filter?.length > 0 ? (
-              filter?.map(
+            {pageInitial?.data?.length > 0 ? (
+              pageInitial?.data?.map(
                 (
                   {
                     nanoid,
@@ -289,7 +310,21 @@ const Table = ({ data, error, loading }) => {
           </tbody>
         </table>
       </div>
+      <div className="flex items-center justify-between mt-5">
+        <Button
+          disabled={pageInitial.pre_page === null ? true : false}
+          onClick={() => paginator(data, pageInitial.pre_page, 2)}
+        >
+          Anterio
+        </Button>
 
+        <Button
+          disabled={pageInitial.next_page === null ? true : false}
+          onClick={() => paginator(data, pageInitial.next_page, 2)}
+        >
+          Siguiente
+        </Button>
+      </div>
       {pathname === '/liquidaciones' && (
         <div className="absolute bottom-1/4 right-20 flex items-center justify-evenly w-full">
           <button

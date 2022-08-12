@@ -10,6 +10,7 @@ import {
   orderBy,
   updateDoc,
 } from 'firebase/firestore/lite';
+import { limit, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';
 import { nanoid } from 'nanoid';
@@ -25,6 +26,7 @@ export const useFirestoreState = () => {
   const [allUser, setAllUser] = useState([]);
   const [error, setError] = useState();
   const [loading, setLoading] = useState({});
+
   const uid = auth?.currentUser?.uid;
 
   const getData = async () => {
@@ -32,8 +34,9 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, getData: true }));
       const q = query(
         collection(db, 'transferencias'),
-        orderBy('fechaCreada', 'desc'),
-        where('uid', '==', uid)
+        orderBy('fechaCreada', 'desc')
+        // limit(2)
+        // where('uid', '==', uid)
       );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
