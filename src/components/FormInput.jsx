@@ -2,11 +2,22 @@ import React, { forwardRef } from 'react';
 
 const FormInput = forwardRef(
   (
-    { type, placeholder, onChange, onBlur, name, className, value, disabled },
+    {
+      type,
+      placeholder,
+      onChange,
+      onBlur,
+      name,
+      className,
+      value,
+      disabled,
+      autoComplete,
+    },
     ref
   ) => {
     return (
       <input
+        autoComplete={autoComplete}
         disabled={disabled}
         value={value}
         type={type}
