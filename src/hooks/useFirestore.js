@@ -46,6 +46,7 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, getData: false }));
     }
   };
+
   const getDataZona = async (e) => {
     try {
       setLoading((prev) => ({ ...prev, getDataZona: true }));

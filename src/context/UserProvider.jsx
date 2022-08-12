@@ -15,6 +15,7 @@ const UserProvider = ({ children }) => {
   const [userMore, setUserMore] = useState(false);
   const [transferenciasRecibidas, setTransferenciasRecibidas] = useState([]);
   const [trasferencias, setTrasferencias] = useState([]);
+  const [paidFilter, setPaidFilter] = useState([]);
   const [modal, setModal] = useState(false);
   const [modalContent, setModalContent] = useState({});
   const { getUserInfo, getDataZona, getData } = useFirestoreState();
@@ -66,6 +67,11 @@ const UserProvider = ({ children }) => {
     const recibidad = await getData();
     setTrasferencias(recibidad);
   };
+  const pagadasFilter = async () => {
+    const recibidad = await getData();
+    const filter = recibidad.filter((filter) => filter.estado === 'Pagado');
+    setPaidFilter(filter);
+  };
   const refreshUser = async () => {
     const { saldo } = await getUserInfo(user.uid);
     setUser({ ...user, saldo });
@@ -74,6 +80,8 @@ const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
+        paidFilter,
+        pagadasFilter,
         user,
         setUser,
         registerUser,

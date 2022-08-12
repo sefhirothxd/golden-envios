@@ -1,6 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../context/UserProvider';
 import DatePicker from 'react-datepicker';
+import { useLocation } from 'react-router-dom';
+import * as FileSaver from 'file-saver';
+import * as XLSX from 'xlsx';
 import { Button } from 'flowbite-react';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -8,7 +11,7 @@ const Table = ({ data, error, loading }) => {
   const { setModalContent, setModal } = useContext(UserContext);
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
-
+  let { pathname } = useLocation();
   const [filter, setFilter] = useState(data);
 
   const handleFilter = (e) => {
@@ -28,6 +31,35 @@ const Table = ({ data, error, loading }) => {
     console.log(filtered);
   };
 
+  const resumenCuentas = () => {
+    const girosSuma = filter.reduce((acc, item) => {
+      return acc + item.monto;
+    }, 0);
+    const ComisionSuma = filter.reduce((acc, item) => {
+      return acc + item.comision;
+    }, 0);
+    const TotalSuma = girosSuma + ComisionSuma;
+    return { girosSuma, ComisionSuma, TotalSuma };
+  };
+
+  const exportExcel = () => {
+    const fileType = 'xlsx';
+    const newData = filter.map((data) => {
+      return {
+        ...data,
+        fechaCierre: data.fechaCierre.toDate(),
+        horaCierre: data.fechaCierre.toDate().toLocaleTimeString(),
+        fechaCreada: data.fechaCreada.toDate(),
+        horaCreada: data.fechaCreada.toDate().toLocaleTimeString(),
+      };
+    });
+    console.log(newData);
+    const ws = XLSX.utils.json_to_sheet(newData);
+    const wb = { Sheets: { data: ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, 'Trasferencias.xlsx');
+  };
   const getTrasf = (data) => {
     console.log(data);
     setModalContent(data);
@@ -85,7 +117,7 @@ const Table = ({ data, error, loading }) => {
   const loadingData = loading && <p>Loading data...</p>;
   const errorData = error && <p>{error}</p>;
   return (
-    <>
+    <div className="">
       <div className=" overflow-x-auto w-full mt-5 shadow-md sm:rounded-xl">
         <div className=" flex justify-center items-center w-full gap-7 my-2 ">
           <div>
@@ -257,7 +289,33 @@ const Table = ({ data, error, loading }) => {
           </tbody>
         </table>
       </div>
-    </>
+
+      {pathname === '/liquidaciones' && (
+        <div className="absolute bottom-1/4 right-20 flex items-center justify-evenly w-full">
+          <button
+            onClick={exportExcel}
+            className="bg-celeste p-3 rounded-lg w-11/12 xs:w-48 text-white text-xl  "
+            type="submit"
+          >
+            Export Exel
+          </button>
+          <div>
+            <div className="flex justify-between items-center gap-2">
+              <p className="font-semibold">Giros:</p>
+              <p>S/. {resumenCuentas().girosSuma}</p>
+            </div>
+            <div className="flex justify-between  items-center gap-2">
+              <p className="font-semibold">Comisiones:</p>
+              <p>S/. {resumenCuentas().ComisionSuma}</p>
+            </div>
+            <div className="flex justify-between  items-center gap-2">
+              <p className="font-semibold">Total:</p>
+              <p>S/. {resumenCuentas().TotalSuma}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

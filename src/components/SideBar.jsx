@@ -47,14 +47,6 @@ const sideBar = ({ bar, setBar }) => {
         setShowCaja(false);
         setAdmini(false);
       },
-      5: () => {
-        setShowTrans(false);
-        setShowHabi(false);
-        setShowRece(false);
-        setShowCuentas(false);
-        setShowCaja(!showCaja);
-        setAdmini(false);
-      },
       6: () => {
         setShowTrans(false);
         setShowHabi(false);
@@ -174,98 +166,15 @@ const sideBar = ({ bar, setBar }) => {
                   Transferencias recibidas
                 </NavLink>
               </li>
+              <li onClick={() => setBar(false)}>
+                <NavLink
+                  to="/liquidaciones"
+                  className="flex cursor-pointer items-center p-2 pl-14 w-full text-xl font-normal text-gray-300 rounded-lg transition duration-75 group   dark:text-gray-300 dark:hover:bg-gray-700"
+                >
+                  Liquidaciones
+                </NavLink>
+              </li>
             </ul>
-          </li>
-          <li>
-            <button
-              type="button"
-              onClick={
-                user.rol === 'administrador' ? () => handleCordion(5) : ''
-              }
-              className="flex items-center py-2 px-5 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-              aria-controls="dropdown-example"
-              data-collapse-toggle="dropdown-example"
-            >
-              <svg
-                className="flex-shrink-0 w-6 h-6  text-white transition duration-75 group-hover:text-white dark:text-gray-400 dark:group-hover:text-white"
-                viewBox="0 0 14 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7 1V23"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M12 5H4.5C3.57174 5 2.6815 5.36875 2.02513 6.02513C1.36875 6.6815 1 7.57174 1 8.5C1 9.42826 1.36875 10.3185 2.02513 10.9749C2.6815 11.6313 3.57174 12 4.5 12H9.5C10.4283 12 11.3185 12.3687 11.9749 13.0251C12.6313 13.6815 13 14.5717 13 15.5C13 16.4283 12.6313 17.3185 11.9749 17.9749C11.3185 18.6313 10.4283 19 9.5 19H1"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span
-                className="flex-1 ml-3 text-left whitespace-nowrap"
-                sidebar-toggle-item=""
-              >
-                Liquidación
-              </span>
-              <svg
-                sidebar-toggle-item=""
-                className={
-                  showCaja
-                    ? 'w-6 h-6 transform rotate-180 transition duration-300'
-                    : 'w-6 h-6 transition duration-300'
-                }
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-            </button>
-            {user.rol === 'administrador' && (
-              <ul
-                id="dropdown-example"
-                className={
-                  showCaja
-                    ? 'inline-block py-2 space-y-2'
-                    : 'hidden py-2 space-y-2'
-                }
-              >
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Products
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Billing
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Invoice
-                  </a>
-                </li>
-              </ul>
-            )}
           </li>
           <li>
             <button

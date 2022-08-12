@@ -60,7 +60,7 @@ const LayoutRequiereAuth = () => {
     <div className="flex h-screen w-full relative">
       <SideBar bar={bar} setBar={setBar} />
       {modal && <Modal>{modalContent}</Modal>}
-      <div className="flex flex-col h-screen w-full p-8 overflow-hidden">
+      <div className="flex flex-col h-screen w-full p-8 overflow-hidden relative">
         <div className="bg-white  border-b flex justify-end items-center relative border-gray-300  mb-5 w-full h-14 px-2">
           <div className="flex justify-between w-full items-center gap-4">
             <div className="flex justify-center items-center gap-2">

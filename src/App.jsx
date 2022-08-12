@@ -15,6 +15,7 @@ import EnvioCaja from './routes/EnvioCaja';
 import UsuariosCreados from './routes/UsuariosCreados';
 import CrearOficinas from './routes/CrearOficinas';
 import ListCaja from './routes/ListCaja';
+import Liquidaciones from './routes/Liquidaciones';
 const App = () => {
   const { user } = useContext(UserContext);
   if (user === false) {
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="/listCaja" element={<ListCaja />} />
           <Route path="/usuariosCreados" element={<UsuariosCreados />} />
           <Route path="/crearOficinas" element={<CrearOficinas />} />
+          <Route path="/liquidaciones" element={<Liquidaciones />} />
         </Route>
         <Route path="/" element={<LayoutContainerForm />}>
           <Route path="/login" element={<Login />} />
