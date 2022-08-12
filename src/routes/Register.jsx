@@ -66,6 +66,7 @@ const Register = () => {
     <div className="overflow-auto ">
       <form
         onSubmit={handleSubmit(onSubmit)}
+        autoComplete="off"
         className="flex flex-col w-full justify-center items-center relative overflow-hidden"
       >
         <div className="w-full flex justify-center mb-8">
