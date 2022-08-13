@@ -31,7 +31,11 @@ const Register = () => {
     formState: { errors },
     getValues,
     setError,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      rol: 'Asesor',
+    },
+  });
 
   const onSubmit = async (e) => {
     const { email, password } = e;
@@ -185,15 +189,15 @@ const Register = () => {
               htmlFor="sede"
               className="block mb-2 text-lg font-medium text-sideblue dark:text-gray-300"
             >
-              Selecciona la sede del usuario
+              Oficina
             </label>
             <select
               {...register('ciudad', {
                 validate: validateSelection,
               })}
-              className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
-              <option value="0">Seleciona la ciudad</option>
+              <option value="0">Seleciona la oficina</option>
               {officesAll.map((office) => {
                 return (
                   <option key={office.nanoid} value={office.alias}>
@@ -212,12 +216,11 @@ const Register = () => {
               Rol
             </label>
             <select
-              {...register('rol', {
-                validate: validateSelection,
-              })}
-              className="bg-white-fondo p-3 rounded-2xl w-11/12 xs:w-96 mb-5"
+              disabled={true}
+              {...register('rol')}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
-              <option value="asesor">Asesor</option>
+              <option value="Asesor">Asesor</option>
             </select>
             <FormError error={errors.rol} />
           </div>
