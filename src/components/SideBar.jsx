@@ -246,7 +246,7 @@ const sideBar = ({ bar, setBar }) => {
                     to="/listCaja"
                     className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                   >
-                    Lista de Envios
+                    Lista de envios
                   </NavLink>
                 </li>
               </ul>
@@ -341,20 +341,21 @@ const sideBar = ({ bar, setBar }) => {
                 </li>
                 <li onClick={() => setBar(false)}>
                   <NavLink
+                    to="/listaOficinas"
+                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
+                  >
+                    Oficinas
+                  </NavLink>
+                </li>
+                <li onClick={() => setBar(false)}>
+                  <NavLink
                     to="/crearOficinas"
                     className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
                   >
                     Crear oficina
                   </NavLink>
                 </li>
-                <li onClick={() => setBar(false)}>
-                  <NavLink
-                    to="/listaOficinas"
-                    className="flex items-center p-2 pl-14 w-full text-xl font-normal text-white rounded-lg transition duration-75 group   dark:text-white dark:hover:bg-gray-700"
-                  >
-                    Lista de oficinas
-                  </NavLink>
-                </li>
+                
               </ul>
             )}
           </li>

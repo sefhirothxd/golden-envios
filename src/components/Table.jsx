@@ -316,7 +316,7 @@ const Table = ({ data, error, loading }) => {
           disabled={pageInitial.pre_page === null ? true : false}
           onClick={() => paginator(data, pageInitial.pre_page, 2)}
         >
-          Anterio
+          Anterior
         </Button>
 
         <Button
@@ -333,7 +333,7 @@ const Table = ({ data, error, loading }) => {
             className="bg-celeste p-3 rounded-lg w-11/12 xs:w-48 text-white text-xl  "
             type="submit"
           >
-            Export Exel
+            Export Excel
           </button>
           <div>
             <div className="flex justify-between items-center gap-2">
