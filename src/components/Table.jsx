@@ -128,7 +128,7 @@ const Table = ({ data, error, loading }) => {
 
   useEffect(() => {
     setFilter(data);
-    paginator(data, 1, 2);
+    paginator(data, 1);
   }, [data]);
   useEffect(() => {
     if (startDate === null && endDate === null) {
@@ -314,14 +314,14 @@ const Table = ({ data, error, loading }) => {
       <div className="flex items-center justify-between mt-5">
         <Button
           disabled={pageInitial.pre_page === null ? true : false}
-          onClick={() => paginator(data, pageInitial.pre_page, 2)}
+          onClick={() => paginator(data, pageInitial.pre_page)}
         >
           Anterior
         </Button>
 
         <Button
           disabled={pageInitial.next_page === null ? true : false}
-          onClick={() => paginator(data, pageInitial.next_page, 2)}
+          onClick={() => paginator(data, pageInitial.next_page)}
         >
           Siguiente
         </Button>
