@@ -1,10 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../context/UserProvider';
-import DatePicker from 'react-datepicker';
 import { Button } from 'flowbite-react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const TableListHistory = ({ data, error, loading }) => {
+const Table = ({ data, error, loading }) => {
   const { setModalContent, setModal } = useContext(UserContext);
   const [dateRange, setDateRange] = useState([null, null]);
   const [startDate, endDate] = dateRange;
@@ -15,14 +14,15 @@ const TableListHistory = ({ data, error, loading }) => {
     e.preventDefault();
     console.log(e.target[0].value);
     const { value } = e.target[0];
-
-    const filtered = data.filter(
-      (entry) =>
-        entry.nombres.toLowerCase().includes(value) ||
-        entry.dni === value ||
-        entry.apellidos.toLowerCase().includes(value) === value
+    // const filtered = data.filter((item) => item.alias.includes(value).trim());
+    const filtered = data.filter((item) =>
+      item.alias.toLowerCase().includes(value.trim().toLowerCase())
+        ? item
+        : item.ciudad.toLowerCase().includes(value.trim().toLowerCase())
+        ? item
+        : ''
     );
-    setFilter(filtered);
+    filtered.length > 0 ? setFilter(filtered) : setFilter('');
     console.log(filtered);
   };
 
@@ -32,62 +32,46 @@ const TableListHistory = ({ data, error, loading }) => {
     // setModal(true);
   };
 
-  const filterDateRage = (update) => {
-    if (update[1] === null) {
-      return;
-    }
-    const filtered = data.filter((item) => {
-      const date = new Date(item.fechaCreada.toDate());
-      const start = new Date(update[0]);
-      const end = new Date(update[1]);
-      const format =
-        date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate();
-      console.log('soy el array formateado ', Date.parse(format));
-      const format2 = Date.parse(start);
-      console.log('soy lo seleccionado formateado ', format2);
-      const format3 = Date.parse(end);
-      console.log('soy lo seleccionado formateado end', format3);
-      return Date.parse(format) >= format2 && Date.parse(format) <= format3;
-    });
-    console.log(filtered, 'soy el filtro');
-    setFilter(filtered);
-  };
+  // const getStatus = (status) => {
+  //   if (status === 'Pendiente') {
+  //     return 'bg-green-300';
+  //   } else if (status === 'Extornado') {
+  //     return 'bg-red-300';
+  //   } else if (status === 'Pagado') {
+  //     return 'bg-white';
+  //   }
+  // };
+  // const getLights = (status) => {
+  //   if (status === 'Pendiente') {
+  //     return 'bg-green-500';
+  //   } else if (status === 'Extornado') {
+  //     return 'bg-red-500';
+  //   } else if (status === 'Pagado') {
+  //     return 'bg-black';
+  //   }
+  // };
 
   useEffect(() => {
     setFilter(data);
   }, [data]);
-  useEffect(() => {
-    if (startDate === null && endDate === null) {
-      setFilter(data);
-    }
-  }, [dateRange]);
+  // useEffect(() => {
+  //   if (startDate === null && endDate === null) {
+  //     setFilter(data);
+  //   }
+  // }, [dateRange]);
   const loadingData = loading && <p>Loading data...</p>;
   const errorData = error && <p>{error}</p>;
   return (
     <>
       <div className=" overflow-x-auto w-full mt-5 shadow-md sm:rounded-xl">
         <div className=" flex justify-center items-center w-full gap-7 my-2 ">
-          <div>
-            <DatePicker
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              selectsRange={true}
-              startDate={startDate}
-              endDate={endDate}
-              onChange={(update) => {
-                filterDateRage(update);
-                setDateRange(update);
-              }}
-              isClearable={true}
-              placeholderText="Buscar por fecha"
-            />
-          </div>
           <form
             className="flex justify-center items-center gap-5"
             onSubmit={handleFilter}
           >
             <input
               type="text"
-              placeholder="Buscar por Nombre o DNI"
+              placeholder="Buscar por Ciudad o Oficina"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
 
@@ -98,22 +82,19 @@ const TableListHistory = ({ data, error, loading }) => {
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="text-center">
               <th scope="col" className="px-6 py-3">
-                Fecha Creacion
+                Fecha
               </th>
               <th scope="col" className="px-6 py-3">
                 Oficina
               </th>
               <th scope="col" className="px-6 py-3">
-                Caja
+                Ciudad
               </th>
               <th scope="col" className="px-6 py-3">
-                Monto
+                Departamento
               </th>
               <th scope="col" className="px-6 py-3">
-                Moneda
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Observacion
+                Direccion
               </th>
             </tr>
           </thead>
@@ -128,27 +109,23 @@ const TableListHistory = ({ data, error, loading }) => {
               filter?.map(
                 (
                   {
-                    nombres,
-                    apellidos,
-                    moneda,
-                    cantidad,
-                    obs,
-                    oficina,
-                    uid,
-                    nanoid,
+                    alias,
+                    ciudad,
+                    departamento,
+                    direccion,
                     fechaCreada,
+                    nanoid,
+                    uid,
                   },
                   index
                 ) => (
                   <tr
                     onClick={() =>
                       getTrasf({
-                        nombres,
-                        apellidos,
-                        moneda,
-                        cantidad,
-                        obs,
-                        oficina,
+                        alias,
+                        ciudad,
+                        departamento,
+                        direccion,
                         uid,
                         nanoid,
                         fechaCreada,
@@ -168,17 +145,10 @@ const TableListHistory = ({ data, error, loading }) => {
                           fechaCreada.toDate().toLocaleTimeString()
                       }
                     </th>
-                    <td className="px-6 py-4">{oficina}</td>
-                    <td className="px-6 py-4">{nombres + ' ' + apellidos}</td>
-                    <td className="px-6 py-4">
-                      S/
-                      {cantidad.toLocaleString('en-ES', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </td>
-                    <td className="px-6 py-4">{moneda}</td>
-                    <td className="px-6 py-4">{obs}</td>
+                    <td className="px-6 py-4">{alias}</td>
+                    <td className="px-6 py-4">{ciudad}</td>
+                    <td className="px-6 py-4">{departamento}</td>
+                    <td className="px-6 py-4">{direccion}</td>
                   </tr>
                 )
               )}
@@ -189,4 +159,4 @@ const TableListHistory = ({ data, error, loading }) => {
   );
 };
 
-export default TableListHistory;
+export default Table;

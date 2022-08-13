@@ -107,8 +107,12 @@ const Table = ({ data, error, loading }) => {
             </tr>
           </thead>
           <tbody className="text-center">
-            <div>{loadingData}</div>
-            <div>{errorData}</div>
+            <tr>
+              <th>{loadingData}</th>
+            </tr>
+            <tr>
+              <th>{errorData}</th>
+            </tr>
             {filter?.length > 0 &&
               filter?.map(
                 (

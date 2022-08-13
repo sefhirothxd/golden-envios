@@ -148,7 +148,10 @@ export const useFirestoreState = () => {
   const getAllOffice = async () => {
     try {
       setLoading((prev) => ({ ...prev, getAllOffice: true }));
-      const q = query(collection(db, 'oficinas'));
+      const q = query(
+        collection(db, 'oficinas'),
+        orderBy('fechaCreada', 'desc')
+      );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
       setOfficesALL(datos);

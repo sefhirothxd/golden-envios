@@ -201,14 +201,15 @@ const Table = ({ data, error, loading }) => {
               <th scope="col" className="px-6 py-3">
                 Estado
               </th>
-              {/* <th scope="col" className="px-6 py-3">
-                  <span className="sr-only">Edit</span>
-                </th> */}
             </tr>
           </thead>
           <tbody className="text-center">
-            <div>{loadingData}</div>
-            <div>{errorData}</div>
+            <tr>
+              <th>{loadingData}</th>
+            </tr>
+            <tr>
+              <th>{errorData}</th>
+            </tr>
             {pageInitial?.data?.length > 0 ? (
               pageInitial?.data?.map(
                 (
