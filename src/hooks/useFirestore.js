@@ -55,14 +55,16 @@ export const useFirestoreState = () => {
       setLoading((prev) => ({ ...prev, getDataZona: true }));
       const q = query(
         collection(db, 'transferencias'),
-        // orderBy('fechaCreada', 'desc'),
-        where('destino', '==', e)
+        orderBy('fechaCreada', 'desc')
+        // where('destino', '==', e)
       );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
-      console.log(datos);
-      setZonaData(datos);
-      return datos;
+      // console.log(datos);
+      const newData = datos.filter((item) => item.destino === e);
+      console.log(newData);
+      setZonaData(newData);
+      return newData;
     } catch (error) {
       console.log(error);
       setError(error.code);
