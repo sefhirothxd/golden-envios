@@ -37,7 +37,8 @@ const Modal = ({ children }) => {
         },
       ],
       type: 'html',
-      style: '<style>body {color: red;}</style>',
+      style:
+        '<style>body {color: red;} h1{font-size: 3.5rem !important; font-weight: 500; line-height: 1.2;color: pink; text-align: center;} img{width: 100px !important; height: auto; border: 1px solid black} </style>',
       showModal: true,
     });
   };
@@ -55,7 +56,7 @@ const Modal = ({ children }) => {
     <div className="absolute h-screen z-20 flex justify-center items-center w-full bg-black bg-opacity-60">
       <div id="probando" className="-z-10 absolute">
         <img src={Logo} alt="logo" />
-        <h1 className="text-red-500 text-center">Golden Fast</h1>
+        <h1>Golden Fast</h1>
         <hr />
         <div>
           <p>Fecha: {fecha()}</p>

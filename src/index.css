@@ -30,6 +30,7 @@
   z-index: 10;
   transition: all 0.3s ease-in-out;
 }
+
 .h-modal {
   height: 100vh;
 }
