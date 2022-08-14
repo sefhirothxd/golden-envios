@@ -9,7 +9,7 @@ import {
   deleteDoc,
   orderBy,
   updateDoc,
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore';
 import { limit, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { auth, db } from '../firebase';

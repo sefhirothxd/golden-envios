@@ -6,7 +6,8 @@ import {
 } from 'firebase/auth';
 import { useFirestoreState } from '../hooks/useFirestore';
 import { createContext, useState, useEffect } from 'react';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
+import { onSnapshot, collection } from 'firebase/firestore';
 
 export const UserContext = createContext();
 
@@ -45,6 +46,14 @@ const UserProvider = ({ children }) => {
         setTrasferencias(res);
         const recibidad = await getDataZona(sede);
         setTransferenciasRecibidas(recibidad);
+        onSnapshot(collection(db, 'registerUser'), (snapshot) =>
+          setUser(
+            snapshot.docs
+              .map((doc) => doc.data())
+              .filter((d) => d.uid === user.uid)[0]
+          )
+        );
+        console.log(user.uid);
       } else {
         setUser(null);
       }

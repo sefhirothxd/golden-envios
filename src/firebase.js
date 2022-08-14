@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore/lite';
+import { getFirestore } from 'firebase/firestore';
 const firebaseConfig = {
   apiKey: 'AIzaSyBRdxQReKAcn1qY5J9Wly1zfHImh1x8kag',
   authDomain: 'golde-envios.firebaseapp.com',
