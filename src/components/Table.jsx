@@ -331,7 +331,7 @@ const Table = ({ data, error, loading }) => {
         </Button>
       </div>
       {pathname === '/liquidaciones' && (
-        <div className="absolute  bottom-1/4 flex-col-reverse gap-3 sm:flex-row right-0 lg:right-20 flex items-center justify-evenly w-full">
+        <div className="absolute  sm:bottom-1/4 bottom-5 flex-col-reverse gap-3 sm:flex-row right-0 lg:right-20 flex items-center justify-evenly w-full">
           <button
             onClick={exportExcel}
             className="bg-celeste p-3 rounded-lg  w-48 text-white text-xl  "
