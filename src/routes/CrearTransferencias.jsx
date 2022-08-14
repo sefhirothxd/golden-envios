@@ -9,6 +9,7 @@ import { erroresFirebase } from '../utils/erroresFirebase';
 import { Button } from 'flowbite-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const token =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNTkxLCJjb3JyZW8iOiJidmVyYWNhY2hheUBnbWFpbC5jb20iLCJpYXQiOjE2NjAwNjE3NjJ9.EEiD81bUFdlC5E-cqVjNGTo_qXNQ9fGxMfA_9PRuGVo';
@@ -130,15 +131,25 @@ const crearTransferencias = () => {
   }) => {
     console.log(fullNameSoli);
     console.log(fullNameBene);
-    if (
-      ciudad == user.sede ||
-      user.saldo < parseFloat(cantidad) ||
-      ciudad == '0'
-    ) {
-      setNotificacionCiudad(true);
-      setTimeout(() => {
-        setNotificacionCiudad(false);
-      }, 3000);
+    if (ciudad == user.sede || user.saldo < parseFloat(cantidad)) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title:
+          ciudad == user.sede
+            ? 'Error no puede elegir la misma ciudad del usuario'
+            : 'El saldo es insuficiente',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else if (parseFloat(cantidad) === 0) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'El Monto no puede ser 0',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } else {
       const obj = {
         asesor: user.nombres + ' ' + user.apellidos,
@@ -167,9 +178,7 @@ const crearTransferencias = () => {
       setNotificacion(true);
       try {
         await addData(obj);
-        console.log('aun no');
         await updateDataRestarSaldo(user.nanoid, nuevoSaldo);
-        console.log('mori');
         setTimeout(() => {
           setNotificacion(false);
         }, 3000);
@@ -177,6 +186,13 @@ const crearTransferencias = () => {
         await getData();
         console.log('get user');
         await refreshUser();
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Trasferencia creada correctamente',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navegate('/TransferenciasCreadas');
       } catch (error) {
         console.log(error.code);
@@ -463,26 +479,6 @@ const crearTransferencias = () => {
           <Button type="submit">Trasferencia</Button>
         </div>
       </form>
-      <div
-        className={
-          `absolute -right-96 transform bottom-28  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-green-700 bg-green-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
-          (notificacion && ' -translate-x-96')
-        }
-        role="alert"
-      >
-        <span className="font-medium">Exito!</span>El giro se realido de manera
-        satisfactoria.
-      </div>
-      <div
-        className={
-          `absolute -right-altoFormulario transform bottom-28 w-96  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-red-700 bg-red-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
-          (notificacionCiudad && ' -translate-x-altoFormulario')
-        }
-        role="alert"
-      >
-        <span className="font-medium">Error!</span>No puede superar el saldo
-        actual y no olvide de seleccionar una zona distinta a la suya.
-      </div>
     </div>
   );
 };

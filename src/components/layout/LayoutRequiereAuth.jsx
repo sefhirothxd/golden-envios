@@ -60,8 +60,8 @@ const LayoutRequiereAuth = () => {
     <div className="flex h-screen w-full relative">
       <SideBar bar={bar} setBar={setBar} />
       {modal && <Modal>{modalContent}</Modal>}
-      <div className="flex flex-col h-screen w-full p-8 overflow-hidden relative">
-        <div className="bg-white  border-b flex justify-end items-center relative border-gray-300  mb-5 w-full h-14 px-2">
+      <div className="flex flex-col h-screen w-full pt-8 px-0 pb-0 sm:p-8 overflow-hidden relative">
+        <div className="bg-white  border-b flex justify-end items-center relative border-gray-300  mb-5 w-full h-14 p-2">
           <div className="flex justify-between w-full items-center gap-4">
             <div className="flex justify-center items-center gap-2">
               <div className="920:hidden ">
@@ -88,10 +88,12 @@ const LayoutRequiereAuth = () => {
                   </svg>
                 </button>
               </div>
-              <p>Sede:</p>
-              <p className="text-transform: capitalize">
-                {user?.sede || 'cargando...'}
-              </p>
+              <div className="flex items-center justify-center gap-3">
+                <p className="hidden sm:block">Sede:</p>
+                <p className="text-transform: capitalize">
+                  {user?.sede || 'cargando...'}
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-4 justify-center">
               <h3>Saldo:</h3>

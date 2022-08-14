@@ -71,14 +71,14 @@ const Register = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         autoComplete="off"
-        className="flex flex-col w-full justify-center items-center relative overflow-hidden"
+        className="flex flex-col w-full justify-center items-center relative overflow-hidden px-3 sm:px-0 pb-5"
       >
         <div className="w-full flex justify-center mb-8">
           <h1 className="text-2xl font-bold text-botton-blue">
             Registrar Usuario
           </h1>
         </div>
-        <div className=" grid place-content-center grid-cols-2 gap-5">
+        <div className=" grid place-content-center grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-4xl">
           <div className="mb-3">
             <label
               htmlFor="nomSolicitante"
@@ -218,7 +218,7 @@ const Register = () => {
             <select
               disabled={true}
               {...register('rol')}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option value="Asesor">Asesor</option>
             </select>
@@ -226,21 +226,11 @@ const Register = () => {
           </div>
         </div>
         <button
-          className="bg-celeste p-3 rounded-lg w-11/12 xs:w-48 text-white text-xl mb-3 "
+          className="bg-celeste p-3 rounded-lg w-11/12 xs:w-48 text-white text-xl mt-5 "
           type="submit"
         >
           Crear usuario
         </button>
-        <div
-          className={
-            `absolute -right-96 transform bottom-28  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-green-700 bg-green-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
-            (notificacion && ' -translate-x-96')
-          }
-          role="alert"
-        >
-          <span className="font-medium">Exito!</span>La cuenta ha sido
-          creada..!!
-        </div>
       </form>
     </div>
   );

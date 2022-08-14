@@ -7,9 +7,9 @@ import { erroresFirebase } from '../utils/erroresFirebase';
 import FormError from '../components/FormError';
 import { formValidate } from '../utils/formValidate';
 import FormInput from '../components/FormInput';
+import Swal from 'sweetalert2';
 const CrearOficinas = () => {
   const { user } = useContext(UserContext);
-  const [notificacion, setNotificacion] = useState(false);
   //metodo que retorna la validacion de los campos
   const {
     required,
@@ -42,23 +42,27 @@ const CrearOficinas = () => {
       uid: user.uid,
     };
     try {
-      const reg = await addOffice(item);
+      await addOffice(item);
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Oficina creada correctamente',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navegate('/listaOficinas');
     } catch (error) {
       console.log(error);
       const { code, message } = erroresFirebase(error.code);
       setError(code, { message });
     }
-    setNotificacion(true);
-    setTimeout(() => {
-      setNotificacion(false);
-    }, 3000);
   };
 
   return (
     <div className="overflow-auto ">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col w-full justify-center items-center relative overflow-hidden"
+        className="flex flex-col w-full justify-center items-center relative overflow-hidden px-3 sm:px-0"
       >
         <div className="w-full flex justify-center mb-8">
           <h1 className="text-2xl font-bold text-botton-blue">
@@ -144,18 +148,8 @@ const CrearOficinas = () => {
           className="bg-celeste p-3 rounded-lg w-11/12 xs:w-48 text-white text-xl mb-3 "
           type="submit"
         >
-          Crear usuario
+          Crear Oficina
         </button>
-        <div
-          className={
-            `absolute -right-96 transform bottom-28  trasition-all duration-500 ease-in-out flex justify-start items-start flex-col z-10 p-4 mb-4 text-sm text-green-700 bg-green-200 rounded-lg dark:bg-green-200 dark:text-green-800 ` +
-            (notificacion && ' -translate-x-96')
-          }
-          role="alert"
-        >
-          <span className="font-medium">Exito!</span>La cuenta ha sido
-          creada..!!
-        </div>
       </form>
     </div>
   );

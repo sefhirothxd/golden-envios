@@ -306,12 +306,16 @@ const Table = ({ data, error, loading }) => {
                 )
               )
             ) : (
-              <p className="py-4">'No hay Trasferencias para esta cuenta'</p>
+              <tr className="h-14 relative text-center text-md text-black font-bold w-full ">
+                <td className="w-full absolute -left-56 md:left-0 top-5">
+                  No hay Trasferencias disponibles
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
       </div>
-      <div className="flex items-center justify-between mt-5">
+      <div className="flex items-center justify-between mt-5 px-4 sm:px-0">
         <Button
           disabled={pageInitial.pre_page === null ? true : false}
           onClick={() => paginator(data, pageInitial.pre_page)}
@@ -327,10 +331,10 @@ const Table = ({ data, error, loading }) => {
         </Button>
       </div>
       {pathname === '/liquidaciones' && (
-        <div className="absolute bottom-1/4 right-20 flex items-center justify-evenly w-full">
+        <div className="absolute  bottom-1/4 flex-col-reverse gap-3 sm:flex-row right-0 lg:right-20 flex items-center justify-evenly w-full">
           <button
             onClick={exportExcel}
-            className="bg-celeste p-3 rounded-lg w-11/12 xs:w-48 text-white text-xl  "
+            className="bg-celeste p-3 rounded-lg  w-48 text-white text-xl  "
             type="submit"
           >
             Export Excel
