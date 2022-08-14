@@ -138,8 +138,8 @@ const Table = ({ data, error, loading }) => {
   const loadingData = loading && <p>Loading data...</p>;
   const errorData = error && <p>{error}</p>;
   return (
-    <div className="">
-      <div className=" overflow-x-auto w-full mt-5 shadow-md sm:rounded-xl">
+    <>
+      <div className=" overflow-x-auto  w-full mt-5 shadow-md sm:rounded-xl">
         <div className=" flex justify-center items-center w-full gap-7 my-2 ">
           <div>
             <DatePicker
@@ -355,7 +355,7 @@ const Table = ({ data, error, loading }) => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 
