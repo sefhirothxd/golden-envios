@@ -1,16 +1,15 @@
 import { useState, useContext, useEffect } from 'react';
 import { useFirestoreState } from '../hooks/useFirestore';
 import { useForm } from 'react-hook-form';
-import { UserContext } from '../context/UserProvider';
 import { useNavigate } from 'react-router-dom';
 import { erroresFirebase } from '../utils/erroresFirebase';
 import FormError from '../components/FormError';
 import { formValidate } from '../utils/formValidate';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 import FormInput from '../components/FormInput';
 const Register = () => {
-  const { registerUser } = useContext(UserContext);
-  const [notificacion, setNotificacion] = useState(false);
   //metodo que retorna la validacion de los campos
   const {
     required,
@@ -49,18 +48,28 @@ const Register = () => {
     };
     console.log(e);
     try {
-      const res = await registerUser(item.email, password);
-      const reg = await addUserRegister(item, res.user.uid);
-      console.log('respuesta del registro', reg);
+      const res = await axios.post(
+        'https://golden-fast.herokuapp.com/new-user',
+        {
+          email: item.email,
+          password,
+        }
+      );
+      console.log(res?.data.uid);
+      await addUserRegister(item, res.data.uid);
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Usuario creado correctamente',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navegate('/usuariosCreados');
     } catch (error) {
       console.log(error);
       const { code, message } = erroresFirebase(error.code);
       setError(code, { message });
     }
-    setNotificacion(true);
-    setTimeout(() => {
-      setNotificacion(false);
-    }, 3000);
   };
   useEffect(() => {
     getAllOffice();
