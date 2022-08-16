@@ -18,14 +18,12 @@ const crearTransferencias = () => {
   const [notificacion, setNotificacion] = useState(false);
   const [notificacionCiudad, setNotificacionCiudad] = useState(false);
   const [fullNameSoli, setFullNameSoli] = useState({
-    nombres: '',
-    paterno: '',
-    materno: '',
+    nomSolicitante: '',
+    soliApellidos: '',
   });
   const [fullNameBene, setFullNameBene] = useState({
-    nombres: '',
-    paterno: '',
-    materno: '',
+    nomBeneficiario: '',
+    beneApellidos: '',
   });
 
   const {
@@ -73,9 +71,18 @@ const crearTransferencias = () => {
   } = useFirestoreState();
 
   const probando = (e) => {
-    e.preventDefault();
-    console.log('se detuvo el formulario');
-    window.print();
+    setFullNameSoli({
+      ...fullNameSoli,
+      [e.target.name]: e.target.value,
+    });
+    console.log(fullNameSoli);
+  };
+  const onChangeBene = (e) => {
+    setFullNameBene({
+      ...fullNameBene,
+      [e.target.name]: e.target.value,
+    });
+    console.log(fullNameBene);
   };
 
   const soliDni = async (e) => {
@@ -94,7 +101,13 @@ const crearTransferencias = () => {
       );
 
       console.log(datos.data.result);
-      setFullNameSoli(datos.data.result);
+
+      setFullNameSoli({
+        ...fullNameSoli,
+        nomSolicitante: datos.data.result.nombres,
+        soliApellidos:
+          datos.data.result.paterno + ' ' + datos.data.result.materno,
+      });
     }
   };
   const beneDni = async (e) => {
@@ -113,7 +126,12 @@ const crearTransferencias = () => {
       );
 
       console.log(datos.data.result);
-      setFullNameBene(datos.data.result);
+      setFullNameBene({
+        ...fullNameBene,
+        nomBeneficiario: datos.data.result.nombres,
+        beneApellidos:
+          datos.data.result.paterno + ' ' + datos.data.result.materno,
+      });
     }
   };
 
@@ -157,14 +175,14 @@ const crearTransferencias = () => {
         destino: ciudad,
         monto: parseFloat(cantidad),
         origen: user.sede,
-        soliApellidos: fullNameSoli.paterno + ' ' + fullNameSoli.materno,
-        beneApellidos: fullNameBene.paterno + ' ' + fullNameBene.materno,
+        soliApellidos: fullNameSoli.soliApellidos,
+        beneApellidos: fullNameBene.beneApellidos,
         dniBene,
         dniSoli,
         estado,
         moneda,
-        nomBeneficiario: fullNameBene.nombres,
-        nomSolicitante: fullNameSoli.nombres,
+        nomBeneficiario: fullNameBene.nomBeneficiario,
+        nomSolicitante: fullNameSoli.nomSolicitante,
         obs,
         telefonoBene,
         telefonoSoli,
@@ -252,14 +270,13 @@ const crearTransferencias = () => {
               </label>
 
               <FormInput
-                disabled
-                value={fullNameSoli.nombres}
+                value={fullNameSoli.nomSolicitante}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
-                name="nomSolicitante"
                 placeholder="Nombres"
                 {...register('nomSolicitante', {
                   validate: validateRequired('Nombre Solicitante'),
+                  onChange: (e) => probando(e),
                 })}
               ></FormInput>
               <FormError error={errors.nomSolicitante} />
@@ -273,14 +290,13 @@ const crearTransferencias = () => {
               </label>
 
               <FormInput
-                disabled
-                value={fullNameSoli.paterno + ' ' + fullNameSoli.materno}
+                value={fullNameSoli.soliApellidos}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
-                name="Apellidos"
                 placeholder="Apellidos"
                 {...register('soliApellidos', {
                   validate: validateRequired('soliApellidos'),
+                  onChange: (e) => probando(e),
                 })}
               ></FormInput>
               <FormError error={errors.soliApellidos} />
@@ -341,14 +357,14 @@ const crearTransferencias = () => {
               </label>
 
               <FormInput
-                disabled
-                value={fullNameBene.nombres}
+                value={fullNameBene.nomBeneficiario}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 name="nomBeneficiario"
                 placeholder="Nombres"
                 {...register('nomBeneficiario', {
                   validate: validateRequired('Nombre Beneficiario'),
+                  onChange: (e) => onChangeBene(e),
                 })}
               ></FormInput>
               <FormError error={errors.nomBeneficiario} />
@@ -362,14 +378,14 @@ const crearTransferencias = () => {
               </label>
 
               <FormInput
-                disabled
-                value={fullNameBene.paterno + ' ' + fullNameBene.materno}
+                value={fullNameBene.beneApellidos}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
-                name="apePaternoBene"
+                name="beneApellidos"
                 placeholder="Apellidos"
                 {...register('beneApellidos', {
                   validate: validateRequired('beneApellidos'),
+                  onChange: (e) => onChangeBene(e),
                 })}
               ></FormInput>
               <FormError error={errors.beneApellidos} />
