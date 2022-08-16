@@ -16,7 +16,6 @@ const token =
 
 const crearTransferencias = () => {
   const [notificacion, setNotificacion] = useState(false);
-  const [notificacionCiudad, setNotificacionCiudad] = useState(false);
   const [fullNameSoli, setFullNameSoli] = useState({
     nomSolicitante: '',
     soliApellidos: '',
@@ -48,6 +47,7 @@ const crearTransferencias = () => {
     getValues,
     setError,
     reset,
+    setValue,
   } = useForm({
     defaultValues: {
       estado: 'Pendiente',
@@ -101,13 +101,11 @@ const crearTransferencias = () => {
       );
 
       console.log(datos.data.result);
-
-      setFullNameSoli({
-        ...fullNameSoli,
-        nomSolicitante: datos.data.result.nombres,
-        soliApellidos:
-          datos.data.result.paterno + ' ' + datos.data.result.materno,
-      });
+      setValue('nomSolicitante', datos.data.result.nombres);
+      setValue(
+        'soliApellidos',
+        datos.data.result.paterno + ' ' + datos.data.result.materno
+      );
     }
   };
   const beneDni = async (e) => {
@@ -126,12 +124,11 @@ const crearTransferencias = () => {
       );
 
       console.log(datos.data.result);
-      setFullNameBene({
-        ...fullNameBene,
-        nomBeneficiario: datos.data.result.nombres,
-        beneApellidos:
-          datos.data.result.paterno + ' ' + datos.data.result.materno,
-      });
+      setValue('nomBeneficiario', datos.data.result.nombres);
+      setValue(
+        'beneApellidos',
+        datos.data.result.paterno + ' ' + datos.data.result.materno
+      );
     }
   };
 
@@ -146,10 +143,12 @@ const crearTransferencias = () => {
     obs,
     telefonoBene,
     telefonoSoli,
+    nomSolicitante,
+    soliApellidos,
+    nomBeneficiario,
+    beneApellidos,
   }) => {
-    console.log(fullNameSoli);
-    console.log(fullNameBene);
-    if (ciudad == user.sede || user.saldo < parseFloat(cantidad)) {
+    if (ciudad == user.sede || 15000 < parseFloat(cantidad)) {
       Swal.fire({
         position: 'center',
         icon: 'error',
@@ -160,11 +159,11 @@ const crearTransferencias = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-    } else if (parseFloat(cantidad) === 0) {
+    } else if (parseFloat(cantidad) <= 0) {
       Swal.fire({
         position: 'center',
         icon: 'error',
-        title: 'El Monto no puede ser 0',
+        title: 'El Monto no puede ser menos o igual a 0',
         showConfirmButton: false,
         timer: 1500,
       });
@@ -175,14 +174,14 @@ const crearTransferencias = () => {
         destino: ciudad,
         monto: parseFloat(cantidad),
         origen: user.sede,
-        soliApellidos: fullNameSoli.soliApellidos,
-        beneApellidos: fullNameBene.beneApellidos,
+        soliApellidos,
+        beneApellidos,
         dniBene,
         dniSoli,
         estado,
         moneda,
-        nomBeneficiario: fullNameBene.nomBeneficiario,
-        nomSolicitante: fullNameSoli.nomSolicitante,
+        nomBeneficiario,
+        nomSolicitante,
         obs,
         telefonoBene,
         telefonoSoli,
@@ -190,16 +189,13 @@ const crearTransferencias = () => {
       };
 
       console.log(obj);
-      const nuevoSaldo = user.saldo - parseFloat(cantidad);
+      const nuevoSaldo =
+        user.saldo + parseFloat(cantidad) + parseFloat(comision);
       console.log('saldo actul : ', user.saldo);
-      console.log('resta saldo nuevo : ', nuevoSaldo);
-      setNotificacion(true);
+      console.log('suma saldo nuevo : ', nuevoSaldo);
       try {
         await addData(obj);
         await updateDataRestarSaldo(user.nanoid, nuevoSaldo);
-        setTimeout(() => {
-          setNotificacion(false);
-        }, 3000);
         console.log('get data');
         await getData();
         console.log('get user');
@@ -270,13 +266,13 @@ const crearTransferencias = () => {
               </label>
 
               <FormInput
-                value={fullNameSoli.nomSolicitante}
+                // value={fullNameSoli.nomSolicitante}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 placeholder="Nombres"
                 {...register('nomSolicitante', {
-                  validate: validateRequired('Nombre Solicitante'),
-                  onChange: (e) => probando(e),
+                  required,
+                  validate: validateRequired('nomSolicitante'),
                 })}
               ></FormInput>
               <FormError error={errors.nomSolicitante} />
@@ -288,15 +284,13 @@ const crearTransferencias = () => {
               >
                 Apellidos
               </label>
-
               <FormInput
-                value={fullNameSoli.soliApellidos}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 placeholder="Apellidos"
                 {...register('soliApellidos', {
+                  required,
                   validate: validateRequired('soliApellidos'),
-                  onChange: (e) => probando(e),
                 })}
               ></FormInput>
               <FormError error={errors.soliApellidos} />
@@ -355,16 +349,13 @@ const crearTransferencias = () => {
               >
                 Nombres
               </label>
-
               <FormInput
-                value={fullNameBene.nomBeneficiario}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 name="nomBeneficiario"
                 placeholder="Nombres"
                 {...register('nomBeneficiario', {
                   validate: validateRequired('Nombre Beneficiario'),
-                  onChange: (e) => onChangeBene(e),
                 })}
               ></FormInput>
               <FormError error={errors.nomBeneficiario} />
@@ -376,16 +367,13 @@ const crearTransferencias = () => {
               >
                 Apellidos
               </label>
-
               <FormInput
-                value={fullNameBene.beneApellidos}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text"
                 name="beneApellidos"
                 placeholder="Apellidos"
                 {...register('beneApellidos', {
                   validate: validateRequired('beneApellidos'),
-                  onChange: (e) => onChangeBene(e),
                 })}
               ></FormInput>
               <FormError error={errors.beneApellidos} />
@@ -470,8 +458,12 @@ const crearTransferencias = () => {
                 type="text"
                 name="comision"
                 placeholder="Ingrese una comision"
-                {...register('comision')}
+                {...register('comision', {
+                  required,
+                  validate: validateRequiredNumber('cantidad'),
+                })}
               ></FormInput>
+              <FormError error={errors.comision} />
             </div>
             <div className="mb-6">
               <label

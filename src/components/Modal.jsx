@@ -5,9 +5,10 @@ import { useLocation } from 'react-router-dom';
 import { useFirestoreState } from '../hooks/useFirestore';
 import Logo from '../assets/img/logoLogin.svg';
 import printJS from 'print-js';
+import Swal from 'sweetalert2';
 
 const Modal = ({ children }) => {
-  const { setModal, refreshTrasferencias, refreshTrasfereZona } =
+  const { setModal, refreshTrasferencias, refreshTrasfereZona, user } =
     useContext(UserContext);
   let { pathname } = useLocation();
   const {
@@ -20,6 +21,7 @@ const Modal = ({ children }) => {
     dataUser,
     getDataZona,
     updateEstate,
+    updateDataRestarSaldo,
   } = useFirestoreState();
 
   const someJSONdata = () => {
@@ -43,8 +45,29 @@ const Modal = ({ children }) => {
     });
   };
   const changeEstate = async (e) => {
-    console.log('funciono');
+    console.log('funciono', children);
+    const nuevoSaldo = user.saldo - (children.monto + children.comision);
+    if (nuevoSaldo < 0) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'No puede tener saldo negativo',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
+    console.log('saldo actul : ', user.saldo);
+    console.log('saldo nuevo : ', nuevoSaldo);
     await updateEstate(children.nanoid, e);
+    await updateDataRestarSaldo(user.nanoid, nuevoSaldo);
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Pago relizado correctamente',
+      showConfirmButton: false,
+      timer: 1500,
+    });
     refreshTrasferencias();
     refreshTrasfereZona();
     setModal(false);

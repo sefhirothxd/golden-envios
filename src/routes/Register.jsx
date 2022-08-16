@@ -33,6 +33,7 @@ const Register = () => {
   } = useForm({
     defaultValues: {
       rol: 'Asesor',
+      saldoMax: 15000,
     },
   });
 
