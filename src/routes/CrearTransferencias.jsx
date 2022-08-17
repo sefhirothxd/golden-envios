@@ -248,8 +248,8 @@ const crearTransferencias = () => {
                 placeholder="DNI"
                 onChange={(e) => beneDni(e)}
                 {...register('dniSoli', {
-                  required,
-                  validate: validateRequiredDni('dniSoli'),
+                  // required,
+                  // validate: validateRequiredDni('dniSoli'),
                   onChange: (e) => {
                     soliDni(e);
                   },
@@ -271,8 +271,8 @@ const crearTransferencias = () => {
                 type="text"
                 placeholder="Nombres"
                 {...register('nomSolicitante', {
-                  required,
-                  validate: validateRequired('nomSolicitante'),
+                  // required,
+                  // validate: validateRequired('nomSolicitante'),
                 })}
               ></FormInput>
               <FormError error={errors.nomSolicitante} />
@@ -289,8 +289,8 @@ const crearTransferencias = () => {
                 type="text"
                 placeholder="Apellidos"
                 {...register('soliApellidos', {
-                  required,
-                  validate: validateRequired('soliApellidos'),
+                  // required,
+                  // validate: validateRequired('soliApellidos'),
                 })}
               ></FormInput>
               <FormError error={errors.soliApellidos} />
@@ -333,8 +333,6 @@ const crearTransferencias = () => {
                 type="text"
                 placeholder="DNI"
                 {...register('dniBene', {
-                  required,
-                  validate: validateRequiredDni('dniBene'),
                   onChange: (e) => {
                     beneDni(e);
                   },
@@ -355,7 +353,7 @@ const crearTransferencias = () => {
                 name="nomBeneficiario"
                 placeholder="Nombres"
                 {...register('nomBeneficiario', {
-                  validate: validateRequired('Nombre Beneficiario'),
+                  // validate: validateRequired('Nombre Beneficiario'),
                 })}
               ></FormInput>
               <FormError error={errors.nomBeneficiario} />
@@ -373,7 +371,7 @@ const crearTransferencias = () => {
                 name="beneApellidos"
                 placeholder="Apellidos"
                 {...register('beneApellidos', {
-                  validate: validateRequired('beneApellidos'),
+                  // validate: validateRequired('beneApellidos'),
                 })}
               ></FormInput>
               <FormError error={errors.beneApellidos} />
@@ -484,7 +482,7 @@ const crearTransferencias = () => {
         </div>
         <div className="w-full my-5 flex justify-center items-center gap-10 fixed -bottom-5 right  bg-white h-14 ">
           <Button onClick={() => reset()}>Limpiar</Button>
-          <Button type="submit">Trasferencia</Button>
+          <Button type="submit">Enviar Trasferencia</Button>
         </div>
       </form>
     </div>
