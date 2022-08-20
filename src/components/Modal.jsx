@@ -90,11 +90,11 @@ const Modal = ({ children }) => {
           <p className="mayuscula">Fecha: {fecha()}</p>
           <p className="mayuscula">Destino: {children.origen} </p>
           <p className="mayuscula">Asesor: {children.asesor}</p>
-          <p className="mayuscula">
+          <p className="mayuscula text-cherry">
             Solicitante:{' '}
             {children.nomSolicitante + ' ' + children.soliApellidos}
           </p>
-          <p className="mayuscula">
+          <p className="mayuscula text-cherry">
             Beneficiario:{' '}
             {children.nomBeneficiario + ' ' + children.beneApellidos}
           </p>
@@ -112,7 +112,7 @@ const Modal = ({ children }) => {
               maximumFractionDigits: 2,
             })}
           </p>
-          <p className="mayuscula">Observacion: {children.obs}</p>
+          <p className="mayuscula text-cherry">Observacion: {children.obs}</p>
         </div>
       </div>
       <div className="bg-white w-full max-w-3xl px-10 rounded-xl relative">
