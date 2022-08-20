@@ -1,12 +1,11 @@
-import React, { useContext } from "react";
-import { UserContext } from "../context/UserProvider";
-import { Button } from "flowbite-react";
-import { useLocation } from "react-router-dom";
-import { useFirestoreState } from "../hooks/useFirestore";
-import Logo from "../assets/img/logoLogin.svg";
-import printJS from "print-js";
-import Swal from "sweetalert2";
-import "./modal.css";
+import React, { useContext } from 'react';
+import { UserContext } from '../context/UserProvider';
+import { Button } from 'flowbite-react';
+import { useLocation } from 'react-router-dom';
+import { useFirestoreState } from '../hooks/useFirestore';
+import Logo from '../assets/img/gf-black.svg';
+import printJS from 'print-js';
+import Swal from 'sweetalert2';
 
 const Modal = ({ children }) => {
   const { setModal, refreshTrasferencias, refreshTrasfereZona, user } =
@@ -28,44 +27,44 @@ const Modal = ({ children }) => {
   const someJSONdata = () => {
     //print react component to pdf
     printJS({
-      printable: document.getElementById("probando-pdf"),
+      printable: document.getElementById('probando-pdf'),
       properties: [
         {
-          name: "width",
-          value: "100px",
+          name: 'width',
+          value: '100px',
         },
         {
-          name: "height",
-          value: "100%",
+          name: 'height',
+          value: '100%',
         },
       ],
-      type: "html",
+      type: 'html',
       style:
-        "body {color: black; font-family: 'Inconsolata', monospace;} .advertising{width: 250px!important } .h3{font-size: 30px!important; font-weight: 500; line-height: 1.2; color: pink; text-align: center;} img{width: 150px !important; height: auto; margin-left:70px;}",
+        "body {color: black; font-family: 'Inconsolata', monospace; margin: 0;}.text-cherry{width: 302px!important;font-size: 12px;} .mayuscula{text-transform: uppercase;} .advertising{width: 302px!important;font-size: 12px; margin-bottom: 30px;text-align: center} .line-break{border-top: 1px dashed #000; width: 302px !important; height: 10px; margin:0} img{width: 150px !important; height: 70px !important; margin-left:50px; }",
       showModal: true,
     });
   };
   const changeEstate = async (e) => {
-    console.log("funciono", children);
+    console.log('funciono', children);
     const nuevoSaldo = user.saldo - (children.monto + children.comision);
     if (nuevoSaldo < 0) {
       Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "No puede tener saldo negativo",
+        position: 'center',
+        icon: 'error',
+        title: 'No puede tener saldo negativo',
         showConfirmButton: false,
         timer: 1500,
       });
       return;
     }
-    console.log("saldo actual : ", user.saldo);
-    console.log("saldo nuevo : ", nuevoSaldo);
+    console.log('saldo actual : ', user.saldo);
+    console.log('saldo nuevo : ', nuevoSaldo);
     await updateEstate(children.nanoid, e);
     await updateDataRestarSaldo(user.nanoid, nuevoSaldo);
     Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Pago relizado correctamente",
+      position: 'center',
+      icon: 'success',
+      title: 'Pago relizado correctamente',
       showConfirmButton: false,
       timer: 1500,
     });
@@ -77,33 +76,43 @@ const Modal = ({ children }) => {
     return new Date().toLocaleString();
   };
   return (
-    <div className="pdf-voucher absolute h-screen z-20 flex justify-center items-center w-full bg-black bg-opacity-60">
-      <div id="probando-pdf" className="-z-10 absolute">
-        <img src={Logo} className="img-logo" alt="logo" />
-        <h3 className="title">Golden Fast</h3>
+    <div className="absolute h-screen z-20 flex justify-center items-center w-full bg-black bg-opacity-60">
+      <div id="probando-pdf" className="-z-10 opacity-0  absolute">
+        <img src={Logo} alt="logo" />
         <p className="advertising">
           Pagos de Letra, Transferencia, Depósitos, Giros Nacionales, Pagos
           Móviles, DIRECTV, FREEFIRE,YAPE, Retiros, Giros a Oficinas Y MÁS...
         </p>
-        <hr />
-        <div>
-          <p>Fecha: {fecha()}</p>
-          <p>Destino: {children.origen} </p>
-          <p>
-            Solicitante:{" "}
-            {children.nomSolicitante + " " + children.soliApellidos}
+        <br />
+        <br />
+        <div className="line-break"></div>
+        <div className="container-datos">
+          <p className="mayuscula">Fecha: {fecha()}</p>
+          <p className="mayuscula">Destino: {children.origen} </p>
+          <p className="mayuscula">Asesor: {children.asesor}</p>
+          <p className="mayuscula">
+            Solicitante:{' '}
+            {children.nomSolicitante + ' ' + children.soliApellidos}
           </p>
-          <p>
-            Beneficiario:{" "}
-            {children.nomBeneficiario + " " + children.beneApellidos}
+          <p className="mayuscula">
+            Beneficiario:{' '}
+            {children.nomBeneficiario + ' ' + children.beneApellidos}
           </p>
-          <p>
+          <p className="mayuscula">
             Monto: S/
-            {children.monto.toLocaleString("en-ES", {
+            {children.monto.toLocaleString('en-ES', {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
           </p>
+          <p className="mayuscula">
+            Comision: S/
+            {children.comision.toLocaleString('en-ES', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </p>
+          <p className="mayuscula">Observacion: {children.obs}</p>
         </div>
       </div>
       <div className="bg-white w-full max-w-3xl px-10 rounded-xl relative">
@@ -128,7 +137,7 @@ const Modal = ({ children }) => {
                   </h4>
                   <p className="font-normal text-lg text-gray-500">
                     {children.fechaCreada.toDate().toLocaleDateString() +
-                      " " +
+                      ' ' +
                       children.fechaCreada.toDate().toLocaleTimeString()}
                   </p>
                 </div>
@@ -141,14 +150,14 @@ const Modal = ({ children }) => {
                 <div>
                   <h4 className="font-medium text-xl text-black">Asesor</h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.asesor}
+                    {children.asesor.toUpperCase()}
                   </p>
                 </div>
                 <div>
                   <h4 className="font-medium text-xl text-black">Monto</h4>
                   <p className="font-normal text-lg text-gray-500">
                     S/
-                    {children.monto.toLocaleString("en-ES", {
+                    {children.monto.toLocaleString('en-ES', {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -158,7 +167,7 @@ const Modal = ({ children }) => {
                   <h4 className="font-medium text-xl text-black">Comision</h4>
                   <p className="font-normal text-lg text-gray-500">
                     S/
-                    {children.comision.toLocaleString("en-ES", {
+                    {children.comision.toLocaleString('en-ES', {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -169,7 +178,7 @@ const Modal = ({ children }) => {
                     Observacion
                   </h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.obs}
+                    {children.obs.toUpperCase()}
                   </p>
                 </div>
               </div>
@@ -188,7 +197,7 @@ const Modal = ({ children }) => {
                 <div>
                   <h4 className="font-medium text-xl text-black">Nombres</h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.nomSolicitante + " " + children.soliApellidos}
+                    {children.nomSolicitante + ' ' + children.soliApellidos}
                   </p>
                 </div>
                 <div>
@@ -200,7 +209,7 @@ const Modal = ({ children }) => {
                 <div>
                   <h4 className="font-medium text-xl text-black">Nombres</h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.nomBeneficiario + " " + children.beneApellidos}
+                    {children.nomBeneficiario + ' ' + children.beneApellidos}
                   </p>
                 </div>
                 <div>
@@ -212,11 +221,11 @@ const Modal = ({ children }) => {
             </div>
           </div>
           <div className="flex justify-end items-center gap-5 mb-5">
-            {pathname === "/TransferenciasCreadas" ? (
-              children.estado === "Pendiente" ? (
+            {pathname === '/TransferenciasCreadas' ? (
+              children.estado === 'Pendiente' ? (
                 <>
                   <Button onClick={someJSONdata}>Imprimir</Button>
-                  <Button onClick={() => changeEstate("Extornado")}>
+                  <Button onClick={() => changeEstate('Extornado')}>
                     Extornar
                   </Button>
                 </>
@@ -225,10 +234,10 @@ const Modal = ({ children }) => {
                   <Button onClick={someJSONdata}>Imprimir</Button>
                 </>
               )
-            ) : children.estado === "Pendiente" ? (
+            ) : children.estado === 'Pendiente' ? (
               <>
                 <Button onClick={someJSONdata}>Imprimir</Button>
-                <Button onClick={() => changeEstate("Pagado")}>Pagar</Button>
+                <Button onClick={() => changeEstate('Pagado')}>Pagar</Button>
               </>
             ) : (
               <>

@@ -44,7 +44,7 @@ const Table = ({ data, error, loading }) => {
     return { girosSuma, ComisionSuma, TotalSuma };
   };
 
-  const paginator = (items, current_page, per_page_items) => {
+  const paginator = (items, current_page, per_page_items = 10) => {
     console.log('aqui toy');
     let page = current_page || pageFinal,
       per_page = per_page_items || 10,

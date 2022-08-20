@@ -10,7 +10,8 @@ const TableListHistory = ({ data, error, loading }) => {
   const [startDate, endDate] = dateRange;
 
   const [filter, setFilter] = useState(data);
-
+  const [pageInitial, setPageInitial] = useState([]);
+  const [pageFinal, setPageFinal] = useState(1);
   const handleFilter = (e) => {
     e.preventDefault();
     console.log(e.target[0].value);
@@ -31,7 +32,23 @@ const TableListHistory = ({ data, error, loading }) => {
     // setModalContent(data);
     // setModal(true);
   };
-
+  const paginator = (items, current_page, per_page_items = 10) => {
+    console.log('aqui toy');
+    let page = current_page || pageFinal,
+      per_page = per_page_items || 10,
+      offset = (page - 1) * per_page,
+      paginatedItems = items?.slice(offset).slice(0, per_page_items),
+      total_pages = Math.ceil(items?.length / per_page);
+    setPageInitial({
+      page: page,
+      per_page: per_page,
+      pre_page: page - 1 ? page - 1 : null,
+      next_page: total_pages > page ? page + 1 : null,
+      total: items?.length,
+      total_pages: total_pages,
+      data: paginatedItems,
+    });
+  };
   const filterDateRage = (update) => {
     if (update[1] === null) {
       return;
@@ -55,6 +72,7 @@ const TableListHistory = ({ data, error, loading }) => {
 
   useEffect(() => {
     setFilter(data);
+    paginator(data, 1);
   }, [data]);
   useEffect(() => {
     if (startDate === null && endDate === null) {
@@ -124,8 +142,8 @@ const TableListHistory = ({ data, error, loading }) => {
             <tr>
               <th>{errorData}</th>
             </tr>
-            {filter?.length > 0 &&
-              filter?.map(
+            {pageInitial?.data?.length > 0 &&
+              pageInitial?.data?.map(
                 (
                   {
                     nombres,
@@ -184,6 +202,21 @@ const TableListHistory = ({ data, error, loading }) => {
               )}
           </tbody>
         </table>
+      </div>
+      <div className="flex items-center justify-between mt-5 px-4 sm:px-0">
+        <Button
+          disabled={pageInitial.pre_page === null ? true : false}
+          onClick={() => paginator(data, pageInitial.pre_page)}
+        >
+          Anterior
+        </Button>
+
+        <Button
+          disabled={pageInitial.next_page === null ? true : false}
+          onClick={() => paginator(data, pageInitial.next_page)}
+        >
+          Siguiente
+        </Button>
       </div>
     </>
   );
