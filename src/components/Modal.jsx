@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
-import { UserContext } from '../context/UserProvider';
-import { Button } from 'flowbite-react';
-import { useLocation } from 'react-router-dom';
-import { useFirestoreState } from '../hooks/useFirestore';
-import Logo from '../assets/img/logoLogin.svg';
-import printJS from 'print-js';
-import Swal from 'sweetalert2';
+import React, { useContext } from "react";
+import { UserContext } from "../context/UserProvider";
+import { Button } from "flowbite-react";
+import { useLocation } from "react-router-dom";
+import { useFirestoreState } from "../hooks/useFirestore";
+import Logo from "../assets/img/logoLogin.svg";
+import printJS from "print-js";
+import Swal from "sweetalert2";
+import "./modal.css";
 
 const Modal = ({ children }) => {
   const { setModal, refreshTrasferencias, refreshTrasfereZona, user } =
@@ -27,44 +28,44 @@ const Modal = ({ children }) => {
   const someJSONdata = () => {
     //print react component to pdf
     printJS({
-      printable: document.getElementById('probando'),
+      printable: document.getElementById("probando-pdf"),
       properties: [
         {
-          name: 'width',
-          value: '100px',
+          name: "width",
+          value: "100px",
         },
         {
-          name: 'height',
-          value: '100%',
+          name: "height",
+          value: "100%",
         },
       ],
-      type: 'html',
+      type: "html",
       style:
-        '<style>body {color: red;} h1{font-size: 3.5rem !important; font-weight: 500; line-height: 1.2;color: pink; text-align: center;} img{width: 100px !important; height: auto; border: 1px solid black} </style>',
+        "body {color: black; font-family: 'Inconsolata', monospace;} .advertising{width: 250px!important } .h3{font-size: 30px!important; font-weight: 500; line-height: 1.2; color: pink; text-align: center;} img{width: 150px !important; height: auto; margin-left:70px;}",
       showModal: true,
     });
   };
   const changeEstate = async (e) => {
-    console.log('funciono', children);
+    console.log("funciono", children);
     const nuevoSaldo = user.saldo - (children.monto + children.comision);
     if (nuevoSaldo < 0) {
       Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: 'No puede tener saldo negativo',
+        position: "center",
+        icon: "error",
+        title: "No puede tener saldo negativo",
         showConfirmButton: false,
         timer: 1500,
       });
       return;
     }
-    console.log('saldo actul : ', user.saldo);
-    console.log('saldo nuevo : ', nuevoSaldo);
+    console.log("saldo actual : ", user.saldo);
+    console.log("saldo nuevo : ", nuevoSaldo);
     await updateEstate(children.nanoid, e);
     await updateDataRestarSaldo(user.nanoid, nuevoSaldo);
     Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'Pago relizado correctamente',
+      position: "center",
+      icon: "success",
+      title: "Pago relizado correctamente",
       showConfirmButton: false,
       timer: 1500,
     });
@@ -76,25 +77,29 @@ const Modal = ({ children }) => {
     return new Date().toLocaleString();
   };
   return (
-    <div className="absolute h-screen z-20 flex justify-center items-center w-full bg-black bg-opacity-60">
-      <div id="probando" className="-z-10 absolute">
-        <img src={Logo} alt="logo" />
-        <h1>Golden Fast</h1>
+    <div className="pdf-voucher absolute h-screen z-20 flex justify-center items-center w-full bg-black bg-opacity-60">
+      <div id="probando-pdf" className="-z-10 absolute">
+        <img src={Logo} className="img-logo" alt="logo" />
+        <h3 className="title">Golden Fast</h3>
+        <p className="advertising">
+          Pagos de Letra, Transferencia, Depósitos, Giros Nacionales, Pagos
+          Móviles, DIRECTV, FREEFIRE,YAPE, Retiros, Giros a Oficinas Y MÁS...
+        </p>
         <hr />
         <div>
           <p>Fecha: {fecha()}</p>
           <p>Destino: {children.origen} </p>
           <p>
-            Solicitante:{' '}
-            {children.nomSolicitante + ' ' + children.soliApellidos}
+            Solicitante:{" "}
+            {children.nomSolicitante + " " + children.soliApellidos}
           </p>
           <p>
-            Beneficiario:{' '}
-            {children.nomBeneficiario + ' ' + children.beneApellidos}
+            Beneficiario:{" "}
+            {children.nomBeneficiario + " " + children.beneApellidos}
           </p>
           <p>
             Monto: S/
-            {children.monto.toLocaleString('en-ES', {
+            {children.monto.toLocaleString("en-ES", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
@@ -123,7 +128,7 @@ const Modal = ({ children }) => {
                   </h4>
                   <p className="font-normal text-lg text-gray-500">
                     {children.fechaCreada.toDate().toLocaleDateString() +
-                      ' ' +
+                      " " +
                       children.fechaCreada.toDate().toLocaleTimeString()}
                   </p>
                 </div>
@@ -143,7 +148,7 @@ const Modal = ({ children }) => {
                   <h4 className="font-medium text-xl text-black">Monto</h4>
                   <p className="font-normal text-lg text-gray-500">
                     S/
-                    {children.monto.toLocaleString('en-ES', {
+                    {children.monto.toLocaleString("en-ES", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -153,7 +158,7 @@ const Modal = ({ children }) => {
                   <h4 className="font-medium text-xl text-black">Comision</h4>
                   <p className="font-normal text-lg text-gray-500">
                     S/
-                    {children.comision.toLocaleString('en-ES', {
+                    {children.comision.toLocaleString("en-ES", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -183,7 +188,7 @@ const Modal = ({ children }) => {
                 <div>
                   <h4 className="font-medium text-xl text-black">Nombres</h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.nomSolicitante + ' ' + children.soliApellidos}
+                    {children.nomSolicitante + " " + children.soliApellidos}
                   </p>
                 </div>
                 <div>
@@ -195,7 +200,7 @@ const Modal = ({ children }) => {
                 <div>
                   <h4 className="font-medium text-xl text-black">Nombres</h4>
                   <p className="font-normal text-lg text-gray-500">
-                    {children.nomBeneficiario + ' ' + children.beneApellidos}
+                    {children.nomBeneficiario + " " + children.beneApellidos}
                   </p>
                 </div>
                 <div>
@@ -207,11 +212,11 @@ const Modal = ({ children }) => {
             </div>
           </div>
           <div className="flex justify-end items-center gap-5 mb-5">
-            {pathname === '/TransferenciasCreadas' ? (
-              children.estado === 'Pendiente' ? (
+            {pathname === "/TransferenciasCreadas" ? (
+              children.estado === "Pendiente" ? (
                 <>
                   <Button onClick={someJSONdata}>Imprimir</Button>
-                  <Button onClick={() => changeEstate('Extornado')}>
+                  <Button onClick={() => changeEstate("Extornado")}>
                     Extornar
                   </Button>
                 </>
@@ -220,10 +225,10 @@ const Modal = ({ children }) => {
                   <Button onClick={someJSONdata}>Imprimir</Button>
                 </>
               )
-            ) : children.estado === 'Pendiente' ? (
+            ) : children.estado === "Pendiente" ? (
               <>
                 <Button onClick={someJSONdata}>Imprimir</Button>
-                <Button onClick={() => changeEstate('Pagado')}>Pagar</Button>
+                <Button onClick={() => changeEstate("Pagado")}>Pagar</Button>
               </>
             ) : (
               <>
