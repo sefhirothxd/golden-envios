@@ -3,6 +3,8 @@ import { UserContext } from '../context/UserProvider';
 import { useFirestoreState } from '../hooks/useFirestore';
 import { useForm } from 'react-hook-form';
 import { formValidate } from '../utils/formValidate';
+import Intercambio from '../assets/img/intercambio.svg';
+import axios from 'axios';
 
 const Home = () => {
   const { logoutUser, user } = useContext(UserContext);
@@ -31,8 +33,18 @@ const Home = () => {
     },
   });
 
+  const dolarSunat = async () => {
+    const res = await axios.get('https://api.peruapis.com/v1/exchange', {
+      headers: {
+        Authorization: `Bearer 38BLutysLMKGZBsXfDhtbGtPSeigaC7tyiW9UYL5pNK087uwE1WjtY9XKznv`,
+      },
+    });
+    console.log(res);
+  };
+
   useEffect(() => {
     console.log(data);
+    dolarSunat(data);
     getData();
   }, []);
 
@@ -56,48 +68,16 @@ const Home = () => {
             <h2 className="font-bold mb-4 text-sideblue text-center text-3xl">
               Tipo de cambio actual
             </h2>
-            <div className="bg-sideblue p-5 text-center text-white  rounded-2xl">
-              <div className="mb-4">
+            <div className="bg-sideblue flex justify-center items-center gap-6 p-5 text-center text-white  rounded-2xl">
+              <div>
                 <p className="font-medium text-2xl">Comprar</p>
                 <h3 className="font-bold text-3xl">USD 3.97</h3>
               </div>
+              <img src={Intercambio} alt="" />
               <div>
                 <p className="font-medium text-2xl">Venta</p>
                 <h3 className="font-bold text-3xl">USD 3.90</h3>
               </div>
-            </div>
-          </div>
-          <div className="w-96">
-            <h2 className="font-bold mb-4 text-sideblue text-center text-3xl">
-              Transaciones
-            </h2>
-            <div className="bg-sideblue p-5 text-center text-white  rounded-2xl">
-              <div className="mb-4">
-                <p className="font-medium text-2xl">Comprar</p>
-                <h3 className="font-bold text-3xl">USD 3.97</h3>
-              </div>
-              <div>
-                <p className="font-medium text-2xl">Venta</p>
-                <h3 className="font-bold text-3xl">USD 3.90</h3>
-              </div>
-            </div>
-          </div>
-          <div className="w-96">
-            <h2 className="font-bold mb-4 text-sideblue text-center text-3xl">
-              Saldo
-            </h2>
-            <div className="bg-sideblue p-5 text-center text-white  rounded-2xl">
-              <div className="mb-4">
-                <p className="font-medium text-2xl">Saldo disponible</p>
-                <h3 className="font-bold text-3xl">
-                  S/
-                  {user?.saldo.toLocaleString('en-ES', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  }) || 'cargando...'}
-                </h3>
-              </div>
-              <div className="h-16"></div>
             </div>
           </div>
         </div>
