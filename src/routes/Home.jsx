@@ -8,6 +8,7 @@ import axios from 'axios';
 
 const Home = () => {
   const { logoutUser, user } = useContext(UserContext);
+  const [cambio, setCambio] = useState({});
   const {
     data,
     loading,
@@ -34,12 +35,9 @@ const Home = () => {
   });
 
   const dolarSunat = async () => {
-    const res = await axios.get('https://api.peruapis.com/v1/exchange', {
-      headers: {
-        Authorization: `Bearer 38BLutysLMKGZBsXfDhtbGtPSeigaC7tyiW9UYL5pNK087uwE1WjtY9XKznv`,
-      },
-    });
-    console.log(res);
+    const res = await axios.get('https://golden-fast.herokuapp.com/cambio');
+    console.log(res.data);
+    setCambio(res.data);
   };
 
   useEffect(() => {
@@ -71,12 +69,16 @@ const Home = () => {
             <div className="bg-sideblue flex justify-center items-center gap-6 p-5 text-center text-white  rounded-2xl">
               <div>
                 <p className="font-medium text-2xl">Comprar</p>
-                <h3 className="font-bold text-3xl">USD 3.97</h3>
+                <h3 className="font-bold text-3xl">
+                  USD {cambio.compra?.toFixed(2)}
+                </h3>
               </div>
               <img src={Intercambio} alt="" />
               <div>
                 <p className="font-medium text-2xl">Venta</p>
-                <h3 className="font-bold text-3xl">USD 3.90</h3>
+                <h3 className="font-bold text-3xl">
+                  USD {cambio.venta?.toFixed(2)}
+                </h3>
               </div>
             </div>
           </div>
