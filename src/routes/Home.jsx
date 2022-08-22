@@ -65,7 +65,7 @@ const Home = () => {
           </p>
         </div>
         <div className="flex justify-center items-center flex-wrap  gap-4">
-          <div className="w-96">
+          <div className="w-full md:w-96">
             <h2 className="font-bold mb-4 text-sideblue text-center text-3xl">
               Tipo de cambio actual
             </h2>

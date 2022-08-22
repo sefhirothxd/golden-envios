@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { UserContext } from '../context/UserProvider';
 import X from '../assets/img/x.svg';
-import Logo from '../assets/img/logoLogin2.png';
+import Logo from '../assets/img/newLogo.png';
 import { NavLink, Link } from 'react-router-dom';
 const sideBar = ({ bar, setBar }) => {
   const [showTrans, setShowTrans] = useState(false);
@@ -70,7 +70,7 @@ const sideBar = ({ bar, setBar }) => {
           />
         </button>
         <Link to="/">
-          <img src={Logo} className="mt-10" alt="logo golden fast" />
+          <img src={Logo} className="mt-10 w-52" alt="logo golden fast" />
         </Link>
         <hr className="bg-white  w-full mt-7 mb-7" />
         <ul className="space-y-2 w-full ">
@@ -355,7 +355,6 @@ const sideBar = ({ bar, setBar }) => {
                     Crear oficina
                   </NavLink>
                 </li>
-                
               </ul>
             )}
           </li>

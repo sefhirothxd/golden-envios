@@ -61,8 +61,9 @@ const UserProvider = ({ children }) => {
   const registerUser = async (email, password) =>
     createUserWithEmailAndPassword(auth, email, password);
 
-  const loginUser = (email, password) =>
-    signInWithEmailAndPassword(auth, email, password);
+  const loginUser = async (email, password) =>
+    await signInWithEmailAndPassword(auth, email, password);
+
   const logoutUser = () => signOut(auth);
 
   const refreshTrasfereZona = async () => {

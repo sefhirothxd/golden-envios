@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { UserContext } from '../context/UserProvider';
 import { useNavigate } from 'react-router-dom';
-import Logo from '../assets/img/logoLogin.svg';
+import Logo from '../assets/img/logoLogin.png';
 import Mundo from '../assets/img/mundoFinal.png';
 import { erroresFirebase } from '../utils/erroresFirebase';
 import FormError from '../components/FormError';

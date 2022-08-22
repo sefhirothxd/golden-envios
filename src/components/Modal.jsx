@@ -3,7 +3,7 @@ import { UserContext } from '../context/UserProvider';
 import { Button } from 'flowbite-react';
 import { useLocation } from 'react-router-dom';
 import { useFirestoreState } from '../hooks/useFirestore';
-import Logo from '../assets/img/gf-black.svg';
+import Logo from '../assets/img/logoRecibo.png';
 import printJS from 'print-js';
 import Swal from 'sweetalert2';
 
@@ -40,7 +40,7 @@ const Modal = ({ children }) => {
       ],
       type: 'html',
       style:
-        "body {color: black; font-family: 'Inconsolata', monospace; margin: 0;}.text-cherry{width: 302px!important;font-size: 12px;} .mayuscula{text-transform: uppercase;} .advertising{width: 302px!important;font-size: 12px; margin-bottom: 30px;text-align: center} .line-break{border-top: 1px dashed #000; width: 302px !important; height: 10px; margin:0} img{width: 150px !important; height: 70px !important; margin-left:50px; }",
+        "body {color: black; font-family: 'Inconsolata', monospace; margin: 0;}.text-cherry{width: 302px!important;font-size: 12px;} .mayuscula{text-transform: uppercase;} .advertising{width: 302px!important;font-size: 12px; margin-bottom: 30px;text-align: center} .line-break{border-top: 1px dashed #000; width: 302px !important; height: 10px; margin:0} img{width: 150px !important; height: auto !important; margin-left:70px; }",
       showModal: true,
     });
   };
