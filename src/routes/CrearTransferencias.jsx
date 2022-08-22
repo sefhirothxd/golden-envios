@@ -148,7 +148,10 @@ const crearTransferencias = () => {
     nomBeneficiario,
     beneApellidos,
   }) => {
-    if (ciudad == user.sede || 15000 < parseFloat(cantidad)) {
+    if (
+      ciudad == user.sede ||
+      user.saldoMax < user.saldo + (parseFloat(cantidad) + parseFloat(comision))
+    ) {
       Swal.fire({
         position: 'center',
         icon: 'error',

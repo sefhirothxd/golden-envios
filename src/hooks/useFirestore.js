@@ -156,6 +156,7 @@ export const useFirestoreState = () => {
       );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
+      console.log('oficinas', datos);
       setOfficesALL(datos);
     } catch (error) {
       console.log(error);
