@@ -36,12 +36,10 @@ const Home = () => {
 
   const dolarSunat = async () => {
     const res = await axios.get('https://golden-fast.herokuapp.com/cambio');
-    console.log(res.data);
     setCambio(res.data);
   };
 
   useEffect(() => {
-    console.log(data);
     dolarSunat(data);
     getData();
   }, []);
@@ -54,8 +52,13 @@ const Home = () => {
             Hola, {user?.nombres?.toUpperCase() || 'Loading...'}
           </h1>
           <p className="text-3xl font-normal">
-            Tienes un saldo disponible de{' '}
+            Saldo consumido{' '}
             {user?.saldo.toLocaleString('en-ES', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }) || 'cargando...'}{' '}
+            de{' '}
+            {user?.saldoMax?.toLocaleString('en-ES', {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             }) || 'cargando...'}

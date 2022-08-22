@@ -22,7 +22,6 @@ const UserProvider = ({ children }) => {
   const { getUserInfo, getDataZona, getData } = useFirestoreState();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log(user);
       if (user) {
         const { email, uid, displayName, photoURL } = user;
         const { apellidos, direccion, dni, nombres, rol, sede, saldo, nanoid } =
@@ -42,7 +41,6 @@ const UserProvider = ({ children }) => {
           nanoid,
         });
         const res = await getData();
-        console.log(res);
         setTrasferencias(res);
         const recibidad = await getDataZona(sede);
         setTransferenciasRecibidas(recibidad);
@@ -53,7 +51,6 @@ const UserProvider = ({ children }) => {
               .filter((d) => d.uid === user.uid)[0]
           )
         );
-        console.log(user.uid);
       } else {
         setUser(null);
       }

@@ -62,7 +62,6 @@ export const useFirestoreState = () => {
       const datos = querySnapshot.docs.map((doc) => doc.data());
       // console.log(datos);
       const newData = datos.filter((item) => item.destino === e);
-      console.log(newData);
       setZonaData(newData);
       return newData;
     } catch (error) {
@@ -90,7 +89,6 @@ export const useFirestoreState = () => {
     }
   };
   const getUserInfo = async (u) => {
-    console.log(u);
     try {
       setLoading((prev) => ({ ...prev, getUserInfo: true }));
       const q = await query(
@@ -99,7 +97,6 @@ export const useFirestoreState = () => {
       );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
-      console.log(datos[0]);
       setDataUser(datos[0]);
       return datos[0];
     } catch (error) {
@@ -156,7 +153,6 @@ export const useFirestoreState = () => {
       );
       const querySnapshot = await getDocs(q);
       const datos = querySnapshot.docs.map((doc) => doc.data());
-      console.log('oficinas', datos);
       setOfficesALL(datos);
     } catch (error) {
       console.log(error);
