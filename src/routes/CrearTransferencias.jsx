@@ -88,22 +88,17 @@ const crearTransferencias = () => {
     console.log(e.target.value);
     if (e.target.value.length === 8) {
       const datos = await axios.post(
-        'https://api.apis.net.pe/v1/dni?numero=45947881',
+        'https://api-rapida-test-production.up.railway.app/dni',
         {
           dni: e.target.value,
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
         }
       );
 
-      console.log(datos.data.result);
-      setValue('nomSolicitante', datos.data.result.nombres);
+      console.log(datos.data);
+      setValue('nomSolicitante', datos.data.nombres);
       setValue(
         'soliApellidos',
-        datos.data.result.paterno + ' ' + datos.data.result.materno
+        datos.data.apellidoMaterno + ' ' + datos.data.apellidoPaterno
       );
     }
   };
@@ -111,22 +106,17 @@ const crearTransferencias = () => {
     console.log(e.target.value);
     if (e.target.value.length === 8) {
       const datos = await axios.post(
-        'https://www.softwarelion.xyz/api/reniec/reniec-dni',
+        'https://api-rapida-test-production.up.railway.app/dni',
         {
           dni: e.target.value,
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
         }
       );
 
-      console.log(datos.data.result);
-      setValue('nomBeneficiario', datos.data.result.nombres);
+      console.log(datos.data);
+      setValue('nomBeneficiario', datos.data.nombres);
       setValue(
         'beneApellidos',
-        datos.data.result.paterno + ' ' + datos.data.result.materno
+        datos.data.apellidoMaterno + ' ' + datos.data.apellidoPaterno
       );
     }
   };
