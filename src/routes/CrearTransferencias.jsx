@@ -11,8 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNTkxLCJjb3JyZW8iOiJidmVyYWNhY2hheUBnbWFpbC5jb20iLCJpYXQiOjE2NjAwNjE3NjJ9.EEiD81bUFdlC5E-cqVjNGTo_qXNQ9fGxMfA_9PRuGVo';
+const token = 'apis-token-3258.NmWYtZ5-JyUVNVoGl08gML7KU19jzoTk';
 
 const crearTransferencias = () => {
   const [notificacion, setNotificacion] = useState(false);
@@ -89,7 +88,7 @@ const crearTransferencias = () => {
     console.log(e.target.value);
     if (e.target.value.length === 8) {
       const datos = await axios.post(
-        'https://www.softwarelion.xyz/api/reniec/reniec-dni',
+        'https://api.apis.net.pe/v1/dni?numero=45947881',
         {
           dni: e.target.value,
         },

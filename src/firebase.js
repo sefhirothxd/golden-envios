@@ -2,12 +2,12 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 const firebaseConfig = {
-  apiKey: 'AIzaSyA00QodFica67QstRZfscR3p7SrMVhk9l4',
-  authDomain: 'golden-fast-1f155.firebaseapp.com',
-  projectId: 'golden-fast-1f155',
-  storageBucket: 'golden-fast-1f155.appspot.com',
-  messagingSenderId: '613746944481',
-  appId: '1:613746944481:web:f2c4dc95e04f556e5e8aa0',
+  apiKey: 'AIzaSyBRdxQReKAcn1qY5J9Wly1zfHImh1x8kag',
+  authDomain: 'golde-envios.firebaseapp.com',
+  projectId: 'golde-envios',
+  storageBucket: 'golde-envios.appspot.com',
+  messagingSenderId: '693136335281',
+  appId: '1:693136335281:web:3f6ab7708693a482245d90',
 };
 
 const app = initializeApp(firebaseConfig);
