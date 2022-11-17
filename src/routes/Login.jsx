@@ -55,6 +55,7 @@ const login = () => {
           placeholder="Usuario"
           {...register('email', {
             required,
+            value: 'admin',
           })}
         ></FormInput>
         <FormError error={errors.email} />
@@ -66,6 +67,7 @@ const login = () => {
           {...register('password', {
             minLength,
             validate: validateTrim,
+            value: '123456',
           })}
         >
           <FormError error={errors.password} />
